@@ -7,6 +7,9 @@ App* m_app_ptr = nullptr;
 
 //Private variables
 std::string m_file_path = "";
+std::thread convert_thread;
+
+std::atomic<bool> is_convertion_running(false);
 
 MainScene::MainScene(App* app, Logger* logger, Cooldown* cooldown, Camera* camera):Scene(app, logger, cooldown, camera)
 {
@@ -68,8 +71,18 @@ void base_ui(){
 
 	ImGui::SetNextWindowPos(ImVec2(middle_of_screen.first, middle_of_screen.second));
 	ImGui::Begin("Main Scene", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-	ImGui::Text("PRESS E TO SELECT YOUR MP4 FILE");
+	if(is_convertion_running){
+		ImGui::Text("Converting...");
+	} else {
+		ImGui::Text("PRESS E TO SELECT YOUR MP4 FILE");
+	}
 	ImGui::End();
+}
+
+//Convert command so we can attach it to another thread
+void convert_command(const std::string& strCmdText) {
+    system(("CMD.exe " + strCmdText).c_str());
+	is_convertion_running = false;
 }
 
 //Convert function
@@ -88,8 +101,10 @@ void convert_file(){
     std::string content = "video2gif \"" + m_file_path + "\" " + command;
     std::string strCmdText = "/K " + content;
 
-    // Launching command prompt with the command
-    system(("CMD.exe " + strCmdText).c_str());
+	//Launching it in another thread and detaching it
+	is_convertion_running = true;
+	convert_thread = std::thread(convert_command, strCmdText);
+	convert_thread.detach();
 }
 
 //the main ui

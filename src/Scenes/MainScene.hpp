@@ -5,6 +5,8 @@
 #include "../Core/DataLoader.hpp"
 
 #include <ctime> 
+#include <thread>
+#include <atomic>
 
 class MainScene : public Scene {
 public:
