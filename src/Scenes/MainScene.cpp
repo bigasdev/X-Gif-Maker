@@ -41,7 +41,18 @@ void MainScene::init()
 
 void MainScene::update(double deltaTime)
 {
-	
+	if(!m_file_path.empty()){
+
+		std::filesystem::path path = m_file_path;
+		std::string filename = path.filename().string();
+		
+		FileEntity file(vec2f(100*Math::clamp(1, m_files.size()+1, 40), 100), vec2f(42, 54), m_app->get_resources()->GetAsset("file")->GetTexture(), 0);
+		file.set_file_path(filename);
+
+		m_files.push_back(file);
+
+		m_file_path = "";
+	}
 }
 
 
@@ -120,6 +131,12 @@ void MainScene::draw()
 {
 	//ui
 	GUI::draw([this](){this->ui();});
+
+	for(auto file : m_files){
+		m_app->get_atlas()->draw(file.get_texture(), vec2f(file.get_current_frame().w, file.get_current_frame().h), 1, file.get_pos().x, file.get_pos().y, false);
+
+		m_app->get_atlas()->draw(file.get_pos().x - 30, file.get_pos().y + 50, file.get_file_path().c_str(), m_app->get_main_font(), {255,255,255,255});
+	}
 }
 
 void MainScene::input(SDL_Event event)
@@ -128,6 +145,12 @@ void MainScene::input(SDL_Event event)
 	//mHero->Input(event);	
 
 	switch (event.type) {
+		case SDL_DROPFILE:
+			m_file_path = event.drop.file;
+			std::cout << "File dropped on window: " << m_file_path << std::endl;
+			//convert_file();
+		break;
+
 		case SDL_MOUSEBUTTONDOWN:
 			switch (event.button.button) {
 				case SDL_BUTTON_LEFT:

@@ -3,10 +3,12 @@
 #include "Scene.hpp"
 
 #include "../Core/DataLoader.hpp"
+#include "../Entity/FileEntity.hpp"
 
 #include <ctime> 
 #include <thread>
 #include <atomic>
+#include <filesystem>
 
 class MainScene : public Scene {
 public:
@@ -22,7 +24,7 @@ public:
 	void ui();
 
 private:
-	
+	std::vector<FileEntity> m_files;
 };
 
 #endif
