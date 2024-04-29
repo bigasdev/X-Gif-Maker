@@ -85,7 +85,7 @@ void base_ui(){
 	if(is_convertion_running){
 		ImGui::Text("Converting...");
 	} else {
-		ImGui::Text("PRESS E TO SELECT YOUR MP4 FILE");
+		ImGui::Text("DRAG AND DROP YOUR FILES");
 	}
 	ImGui::End();
 }
