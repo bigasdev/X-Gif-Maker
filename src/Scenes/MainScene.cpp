@@ -1,15 +1,12 @@
 #include "MainScene.hpp"
-#include "GameScene.hpp"
 
 #include "../ImGui/tinyfiledialogs.h"
 
 //Used to reference the app in local functions
 App* m_app_ptr = nullptr;
 
-
-//Game Scene
-GameScene* m_game_scene = nullptr;
-
+//Private variables
+std::string m_file_path = "";
 
 MainScene::MainScene(App* app, Logger* logger, Cooldown* cooldown, Camera* camera):Scene(app, logger, cooldown, camera)
 {
@@ -32,8 +29,6 @@ void MainScene::init()
 {
 	m_cd->set_state("init_event", .1f, [&] {	m_logger->log("Starting the MainScene!");});
 	m_app->change_background_color(vec3f(61, 61, 61));
-
-	m_game_scene = new GameScene(m_app, m_logger, m_cd, m_camera);
 	
 	//
 	//
@@ -68,13 +63,33 @@ void base_ui(){
 	auto middle_of_screen = std::make_pair(windowSize.x / 2, windowSize.y / 2);
 
 	//Hold the powerful magic numbers to center the text!!!
-	middle_of_screen.first -= 100;
+	middle_of_screen.first -= 120;
 	middle_of_screen.second -= 40;
 
 	ImGui::SetNextWindowPos(ImVec2(middle_of_screen.first, middle_of_screen.second));
 	ImGui::Begin("Main Scene", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-	ImGui::Text("PRESS E TO START THE GAME");
+	ImGui::Text("PRESS E TO SELECT YOUR MP4 FILE");
 	ImGui::End();
+}
+
+//Convert function
+void convert_file(){
+    std::string command = "-w 800 -q 6 -o results/$2.gif"; // Default command
+    // Assuming you have defined the enum Quality { high, medium, low }
+    //Quality quality = Quality::high; // Adjust this based on your needs
+
+    // Adjust the command based on quality
+    /*if (quality == Quality::medium) {
+        command = "-w 600 -o results/$2.gif";
+    } else if (quality == Quality::low) {
+        command = "-w 450 -q 4 -o results/$2.gif";
+    }*/
+
+    std::string content = "video2gif \"" + m_file_path + "\" " + command;
+    std::string strCmdText = "/K " + content;
+
+    // Launching command prompt with the command
+    system(("CMD.exe " + strCmdText).c_str());
 }
 
 //the main ui
@@ -122,7 +137,11 @@ void MainScene::input(SDL_Event event)
 
 				break;
 				case SDL_SCANCODE_E:
-					m_app->change_scene(m_game_scene);
+					m_file_path = Data_Loader::load_file("*.mp4");
+
+					if(m_file_path != ""){
+						convert_file();
+					}
 				break;
 				case SDL_SCANCODE_A:
 					

@@ -20,6 +20,10 @@
 #include <string>
 #include <math.h>
 #include <map>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cstdlib>
 
 //the scene class, we'll use this to create the behaviours of our app.
 class Scene {

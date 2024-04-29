@@ -2,6 +2,8 @@
 #define _MAINSCENE_HPP
 #include "Scene.hpp"
 
+#include "../Core/DataLoader.hpp"
+
 #include <ctime> 
 
 class MainScene : public Scene {
