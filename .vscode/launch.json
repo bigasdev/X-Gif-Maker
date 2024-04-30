@@ -3,14 +3,27 @@
     "configurations": [
         {
             "name": "(Windows) Launch",
-            "type": "cppvsdbg",
+            "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/.build/fortress_debug.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "environment": [],
-            "console":"externalTerminal",
+            "environment": [{ "name": "config", "value": "Debug" }],
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:\\mingw64\\bin\\gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "externalConsole": false,
+            "windows": {
+                "program": "${workspaceFolder}/.build/fortress_debug.exe",
+                "stopAtEntry": false
+            },
             "preLaunchTask": "build"
         }
     ]
