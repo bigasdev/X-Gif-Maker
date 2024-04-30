@@ -113,7 +113,7 @@ void convert_file(){
         command = "-w 450 -q 4 -o results/$2.gif";
     }*/
 
-    std::string content = "video2gif \"" + m_file_path + "\" " + command;
+    std::string content = "video2gif.bat \"" + m_file_path + "\" " + command;
     std::string strCmdText = "/K " + content;
 
 	//Launching it in another thread and detaching it
