@@ -12,6 +12,11 @@ FileEntity::FileEntity(vec2f _pos, vec2f _scale, SDL_Texture *_texture, int _uid
 void FileEntity::set_file_path(std::string _file_path)
 {
     m_file_path = _file_path;
+
+    if(m_file_path.length() > 6)
+    {
+        m_file_path = m_file_path.substr(0, 6) + "..";
+    }
 }
 
 std::string FileEntity::get_file_path()

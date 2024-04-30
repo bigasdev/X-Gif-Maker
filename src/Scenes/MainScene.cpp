@@ -14,6 +14,7 @@ std::atomic<bool> is_convertion_running(false);
 //Textures
 SDL_Texture* m_file_hover_tx = nullptr;
 SDL_Texture* m_file_selected_tx = nullptr;
+SDL_Texture* m_add_symbol_tx = nullptr;
 
 MainScene::MainScene(App* app, Logger* logger, Cooldown* cooldown, Camera* camera):Scene(app, logger, cooldown, camera)
 {
@@ -33,12 +34,13 @@ void MainScene::load_assets()
 
 	m_file_hover_tx = m_app->get_resources()->GetAsset("hover")->GetTexture();
 	m_file_selected_tx = m_app->get_resources()->GetAsset("selected")->GetTexture();
+	m_add_symbol_tx = m_app->get_resources()->GetAsset("add_symbol")->GetTexture();
 }
 
 void MainScene::init()
 {
 	m_cd->set_state("init_event", .1f, [&] {	m_logger->log("Starting the MainScene!");});
-	m_app->change_background_color(vec3f(61, 61, 61));
+	m_app->change_background_color(vec3f(42, 47, 78));
 	
 	//
 	//
@@ -53,7 +55,7 @@ void MainScene::update(double deltaTime)
 		std::filesystem::path path = m_file_path;
 		std::string filename = path.filename().string();
 		
-		FileEntity file(vec2f(100*Math::clamp(1, m_files.size()+1, 40), 100), vec2f(28, 36), m_app->get_resources()->GetAsset("file")->GetTexture(), 0);
+		FileEntity file(vec2f(65*Math::clamp(1, m_files.size()+1, 10), 100), vec2f(36, 36), m_app->get_resources()->GetAsset("new_file")->GetTexture(), 0);
 		file.set_file_path(filename);
 
 		m_files.push_back(file);
@@ -91,7 +93,7 @@ void status_bar_ui(){
 //Base UI for the main scene
 void base_ui(){
 	auto windowSize = m_app_ptr->get_window_size();
-	auto middle_of_screen = std::make_pair(windowSize.x / 2, windowSize.y / 2);
+	auto middle_of_screen = std::make_pair(windowSize.x / 2, windowSize.y);
 
 	//Hold the powerful magic numbers to center the text!!!
 	middle_of_screen.first -= 120;
@@ -148,16 +150,17 @@ void MainScene::draw()
 {
 	//ui
 	GUI::draw([this](){this->ui();});
+	m_app->get_atlas()->draw(m_add_symbol_tx, vec2f(44, 44), 1, 544, 517, false);
 
 	for(auto file : m_files){
 		m_app->get_atlas()->draw(file.get_texture(), vec2f(file.get_current_frame().w, file.get_current_frame().h), 1, file.get_pos().x, file.get_pos().y, false);
 
 		if(file.is_hovered()){
 			//std::cout << "Hovered" << std::endl;
-			m_app->get_atlas()->draw(m_file_hover_tx, vec2f(14, 8), 1, file.get_pos().x, file.get_pos().y - 35, false);
+			m_app->get_atlas()->draw(m_file_hover_tx, vec2f(14, 8), 1, file.get_pos().x, file.get_pos().y - 15, false);
 		}
 
-		m_app->get_atlas()->draw(file.get_pos().x - 30, file.get_pos().y + 50, file.get_file_path().c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(file.get_pos().x-5, file.get_pos().y + 32, file.get_file_path().c_str(), m_app->get_main_font(), {101,115,146,255});
 	}
 }
 
