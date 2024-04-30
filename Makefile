@@ -45,11 +45,10 @@ bin/%.o: src/Utils/%.cpp
 	$(CC) -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
 
 debug: imgui_o app_o entity_o renderer_o resources_o scenes_o tools_o utils_o
-	${CC} -Wall -static-libstdc++ -static-libgcc -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -o .build/${NAME}_debug.exe ${BIN} res/icon/icon.res -lstdc++fs -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lole32 -mwindows -mconsole
-	.build/${NAME}_debug.exe
+	${CC} -Wall -static-libstdc++ -static-libgcc -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -o .build/${NAME}_debug.exe ${BIN} res/icon/icon.res -lstdc++fs -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lole32 -mwindows -mconsole -g
 
 build: imgui_o app_o entity_o renderer_o resources_o scenes_o tools_o utils_o
-	${CC} -g -Wall  -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -o .release/${NAME}.exe ${BIN} res/icon/icon.res -lstdc++fs -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lole32 -mwindows -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic
+	${CC} -g -Wall  -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -o .release/${NAME}.exe ${BIN} res/icon/icon.res -lstdc++fs -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lole32 -mwindows -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic -O2
 
 compile: bin_dir imgui_o app_o entity_o renderer_o resources_o scenes_o tools_o utils_o
 	${CC} -Wall -static-libstdc++ -static-libgcc -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -o ${NAME}_debug ${BIN} res/icon/icon.res -lstdc++fs -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lole32 -mwindows -mconsole

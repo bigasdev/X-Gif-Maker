@@ -11,6 +11,10 @@ std::thread convert_thread;
 
 std::atomic<bool> is_convertion_running(false);
 
+//Textures
+SDL_Texture* m_file_hover_tx = nullptr;
+SDL_Texture* m_file_selected_tx = nullptr;
+
 MainScene::MainScene(App* app, Logger* logger, Cooldown* cooldown, Camera* camera):Scene(app, logger, cooldown, camera)
 {
 	m_app_ptr = app;
@@ -26,6 +30,9 @@ void MainScene::load_assets()
 	//double timer = 0.3f;
 	//mHero->AddSpriteAnimation(SpriteAnimation("idle", idleFrames, timer));
 	m_GUI_assets.load_assets(m_app->get_resources());
+
+	m_file_hover_tx = m_app->get_resources()->GetAsset("hover")->GetTexture();
+	m_file_selected_tx = m_app->get_resources()->GetAsset("selected")->GetTexture();
 }
 
 void MainScene::init()
@@ -56,6 +63,12 @@ void MainScene::update(double deltaTime)
 
 	for(auto& file : m_files){
 		file.hover(file.is_close_to_pos(vec2f(Mouse::get_mouse_pos().x, Mouse::get_mouse_pos().y), 50));
+
+		if(file.is_hovered()){
+			if(m_current_mouse_key == LEFT_CLICK){
+				std::cout << "Clicked" << std::endl;
+			}
+		}
 	}
 }
 
@@ -141,7 +154,7 @@ void MainScene::draw()
 
 		if(file.is_hovered()){
 			//std::cout << "Hovered" << std::endl;
-			m_app->get_atlas()->draw(m_app->get_resources()->GetAsset("hover")->GetTexture(), vec2f(14, 8), 1, file.get_pos().x, file.get_pos().y - 35, false);
+			m_app->get_atlas()->draw(m_file_hover_tx, vec2f(14, 8), 1, file.get_pos().x, file.get_pos().y - 35, false);
 		}
 
 		m_app->get_atlas()->draw(file.get_pos().x - 30, file.get_pos().y + 50, file.get_file_path().c_str(), m_app->get_main_font(), {255,255,255,255});
@@ -163,7 +176,7 @@ void MainScene::input(SDL_Event event)
 		case SDL_MOUSEBUTTONDOWN:
 			switch (event.button.button) {
 				case SDL_BUTTON_LEFT:
-					
+					m_current_mouse_key = LEFT_CLICK;
 				break;
 			}
 
@@ -171,7 +184,7 @@ void MainScene::input(SDL_Event event)
 			if(event.type == SDL_MOUSEBUTTONDOWN)return;
 			switch (event.button.button) {
 				case SDL_BUTTON_LEFT:			
-					
+					m_current_mouse_key = NO_KEY;
 				break;
 			}
 

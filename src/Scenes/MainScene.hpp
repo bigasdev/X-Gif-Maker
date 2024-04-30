@@ -10,6 +10,12 @@
 #include <atomic>
 #include <filesystem>
 
+enum MOUSE_KEY_STATE{
+	LEFT_CLICK,
+	RIGHT_CLICK,
+	NO_KEY
+};
+
 class MainScene : public Scene {
 public:
 	MainScene(App* app, Logger* logger, Cooldown* cooldown, Camera* camera);
@@ -25,6 +31,8 @@ public:
 
 private:
 	std::vector<FileEntity> m_files;
+
+	MOUSE_KEY_STATE m_current_mouse_key = NO_KEY;
 };
 
 #endif
