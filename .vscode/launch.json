@@ -8,14 +8,22 @@
             "program": "${workspaceFolder}/.build/fortress_debug.exe",
             "args": [],
             "stopAtEntry": false,
+            "sourceFileMap": {
+                "${workspaceFolder}/.build": "${workspaceFolder}\\bin"
+            },
             "cwd": "${workspaceFolder}",
             "environment": [{ "name": "config", "value": "Debug" }],
-            "MIMode": "gdb",
             "miDebuggerPath": "C:\\mingw64\\bin\\gdb.exe",
+            "MIMode": "gdb",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
                     "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
                     "ignoreFailures": true
                 }
             ],
@@ -24,7 +32,7 @@
                 "program": "${workspaceFolder}/.build/fortress_debug.exe",
                 "stopAtEntry": false
             },
-            "preLaunchTask": "build"
+            "preLaunchTask": "build",        
         }
     ]
 }
