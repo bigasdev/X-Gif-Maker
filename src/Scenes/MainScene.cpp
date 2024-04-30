@@ -53,6 +53,10 @@ void MainScene::update(double deltaTime)
 
 		m_file_path = "";
 	}
+
+	for(auto& file : m_files){
+		file.hover(file.is_close_to_pos(vec2f(Mouse::get_mouse_pos().x, Mouse::get_mouse_pos().y), 50));
+	}
 }
 
 
@@ -134,6 +138,11 @@ void MainScene::draw()
 
 	for(auto file : m_files){
 		m_app->get_atlas()->draw(file.get_texture(), vec2f(file.get_current_frame().w, file.get_current_frame().h), 1, file.get_pos().x, file.get_pos().y, false);
+
+		if(file.is_hovered()){
+			//std::cout << "Hovered" << std::endl;
+			m_app->get_atlas()->draw(m_app->get_resources()->GetAsset("hover")->GetTexture(), vec2f(21, 12), 1, file.get_pos().x, file.get_pos().y - 35, false);
+		}
 
 		m_app->get_atlas()->draw(file.get_pos().x - 30, file.get_pos().y + 50, file.get_file_path().c_str(), m_app->get_main_font(), {255,255,255,255});
 	}
