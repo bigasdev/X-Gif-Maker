@@ -28,7 +28,7 @@ void GUI::setup(SDL_Window* window, SDL_Renderer* renderer)
     style.Colors[ImGuiCol_TitleBgActive] = ImVec4{0.34f, 0.43f, 0.25f, 1.0f};
 
     //adding custom font
-    io.Fonts->AddFontFromFileTTF("res/font/rzpix.ttf", 12);
+    io.Fonts->AddFontFromFileTTF("res/font/zpix.ttf", 12);
 
     
 
