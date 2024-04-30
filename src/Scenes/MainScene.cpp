@@ -46,7 +46,7 @@ void MainScene::update(double deltaTime)
 		std::filesystem::path path = m_file_path;
 		std::string filename = path.filename().string();
 		
-		FileEntity file(vec2f(100*Math::clamp(1, m_files.size()+1, 40), 100), vec2f(42, 54), m_app->get_resources()->GetAsset("file")->GetTexture(), 0);
+		FileEntity file(vec2f(100*Math::clamp(1, m_files.size()+1, 40), 100), vec2f(28, 36), m_app->get_resources()->GetAsset("file")->GetTexture(), 0);
 		file.set_file_path(filename);
 
 		m_files.push_back(file);
@@ -141,7 +141,7 @@ void MainScene::draw()
 
 		if(file.is_hovered()){
 			//std::cout << "Hovered" << std::endl;
-			m_app->get_atlas()->draw(m_app->get_resources()->GetAsset("hover")->GetTexture(), vec2f(21, 12), 1, file.get_pos().x, file.get_pos().y - 35, false);
+			m_app->get_atlas()->draw(m_app->get_resources()->GetAsset("hover")->GetTexture(), vec2f(14, 8), 1, file.get_pos().x, file.get_pos().y - 35, false);
 		}
 
 		m_app->get_atlas()->draw(file.get_pos().x - 30, file.get_pos().y + 50, file.get_file_path().c_str(), m_app->get_main_font(), {255,255,255,255});

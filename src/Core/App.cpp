@@ -96,7 +96,7 @@ void App::init(const char* title, uint32_t xpos, uint32_t ypos, uint32_t width, 
 
 			m_atlas_ptr = new Atlas(m_renderer, 1);
 
-			s_main_font = TTF_OpenFont("res/font/rzpix.ttf", 12);
+			s_main_font = TTF_OpenFont("res/font/zpix.ttf", 12);
 
 			m_cd = new Cooldown();
 			m_camera = new Camera(nullptr);
