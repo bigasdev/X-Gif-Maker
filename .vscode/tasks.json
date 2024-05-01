@@ -5,10 +5,7 @@
             "label": "build",
             "type": "shell",
             "command": "mingw32-make",
-            "args": [
-                "-j",
-                "debug"
-            ],
+            "args": ["-j", "debug", "DEBUG=true"],
             "group": "build",
             "problemMatcher": []
         },
@@ -26,9 +23,7 @@
             "options": {
                 "cwd": "C:/mingw64/bin"
             },
-            "problemMatcher": [
-                "$gcc"
-            ],
+            "problemMatcher": ["$gcc"],
             "group": {
                 "kind": "build",
                 "isDefault": true

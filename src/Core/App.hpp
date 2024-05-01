@@ -3,6 +3,7 @@
 #include "SDL.h"
 #include "../Resources/Resources.hpp"
 #include <iostream>
+#include "Assert.h"
 #include "../Renderer/Atlas.hpp"
 
 class Scene;

@@ -6,6 +6,7 @@ CC = g++ -std=c++17
 #CPP = .\src\Entity/*.cpp .\src\Scenes/*.cpp
 # imgui dependencies
 BIN = bin/*.o
+DEBUG_FLAGS = -DF_ENABLE_ASSERTS
 
 bin_dir:
 	mkdir bin
@@ -21,28 +22,28 @@ utils_o : $(patsubst src/Utils/%.cpp,bin/%.o,$(wildcard src/Utils/*.cpp))
 
 # Rule to build all .cpp files in the src/ImGui folder
 bin/%.o: src/ImGui/%.cpp
-	$(CC) -g -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
+	$(CC) -g $(if $(filter true,$(DEBUG)),$(DEBUG_FLAGS)) -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
 	
 bin/%.o: src/Core/%.cpp
-	$(CC) -g -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
+	$(CC) -g $(if $(filter true,$(DEBUG)),$(DEBUG_FLAGS)) -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
 
 bin/%.o: src/Entity/%.cpp
-	$(CC) -g -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
+	$(CC) -g $(if $(filter true,$(DEBUG)),$(DEBUG_FLAGS)) -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
 
 bin/%.o: src/Renderer/%.cpp
-	$(CC) -g -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
+	$(CC) -g $(if $(filter true,$(DEBUG)),$(DEBUG_FLAGS)) -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
 
 bin/%.o: src/Resources/%.cpp
-	$(CC) -g -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
+	$(CC) -g $(if $(filter true,$(DEBUG)),$(DEBUG_FLAGS)) -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
 
 bin/%.o: src/Scenes/%.cpp
-	$(CC) -g -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
+	$(CC) -g $(if $(filter true,$(DEBUG)),$(DEBUG_FLAGS)) -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
 
 bin/%.o: src/Tools/%.cpp
-	$(CC) -g -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
+	$(CC) -g $(if $(filter true,$(DEBUG)),$(DEBUG_FLAGS)) -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
 
 bin/%.o: src/Utils/%.cpp
-	$(CC) -g -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
+	$(CC) -g $(if $(filter true,$(DEBUG)),$(DEBUG_FLAGS)) -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -c $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -o $@
 
 debug: imgui_o app_o entity_o renderer_o resources_o scenes_o tools_o utils_o
 	${CC} -g -Wall -static-libstdc++ -static-libgcc -Iinclude -Iinclude/sdl -Iinclude/headers -Llib -o .build/${NAME}_debug.exe ${BIN} res/icon/icon.res -lstdc++fs -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lole32 -mwindows -mconsole

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Core/App.hpp"
+#include "../Core/Assert.h"
 #include "../Renderer/AppGui.hpp"
 #include "../Renderer/Atlas.hpp"
 #include "../Renderer/Camera.hpp"
