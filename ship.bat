@@ -12,3 +12,6 @@ xcopy "SDL2_ttf.dll" ".release" /i
 xcopy "libwinpthread-1.dll" ".release" /i
 xcopy "res" ".release/res/" /i /e /y
 mingw32-make build DEBUG=false
+del "bin\*"
+echo Build successful
+timeout /t 3
