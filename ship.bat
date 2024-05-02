@@ -5,13 +5,13 @@ rem /i option is needed to avoid the batch file asking you whether destination f
 rem /e option is needed to copy also all folders and subfolders
 rem /y 
 
-del "bin\*"
-xcopy "SDL2.dll" ".release" /i
-xcopy "SDL2_image.dll" ".release" /i
-xcopy "SDL2_ttf.dll" ".release" /i
-xcopy "libwinpthread-1.dll" ".release" /i
+del /Q "bin\*"
+xcopy "SDL2.dll" ".release" /i /y
+xcopy "SDL2_image.dll" ".release" /i /y
+xcopy "SDL2_ttf.dll" ".release" /i /y
+xcopy "libwinpthread-1.dll" ".release" /i /y
 xcopy "res" ".release/res/" /i /e /y
 mingw32-make build DEBUG=false
-del "bin\*"
+del /Q "bin\*"
 echo Build successful
 timeout /t 3

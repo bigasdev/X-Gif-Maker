@@ -30,7 +30,7 @@
         {
             "text": "💼 Build",
             "color": "#cfdd40",
-            "command": "mingw32-make build",
+            "command": "ship.bat",
             "alignment": "right",
             "skipTerminateQuickPick": false,
             "priority": 0
