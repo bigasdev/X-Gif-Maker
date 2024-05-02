@@ -99,7 +99,7 @@ void App::init(const char* title, uint32_t xpos, uint32_t ypos, uint32_t width, 
 			s_main_font = TTF_OpenFont("res/font/zpix.ttf", 12);
 
 			m_cd = new Cooldown();
-			m_camera = new Camera(nullptr);
+			m_camera = new Camera(nullptr, m_window_size);
 
 			m_logger = new Logger(m_resources_ptr->GetAsset("logger")->GetTexture());
 			m_logger->init(m_atlas_ptr, s_main_font, vec2f(46, 14));

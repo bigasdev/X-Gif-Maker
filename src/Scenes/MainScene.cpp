@@ -45,6 +45,8 @@ void MainScene::init()
 	//
 	//
 	load_assets();
+	
+	F_ASSERT(m_files.size() > 0);
 }
 
 
@@ -153,7 +155,8 @@ void MainScene::draw()
 	m_app->get_atlas()->draw(m_add_symbol_tx, vec2f(44, 44), 1, 544, 517, false);
 
 	for(auto file : m_files){
-		m_app->get_atlas()->draw(file.get_texture(), vec2f(file.get_current_frame().w, file.get_current_frame().h), 1, file.get_pos().x, file.get_pos().y, false);
+		//convert file to just the entity base class
+		m_app->get_atlas()->draw(&file, m_camera);
 
 		if(file.is_hovered()){
 			//std::cout << "Hovered" << std::endl;

@@ -5,7 +5,7 @@
 
 class Camera {
 public:
-	Camera(Entity* _target);
+	Camera(Entity* _target, vec2f _screen_size);
 
 	void move(double deltaTime);
 	void update_camera_size(vec2f size);

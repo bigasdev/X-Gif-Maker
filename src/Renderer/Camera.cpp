@@ -1,12 +1,12 @@
 #include "Camera.hpp"
 
-Camera::Camera(Entity* _target)
+Camera::Camera(Entity* _target, vec2f _screen_size)
 {
 	m_target = _target;
 
-	if (m_target == nullptr)return;
+	m_camera_size = _screen_size;
 
-	m_current_pos = m_target->get_pos();
+	//m_current_pos = m_target->get_pos();
 	m_current_pos.x -= m_camera_size.x / 2;
 	m_current_pos.y -= m_camera_size.y / 2;
 }
