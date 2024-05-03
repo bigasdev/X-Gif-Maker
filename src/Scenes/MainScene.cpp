@@ -15,6 +15,7 @@ std::atomic<bool> is_convertion_running(false);
 SDL_Texture* m_file_hover_tx = nullptr;
 SDL_Texture* m_file_selected_tx = nullptr;
 SDL_Texture* m_add_symbol_tx = nullptr;
+SDL_Texture* m_bg_tx = nullptr;
 
 MainScene::MainScene(App* app, Logger* logger, Cooldown* cooldown, Camera* camera):Scene(app, logger, cooldown, camera)
 {
@@ -35,6 +36,7 @@ void MainScene::load_assets()
 	m_file_hover_tx = m_app->get_resources()->GetAsset("hover")->GetTexture();
 	m_file_selected_tx = m_app->get_resources()->GetAsset("selected")->GetTexture();
 	m_add_symbol_tx = m_app->get_resources()->GetAsset("add_symbol")->GetTexture();
+	m_bg_tx = m_app->get_resources()->GetAsset("main_scene")->GetTexture();
 }
 
 void MainScene::init()
@@ -46,7 +48,7 @@ void MainScene::init()
 	//
 	load_assets();
 	
-	F_ASSERT(m_files.size() > 0);
+	//F_ASSERT(m_files.size() > 0);
 }
 
 
@@ -57,7 +59,12 @@ void MainScene::update(double deltaTime)
 		std::filesystem::path path = m_file_path;
 		std::string filename = path.filename().string();
 		
-		FileEntity file(vec2f(65*Math::clamp(1, m_files.size()+1, 10), 100), vec2f(36, 36), m_app->get_resources()->GetAsset("new_file")->GetTexture(), 0);
+		//yes its really hard to understand and maintain this stuff, need to rework it asap
+		int x = 55*Math::clamp(1, m_files.size()+1, 8);
+		if (m_files.size() == 0) x = 90;
+		if( x == 110) x = 145;
+		std::cout << x << "" << m_files.size() << "\n";
+		FileEntity file(vec2f(x, 100), vec2f(36, 36), m_app->get_resources()->GetAsset("new_file")->GetTexture(), 0);
 		file.set_file_path(filename);
 
 		m_files.push_back(file);
@@ -98,7 +105,7 @@ void base_ui(){
 	auto middle_of_screen = std::make_pair(windowSize.x / 2, windowSize.y);
 
 	//Hold the powerful magic numbers to center the text!!!
-	middle_of_screen.first -= 120;
+	middle_of_screen.first -= 170;
 	middle_of_screen.second -= 40;
 
 	ImGui::SetNextWindowPos(ImVec2(middle_of_screen.first, middle_of_screen.second));
@@ -106,7 +113,7 @@ void base_ui(){
 	if(is_convertion_running){
 		ImGui::Text("Converting...");
 	} else {
-		ImGui::Text("DRAG AND DROP YOUR FILES");
+		ImGui::Text("DRAG AND DROP YOUR MP4 FILES");
 	}
 	ImGui::End();
 }
@@ -151,8 +158,9 @@ void MainScene::ui(){
 void MainScene::draw()
 {
 	//ui
+	m_app->get_atlas()->draw(m_bg_tx, vec2f(1200, 600), 1, 0, 0, false);
 	GUI::draw([this](){this->ui();});
-	m_app->get_atlas()->draw(m_add_symbol_tx, vec2f(44, 44), 1, 544, 517, false);
+	//m_app->get_atlas()->draw(m_add_symbol_tx, vec2f(44, 44), 1, 544, 517, false);
 
 	for(auto file : m_files){
 		//convert file to just the entity base class

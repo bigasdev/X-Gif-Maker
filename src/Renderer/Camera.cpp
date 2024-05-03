@@ -7,8 +7,8 @@ Camera::Camera(Entity* _target, vec2f _screen_size)
 	m_camera_size = _screen_size;
 
 	//m_current_pos = m_target->get_pos();
-	m_current_pos.x -= m_camera_size.x / 2;
-	m_current_pos.y -= m_camera_size.y / 2;
+	m_current_pos.x = 0;
+	m_current_pos.y = 0;
 }
 
 void Camera::move(double deltaTime)
