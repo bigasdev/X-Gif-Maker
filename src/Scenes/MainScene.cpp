@@ -7,6 +7,7 @@ App* m_app_ptr = nullptr;
 
 //Private variables
 std::string m_file_path = "";
+std::string m_folder_path = "";
 std::thread convert_thread;
 
 std::atomic<bool> is_convertion_running(false);
@@ -31,6 +32,8 @@ void MainScene::load_assets()
 	//std::vector<std::string> idleFrames = { "hero.png", "hero1.png", "hero2.png", "hero3.png", "hero4.png", "hero5.png" };
 	//double timer = 0.3f;
 	//mHero->AddSpriteAnimation(SpriteAnimation("idle", idleFrames, timer));
+	m_folder_path = SDL_GetBasePath();
+	F_ASSERT(m_folder_path != "");
 	m_GUI_assets.load_assets(m_app->get_resources());
 
 	m_file_hover_tx = m_app->get_resources()->GetAsset("hover")->GetTexture();
@@ -134,8 +137,13 @@ void convert_command(const std::string& strCmdText) {
 }
 
 //Convert function
-void convert_file(){
-    std::string command = "-w 800 -q 6 -o results/$2.gif"; // Default command
+void convert_file(std::string file){
+	std::filesystem::path path = file;
+	std::string filename = path.filename().string();
+	std::string filenameWithoutExtension = filename.substr(0, filename.find_last_of("."));
+
+	std::string command = "-w 200 -q 3 -o \"" + m_folder_path + "\\" + filenameWithoutExtension + ".gif\""; // Default command
+	std::cout << command << std::endl;
     // Assuming you have defined the enum Quality { high, medium, low }
     //Quality quality = Quality::high; // Adjust this based on your needs
 
@@ -146,7 +154,7 @@ void convert_file(){
         command = "-w 450 -q 4 -o results/$2.gif";
     }*/
 
-    std::string content = "video2gif.bat \"" + m_file_path + "\" " + command;
+    std::string content = "video2gif.bat \"" + file + "\" " + command;
     std::string strCmdText = "/K " + content;
 
 	//Launching it in another thread and detaching it
@@ -181,6 +189,10 @@ void MainScene::draw()
 		}
 
 		m_app->get_atlas()->draw(file.get_pos().x-5, file.get_pos().y + 32, file.get_file_path().c_str(), m_app->get_main_font(), {101,115,146,255});
+	}
+
+	if(m_folder_path != ""){
+		m_app->get_atlas()->draw(800, 80, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
 	}
 }
 
@@ -220,13 +232,13 @@ void MainScene::input(SDL_Event event)
 
 				break;
 				case SDL_SCANCODE_F:
-					Data_Loader::load_folder("Select a folder");
+					m_folder_path = Data_Loader::load_folder("Select a folder");
 					break;
 				case SDL_SCANCODE_E:
 					m_file_path = Data_Loader::load_file("*.mp4");
 
 					if(m_file_path != ""){
-						convert_file();
+						convert_file(m_file_path);
 					}
 				break;
 				case SDL_SCANCODE_A:
