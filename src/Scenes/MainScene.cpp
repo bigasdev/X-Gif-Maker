@@ -77,10 +77,11 @@ void MainScene::update(double deltaTime)
 	for(auto& file : m_files){
 		file.hover(file.is_close_to_pos(vec2f(Mouse::get_mouse_pos().x, Mouse::get_mouse_pos().y), 50));
 
-		file.set_pos(file.get_pos().x, Math::lerp(file.get_pos().y, 80, 0.2) );
+		if(Math::round(file.get_pos().y) != 80)
+			file.set_pos(file.get_pos().x, Math::lerp(file.get_pos().y, 80, 0.2) );
 
 		if(file.is_hovered()){
-			file.set_pos(file.get_pos().x, Math::lerp(file.get_pos().y, 70, 0.2) );
+			file.set_pos(file.get_pos().x, Math::lerp(file.get_pos().y, 60, 0.2) );
 			if(m_current_mouse_key == LEFT_CLICK){
 				std::cout << "Clicked" << std::endl;
 				m_current_mouse_key = NO_KEY;
@@ -218,6 +219,9 @@ void MainScene::input(SDL_Event event)
 					}
 
 				break;
+				case SDL_SCANCODE_F:
+					Data_Loader::load_folder("Select a folder");
+					break;
 				case SDL_SCANCODE_E:
 					m_file_path = Data_Loader::load_file("*.mp4");
 

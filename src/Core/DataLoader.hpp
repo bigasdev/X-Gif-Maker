@@ -2,6 +2,7 @@
 #define __DATA_LOADER__
 
 #include "../ImGui/tinyfiledialogs.h"
+#include "SDL.h"
 
 #include <iostream>
 #include <string>
@@ -9,6 +10,7 @@
 
 namespace Data_Loader{
     const char* load_file(const char* filter);
+    const char* load_folder(const char* title);
 }
 
 #endif
