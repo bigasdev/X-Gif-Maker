@@ -80,6 +80,7 @@ void MainScene::update(double deltaTime)
 		file.set_pos(file.get_pos().x, Math::lerp(file.get_pos().y, 80, 0.2) );
 
 		if(file.is_hovered()){
+			file.set_pos(file.get_pos().x, Math::lerp(file.get_pos().y, 70, 0.2) );
 			if(m_current_mouse_key == LEFT_CLICK){
 				std::cout << "Clicked" << std::endl;
 				m_current_mouse_key = NO_KEY;
