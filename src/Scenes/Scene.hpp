@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Core/App.hpp"
+#include "../Core/Assert.h"
 #include "../Renderer/AppGui.hpp"
 #include "../Renderer/Atlas.hpp"
 #include "../Renderer/Camera.hpp"
@@ -20,6 +21,10 @@
 #include <string>
 #include <math.h>
 #include <map>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cstdlib>
 
 //the scene class, we'll use this to create the behaviours of our app.
 class Scene {

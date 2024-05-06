@@ -2,7 +2,19 @@
 #define _MAINSCENE_HPP
 #include "Scene.hpp"
 
+#include "../Core/DataLoader.hpp"
+#include "../Entity/FileEntity.hpp"
+
 #include <ctime> 
+#include <thread>
+#include <atomic>
+#include <filesystem>
+
+enum MOUSE_KEY_STATE{
+	LEFT_CLICK,
+	RIGHT_CLICK,
+	NO_KEY
+};
 
 class MainScene : public Scene {
 public:
@@ -18,7 +30,9 @@ public:
 	void ui();
 
 private:
-	
+	std::vector<FileEntity> m_files;
+
+	MOUSE_KEY_STATE m_current_mouse_key = NO_KEY;
 };
 
 #endif

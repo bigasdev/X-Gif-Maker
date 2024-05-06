@@ -6,7 +6,7 @@
         {
             "text": "⚙️ First setup",
             "color": "#cfdd40",
-            "command": "setup.bat",
+            "command": "${workspaceFolder}/scripts_dlls/setup.bat",
             "alignment": "right",
             "skipTerminateQuickPick": false,
             "priority": 0
@@ -14,7 +14,7 @@
         {
             "text": "🚀 Update res",
             "color": "#cfdd40",
-            "command": "update_res.bat",
+            "command": "${workspaceFolder}/scripts_dlls/update_res.bat",
             "alignment": "right",
             "skipTerminateQuickPick": false,
             "priority": 0
@@ -30,7 +30,7 @@
         {
             "text": "💼 Build",
             "color": "#cfdd40",
-            "command": "mingw32-make build",
+            "command": "${workspaceFolder}/scripts_dlls/ship.bat",
             "alignment": "right",
             "skipTerminateQuickPick": false,
             "priority": 0

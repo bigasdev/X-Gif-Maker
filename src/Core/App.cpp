@@ -66,7 +66,7 @@ void App::init(const char* title, uint32_t xpos, uint32_t ypos, uint32_t width, 
 			std::cout << "Window created!..." << std::endl;
 		}
 
-		int rendererFlags = SDL_RENDERER_ACCELERATED;
+		int rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
 
 		IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 
@@ -96,10 +96,10 @@ void App::init(const char* title, uint32_t xpos, uint32_t ypos, uint32_t width, 
 
 			m_atlas_ptr = new Atlas(m_renderer, 1);
 
-			s_main_font = TTF_OpenFont("res/font/rzpix.ttf", 12);
+			s_main_font = TTF_OpenFont("res/font/zpix.ttf", 12);
 
 			m_cd = new Cooldown();
-			m_camera = new Camera(nullptr);
+			m_camera = new Camera(nullptr, m_window_size);
 
 			m_logger = new Logger(m_resources_ptr->GetAsset("logger")->GetTexture());
 			m_logger->init(m_atlas_ptr, s_main_font, vec2f(46, 14));
@@ -271,7 +271,7 @@ float App::get_fps()
 
 void App::set_fps(float fps)
 {
-	m_fps = fps;
+	m_fps = Math::clamp(0, fps, 60);
 }
 
 SDL_Window* App::get_window()
