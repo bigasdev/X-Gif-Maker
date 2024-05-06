@@ -46,7 +46,6 @@ int main(int args, char *argv[]) {
 		//Framerate calculation
 		frame_time = SDL_GetTicks()-start_time;
   		fps = (frame_time > 0) ? 1000.0f / frame_time : 0.0f;
-		std::cout << "FPS: " << fps << std::endl;
 
 		//Sending the fps to the app so it can be displayed
 		mApp->set_fps(fps);

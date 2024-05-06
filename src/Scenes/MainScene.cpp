@@ -60,12 +60,14 @@ void MainScene::update(double deltaTime)
 		std::string filename = path.filename().string();
 		
 		//yes its really hard to understand and maintain this stuff, need to rework it asap
-		int x = 55*Math::clamp(1, m_files.size()+1, 8);
-		if (m_files.size() == 0) x = 90;
-		if( x == 110) x = 145;
-		std::cout << x << "" << m_files.size() << "\n";
-		FileEntity file(vec2f(x, 100), vec2f(36, 36), m_app->get_resources()->GetAsset("new_file")->GetTexture(), 0);
+		int x = 90;
+		if(m_files.size() > 0){
+			x = m_files[m_files.size() - 1].get_pos().x + 50;
+		}
+		FileEntity file(vec2f(x, 50), vec2f(36, 36), m_app->get_resources()->GetAsset("new_file")->GetTexture(), 0);
 		file.set_file_path(filename);
+
+		F_ASSERT(file.get_file_path() != "");
 
 		m_files.push_back(file);
 
@@ -74,6 +76,8 @@ void MainScene::update(double deltaTime)
 
 	for(auto& file : m_files){
 		file.hover(file.is_close_to_pos(vec2f(Mouse::get_mouse_pos().x, Mouse::get_mouse_pos().y), 50));
+
+		file.set_pos(file.get_pos().x, Math::lerp(file.get_pos().y, 80, 0.2) );
 
 		if(file.is_hovered()){
 			if(m_current_mouse_key == LEFT_CLICK){
