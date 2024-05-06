@@ -65,9 +65,9 @@ void MainScene::update(double deltaTime)
 		//yes its really hard to understand and maintain this stuff, need to rework it asap
 		int x = 90;
 		if(m_files.size() > 0){
-			x = m_files[m_files.size() - 1].get_pos().x + 50;
+			x = m_files[m_files.size() - 1].get_pos().x + 70;
 		}
-		FileEntity file(vec2f(x, 50), vec2f(36, 36), m_app->get_resources()->GetAsset("new_file")->GetTexture(), 0);
+		FileEntity file(vec2f(x, 50), vec2f(54, 54), m_app->get_resources()->GetAsset("new_file")->GetTexture(), 0);
 		file.set_file_path(filename);
 
 		F_ASSERT(file.get_file_path() != "");
@@ -78,7 +78,7 @@ void MainScene::update(double deltaTime)
 	}
 
 	for(auto& file : m_files){
-		file.hover(file.is_close_to_pos(vec2f(Mouse::get_mouse_pos().x, Mouse::get_mouse_pos().y), 50));
+		file.hover(file.is_close_to_pos(vec2f(Mouse::get_mouse_pos().x, Mouse::get_mouse_pos().y), 40));
 
 		if(Math::round(file.get_pos().y) != 80)
 			file.set_pos(file.get_pos().x, Math::lerp(file.get_pos().y, 80, 0.2) );
@@ -117,7 +117,7 @@ void base_ui(){
 	auto middle_of_screen = std::make_pair(windowSize.x / 2, windowSize.y);
 
 	//Hold the powerful magic numbers to center the text!!!
-	middle_of_screen.first -= 170;
+	middle_of_screen.first -= 130;
 	middle_of_screen.second -= 40;
 
 	ImGui::SetNextWindowPos(ImVec2(middle_of_screen.first, middle_of_screen.second));
@@ -185,14 +185,14 @@ void MainScene::draw()
 
 		if(file.is_hovered()){
 			//std::cout << "Hovered" << std::endl;
-			m_app->get_atlas()->draw(m_file_hover_tx, vec2f(14, 8), 1, file.get_pos().x, file.get_pos().y - 15, false);
+			m_app->get_atlas()->draw(m_file_hover_tx, vec2f(14, 8), 1, file.get_pos().x + 20, file.get_pos().y - 15, false);
 		}
 
 		m_app->get_atlas()->draw(file.get_pos().x-5, file.get_pos().y + 32, file.get_file_path().c_str(), m_app->get_main_font(), {101,115,146,255});
 	}
 
 	if(m_folder_path != ""){
-		m_app->get_atlas()->draw(800, 80, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(780, 30, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
 	}
 }
 
