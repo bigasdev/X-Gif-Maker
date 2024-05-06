@@ -78,6 +78,7 @@ void MainScene::update(double deltaTime)
 		if(file.is_hovered()){
 			if(m_current_mouse_key == LEFT_CLICK){
 				std::cout << "Clicked" << std::endl;
+				m_current_mouse_key = NO_KEY;
 			}
 		}
 	}
@@ -94,6 +95,8 @@ void status_bar_ui(){
 	ImGui::Text("Filename.mb");
 	ImGui::SameLine();
 	ImGui::Text( " FPS" );
+	ImGui::SameLine();
+	ImGui::Text( std::to_string(m_app_ptr->get_fps()).c_str() );
 	ImGui::PopStyleVar();
 	ImGui::PopStyleColor();
 	ImGui::End();

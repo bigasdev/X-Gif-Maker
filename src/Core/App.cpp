@@ -66,7 +66,7 @@ void App::init(const char* title, uint32_t xpos, uint32_t ypos, uint32_t width, 
 			std::cout << "Window created!..." << std::endl;
 		}
 
-		int rendererFlags = SDL_RENDERER_ACCELERATED;
+		int rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
 
 		IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 
@@ -271,7 +271,7 @@ float App::get_fps()
 
 void App::set_fps(float fps)
 {
-	m_fps = fps;
+	m_fps = Math::clamp(0, fps, 60);
 }
 
 SDL_Window* App::get_window()

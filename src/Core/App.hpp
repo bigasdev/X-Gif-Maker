@@ -60,5 +60,5 @@ private:
 	vec3f m_window_color = vec3f(0, 0, 0);
 
 	//System
-	float m_fps = 0;
+	int m_fps = 0;
 };
