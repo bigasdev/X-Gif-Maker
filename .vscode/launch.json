@@ -32,7 +32,7 @@
                 "program": "${workspaceFolder}/.build/fortress_debug.exe",
                 "stopAtEntry": false
             },
-            "preLaunchTask": "build",        
+            "preLaunchTask": "build"
         }
     ]
 }
