@@ -31,6 +31,7 @@ public:
 
 private:
 	std::vector<FileEntity> m_files;
+	std::vector<FileEntity*> m_selected_files;
 
 	MOUSE_KEY_STATE m_current_mouse_key = NO_KEY;
 };

@@ -87,6 +87,19 @@ void MainScene::update(double deltaTime)
 			file.set_pos(file.get_pos().x, Math::lerp(file.get_pos().y, 60, 0.2) );
 			if(m_current_mouse_key == LEFT_CLICK){
 				std::cout << "Clicked" << std::endl;
+
+				for(auto& sel_file : m_selected_files){
+					if(sel_file == &file){
+						m_selected_files.erase(std::remove(m_selected_files.begin(), m_selected_files.end(), sel_file), m_selected_files.end());
+
+										
+						m_current_mouse_key = NO_KEY;
+						return;
+					}
+				}
+
+				m_selected_files.push_back(&file);
+				
 				m_current_mouse_key = NO_KEY;
 			}
 		}
@@ -106,6 +119,12 @@ void status_bar_ui(){
 	ImGui::Text( " FPS" );
 	ImGui::SameLine();
 	ImGui::Text( std::to_string(m_app_ptr->get_fps()).c_str() );
+	ImGui::SameLine();
+	ImGui::Text( "Mouse Pos: " );
+	ImGui::SameLine();
+	ImGui::Text( std::to_string(Mouse::get_mouse_pos().x).c_str() );
+	ImGui::SameLine();
+	ImGui::Text( std::to_string(Mouse::get_mouse_pos().y).c_str() );
 	ImGui::PopStyleVar();
 	ImGui::PopStyleColor();
 	ImGui::End();
@@ -189,6 +208,12 @@ void MainScene::draw()
 		}
 
 		m_app->get_atlas()->draw(file.get_pos().x-5, file.get_pos().y + 32, file.get_file_path().c_str(), m_app->get_main_font(), {101,115,146,255});
+	}
+
+	for(size_t i = 0; i < m_selected_files.size(); ++i){
+		int x = Math::clamp(800, 800 + (50*i), 1200);
+
+		m_app->get_atlas()->draw(m_selected_files[i]->get_texture(), vec2f(54,54), 1, x, 320,false);	
 	}
 
 	if(m_folder_path != ""){
