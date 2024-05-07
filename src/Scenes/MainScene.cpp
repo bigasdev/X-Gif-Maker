@@ -142,7 +142,7 @@ void convert_file(std::string file){
 	std::string filename = path.filename().string();
 	std::string filenameWithoutExtension = filename.substr(0, filename.find_last_of("."));
 
-	std::string command = "-w 200 -q 3 -o \"" + m_folder_path + "\\" + filenameWithoutExtension + ".gif\""; // Default command
+	std::string command = "-w 800 -q 6 -o \"" + m_folder_path + "\\" + filenameWithoutExtension + ".gif\""; // Default command
 	std::cout << command << std::endl;
     // Assuming you have defined the enum Quality { high, medium, low }
     //Quality quality = Quality::high; // Adjust this based on your needs
