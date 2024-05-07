@@ -9,9 +9,10 @@ FileEntity::FileEntity(vec2f _pos, vec2f _scale, SDL_Texture *_texture, int _uid
 
 }
 
-void FileEntity::set_file_path(std::string _file_path)
+void FileEntity::set_file_path(std::string _file_path, std::string path)
 {
     m_file_path = _file_path;
+    m_complete_file_path = path;
 
     if(m_file_path.length() > 6)
     {
@@ -22,6 +23,11 @@ void FileEntity::set_file_path(std::string _file_path)
 std::string FileEntity::get_file_path()
 {
     return m_file_path;
+}
+
+std::string FileEntity::get_complete_file_path()
+{
+    return m_complete_file_path;
 }
 
 void FileEntity::hover(bool state)

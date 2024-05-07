@@ -9,6 +9,7 @@ App* m_app_ptr = nullptr;
 std::string m_file_path = "";
 std::string m_folder_path = "";
 std::thread convert_thread;
+std::vector<FileEntity*> m_selected_files;
 
 std::atomic<bool> is_convertion_running(false);
 
@@ -68,7 +69,7 @@ void MainScene::update(double deltaTime)
 			x = m_files[m_files.size() - 1].get_pos().x + 70;
 		}
 		FileEntity file(vec2f(x, 50), vec2f(54, 54), m_app->get_resources()->GetAsset("new_file")->GetTexture(), 0);
-		file.set_file_path(filename);
+		file.set_file_path(filename, path.string());
 
 		F_ASSERT(file.get_file_path() != "");
 
@@ -177,9 +178,22 @@ void convert_file(std::string file){
     std::string strCmdText = "/K " + content;
 
 	//Launching it in another thread and detaching it
-	is_convertion_running = true;
+	/*is_convertion_running = true;
 	convert_thread = std::thread(convert_command, strCmdText);
-	convert_thread.detach();
+	convert_thread.detach();*/
+	system(("CMD.exe " + strCmdText).c_str());
+}
+
+//Main convert function that will use the selected files in queue
+void convert_selected_files(){
+	if(m_selected_files.size() == 0)return;
+
+	F_ASSERT(m_folder_path != "");
+
+	for(auto& file : m_selected_files){
+		std::cout << "Converting file: " << file->get_complete_file_path() << "\n";
+		convert_file(file->get_complete_file_path());
+	}
 }
 
 //the main ui
@@ -252,7 +266,7 @@ void MainScene::input(SDL_Event event)
 			switch (event.key.keysym.scancode) {
 				case SDL_SCANCODE_D:
 					{
-						
+						convert_selected_files();
 					}
 
 				break;
