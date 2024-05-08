@@ -90,8 +90,6 @@ void App::init(const char* title, uint32_t xpos, uint32_t ypos, uint32_t width, 
 
 			//Initializing the GUI
 			TTF_Init();
-			GUI::setup(m_window, m_renderer);
-
 
 			m_atlas_ptr = new Atlas(m_renderer, 1);
 
@@ -109,6 +107,8 @@ void App::load()
 	if(m_is_loaded) return;
 	//loading resources
 	{
+		GUI::setup(m_window, m_renderer);
+
 		m_resources_ptr = new Resources(m_renderer);
 		m_cd = new Cooldown();
 		m_camera = new Camera(nullptr, m_window_size);
