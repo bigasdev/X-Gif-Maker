@@ -19,6 +19,7 @@ public:
 	~App();
 
 	void init(const char* title, uint32_t xpos, uint32_t ypos, uint32_t width, uint32_t height, bool fullscreen, bool splash_screen);
+	void load();
 	void handle_events();
 	void update(double deltaTime);
 	void render();
@@ -50,6 +51,7 @@ public:
 
 private:
 	bool m_is_running = false;
+	bool m_is_loaded = false;
 	bool m_has_splash_screen = true;
 
 	SDL_Window* m_window = nullptr;
@@ -60,7 +62,7 @@ private:
 
 	//Local
 	vec2f m_window_size = vec2f(0,0);
-	vec3f m_window_color = vec3f(0, 0, 0);
+	vec3f m_window_color = vec3f(26, 25, 50);
 
 	//System
 	int m_fps = 0;

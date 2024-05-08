@@ -49,6 +49,7 @@ int main(int args, char *argv[]) {
 
 		//Sending the fps to the app so it can be displayed
 		mApp->set_fps(fps);
+		mApp->load();
 	}
 
 	mApp->clean();
