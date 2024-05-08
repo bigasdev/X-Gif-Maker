@@ -104,6 +104,8 @@ void App::init(const char* title, uint32_t xpos, uint32_t ypos, uint32_t width, 
 			m_logger = new Logger(m_resources_ptr->GetAsset("logger")->GetTexture());
 			m_logger->init(m_atlas_ptr, s_main_font, vec2f(46, 14));
 
+			m_ini_handler_ptr = new IniHandler();
+
 			//Starting scenes
 			if(m_has_splash_screen){
 				m_current_scene = new IntroScene(this, m_logger, m_cd, m_camera);
@@ -292,6 +294,11 @@ Resources* App::get_resources()
 Atlas* App::get_atlas()
 {
 	return m_atlas_ptr;
+}
+
+IniHandler *App::get_ini_handler()
+{
+    return m_ini_handler_ptr;
 }
 
 bool App::running()

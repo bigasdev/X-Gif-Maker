@@ -21,6 +21,7 @@ scripts_dlls/*.exe
 ffmpeg.exe
 video2gif.bat
 make/
+config.ini
 .build/
 .release/
 [Dd]ebug/
@@ -404,3 +405,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+config.ini

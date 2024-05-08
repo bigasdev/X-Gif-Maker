@@ -5,7 +5,7 @@
             "name": "(Windows) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/.build/fortress_debug.exe",
+            "program": "${workspaceFolder}/.build/twitter-gif-maker_debug.exe",
             "args": [],
             "stopAtEntry": false,
             "sourceFileMap": {
@@ -29,7 +29,7 @@
             ],
             "externalConsole": false,
             "windows": {
-                "program": "${workspaceFolder}/.build/fortress_debug.exe",
+                "program": "${workspaceFolder}/.build/twitter-gif-maker_debug.exe",
                 "stopAtEntry": false
             },
             "preLaunchTask": "build"
