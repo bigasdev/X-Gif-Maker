@@ -63,10 +63,10 @@ void MainScene::update(double deltaTime)
 	//system
 	m_app->get_ini_handler()->update_ini_files();
 
-	for(size_t i = 0 ; i < 100; ++i){
+	/*for(size_t i = 0 ; i < 10; ++i){
 		m_app->get_ini_handler()->get_ini_data("FolderName").relative_x;
 		m_app->get_ini_handler()->get_ini_data("Test").relative_x;
-	}
+	}*/
 
 	if(!m_file_path.empty()){
 
@@ -241,6 +241,10 @@ void MainScene::draw()
 	}
 
 	if(m_folder_path != ""){
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("test").relative_x, m_app->get_ini_handler()->get_ini_data("test").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("FolderNameeee").relative_x, m_app->get_ini_handler()->get_ini_data("FolderNameeee").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("FolderNameee").relative_x, m_app->get_ini_handler()->get_ini_data("FolderNameee").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("FolderNamee").relative_x, m_app->get_ini_handler()->get_ini_data("FolderNamee").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
 		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("FolderName").relative_x, m_app->get_ini_handler()->get_ini_data("FolderName").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
 	}
 }
