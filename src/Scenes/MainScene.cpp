@@ -246,6 +246,28 @@ void MainScene::draw()
 		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("FolderNameee").relative_x, m_app->get_ini_handler()->get_ini_data("FolderNameee").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
 		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("FolderNamee").relative_x, m_app->get_ini_handler()->get_ini_data("FolderNamee").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
 		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("FolderName").relative_x, m_app->get_ini_handler()->get_ini_data("FolderName").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_1").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_1").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_2").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_2").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_3").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_3").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_4").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_4").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_5").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_5").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_6").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_6").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_7").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_7").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_8").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_8").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_9").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_9").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_10").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_10").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_20").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_20").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_11").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_11").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_12").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_12").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_13").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_13").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_14").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_14").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_15").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_15").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_16").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_16").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_17").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_17").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_18").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_18").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("placeholder_19").relative_x, m_app->get_ini_handler()->get_ini_data("placeholder_19").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+
+
 	}
 }
 
