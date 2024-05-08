@@ -53,11 +53,16 @@ void MainScene::init()
 	load_assets();
 	
 	//F_ASSERT(m_files.size() > 0);
+
+	m_app->get_ini_handler()->load_ini_files("config.ini");
 }
 
 
 void MainScene::update(double deltaTime)
 {
+	//system
+	m_app->get_ini_handler()->update_ini_files();
+
 	if(!m_file_path.empty()){
 
 		std::filesystem::path path = m_file_path;
@@ -231,7 +236,7 @@ void MainScene::draw()
 	}
 
 	if(m_folder_path != ""){
-		m_app->get_atlas()->draw(780, 30, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("FolderName").relative_x, m_app->get_ini_handler()->get_ini_data("FolderName").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
 	}
 }
 

@@ -4,6 +4,7 @@
 #include "../Resources/Resources.hpp"
 #include <iostream>
 #include "Assert.h"
+#include "IniHandler.hpp"
 #include "../Renderer/Atlas.hpp"
 
 class Scene;
@@ -43,6 +44,7 @@ public:
 	SDL_Renderer* get_renderer();
 	Resources* get_resources();
 	Atlas* get_atlas();
+	IniHandler* get_ini_handler();	
 	TTF_Font* get_main_font();
 
 
@@ -54,6 +56,7 @@ private:
 	SDL_Renderer* m_renderer = nullptr;
 	Resources* m_resources_ptr = nullptr;
 	Atlas* m_atlas_ptr = nullptr;
+	IniHandler* m_ini_handler_ptr = nullptr;
 
 	//Local
 	vec2f m_window_size = vec2f(0,0);
