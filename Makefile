@@ -1,5 +1,5 @@
 # set the App name
-NAME = fortress
+NAME = twitter-gif-maker
 # set compiler
 CC = g++ -std=c++17
 # set all the files needed

@@ -1,9 +1,6 @@
 #include "IniHandler.hpp"
 
 #include "Assert.h"
-#include <chrono>
-
-std::string lastModifiedTime;
 
 IniHandler::IniHandler()
 {
@@ -25,46 +22,44 @@ void IniHandler::load_ini_files(std::string path)
         data.fileName = path;
         data.name = sectionPair.first;
 
-        if(sectionPair.first == "config")continue;
-
-        data.lastWriteTime = std::to_string(std::filesystem::last_write_time(path).time_since_epoch().count());
-
+        std::unordered_map<std::string, std::string> fieldMap = {
+            {"fileName", data.fileName},
+            {"relative_x", std::to_string(data.relative_x)},
+            {"relative_y", std::to_string(data.relative_y)},
+            {"relative_name", data.relative_name},
+        };
 
         for(auto& [key,val] : sectionPair.second){
-            if(key == "fileName"){
-                data.fileName = val.as<std::string>();
-            }else if(key == "relative_x"){
-                data.relative_x = val.as<int>();
-            }else if(key == "relative_y"){
-                data.relative_y = val.as<int>();
-            }else if(key == "relative_name"){
-                data.relative_name = val.as<std::string>();
-            }else if(key == "lastWriteTime"){
-                data.lastWriteTime = val.as<std::string>();
+            if(fieldMap.count(key) > 0) {
+                fieldMap[key] = val.as<std::string>();
             }
         }
 
+        data.fileName = fieldMap["fileName"];
+        data.relative_x = std::stoi(fieldMap["relative_x"]);
+        data.relative_y = std::stoi(fieldMap["relative_y"]);
+        data.relative_name = fieldMap["relative_name"];
+
         F_ASSERT(data.name != "");
         ini_files.push_back(data);
-
     }
 }
 
 void IniHandler::update_ini_files()
 {
+    if(ini_files.size() == 0)return;
+
     ini::IniFile file;
 
     file.load("config.ini");
 
     if(file["config"]["lastWriteTime"].as<std::string>() != std::to_string(std::filesystem::last_write_time("config.ini").time_since_epoch().count())){
-        std::cout << "INFO: Config file was modified\n";
 
         for(auto& ini : ini_files){
             ini.name = file[ini.name]["name"].as<std::string>();
             ini.relative_x = file[ini.name]["relative_x"].as<int>();
             ini.relative_y = file[ini.name]["relative_y"].as<int>();
             ini.relative_name = file[ini.name]["relative_name"].as<std::string>();
-            ini.lastWriteTime = std::to_string(std::filesystem::last_write_time(ini.fileName).time_since_epoch().count());
 
             update_ini_file(ini);
         }
@@ -76,13 +71,10 @@ void IniHandler::update_ini_files()
 
 void IniHandler::update_ini_file(IniData data)
 {
+    F_ASSERT(data.name != "");
     ini::IniFile file;
 
-    F_ASSERT(data.name != "");
-
     if(data.name == "")return;
-
-    std::cout << "INFO: Updating ini file " << data.name << "\n";
 
     file.load(data.fileName);
 
@@ -92,7 +84,6 @@ void IniHandler::update_ini_file(IniData data)
     file[data.name]["relative_x"] = std::to_string(data.relative_x);
     file[data.name]["relative_y"] = std::to_string(data.relative_y);
     file[data.name]["relative_name"] = data.relative_name;
-    file[data.name]["lastWriteTime"] = std::to_string(std::filesystem::last_write_time(data.fileName).time_since_epoch().count());
 
     file.save(data.fileName);
 }
@@ -103,13 +94,6 @@ void IniHandler::create_ini_file(IniData data, std::string path)
 
     std::cout << "INFO: Creating ini file " << path << data.name << "\n";
 
-    //check if the file exists
-    if(!std::filesystem::exists(path)){
-        data.lastWriteTime = "0";
-    }else{
-        data.lastWriteTime = std::to_string(std::filesystem::last_write_time(path).time_since_epoch().count());
-    }
-
     file.load(path);
 
     file[data.name];
@@ -119,12 +103,8 @@ void IniHandler::create_ini_file(IniData data, std::string path)
     file[data.name]["relative_y"] = std::to_string(data.relative_y);
     file[data.name]["relative_name"] = data.relative_name;
 
-    file["config"]["lastWriteTime"] = std::to_string(std::filesystem::last_write_time(data.fileName).time_since_epoch().count());
-
-    if(!std::filesystem::exists(path)){
-        file[data.name]["lastWriteTime"] = "0";
-    }else{
-        file[data.name]["lastWriteTime"] = std::to_string(std::filesystem::last_write_time(path).time_since_epoch().count());
+    if(ini_files.size() > 0){
+        file["config"]["lastWriteTime"] = std::to_string(std::filesystem::last_write_time(data.fileName).time_since_epoch().count());
     }
 
     file.save(path);
@@ -133,23 +113,8 @@ void IniHandler::create_ini_file(IniData data, std::string path)
 
 IniData IniHandler::get_ini_data(std::string name)
 {
-    auto start = std::chrono::high_resolution_clock::now();
-
-    if(ini_files.size() == 0){
-        IniData data;
-        data.fileName = "config.ini";
-        data.name = name;
-
-        create_ini_file(data, "config.ini");
-    }
-
     for(auto& ini : ini_files){
         if(ini.name == name){
-            auto end = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double, std::nano> elapsed = end - start;
-
-            std::cout << "INFO: Ini file found in " << elapsed.count() << " nanoseconds\n";
-
             return ini;
         }
     }

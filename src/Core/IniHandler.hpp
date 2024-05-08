@@ -9,6 +9,8 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <map>
+#include <unordered_map>
 
 //Base class to handle all the ini files the project needs
 //It will load an have an update class to update the ini struct if the file was modified
@@ -19,8 +21,6 @@ struct IniData{
     int relative_x = 0;
     int relative_y = 0;
     std::string relative_name = "null";
-
-    std::string lastWriteTime;
 
     bool was_modified = false;
 };
