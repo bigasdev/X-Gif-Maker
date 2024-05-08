@@ -63,6 +63,11 @@ void MainScene::update(double deltaTime)
 	//system
 	m_app->get_ini_handler()->update_ini_files();
 
+	for(size_t i = 0 ; i < 100; ++i){
+		m_app->get_ini_handler()->get_ini_data("FolderName").relative_x;
+		m_app->get_ini_handler()->get_ini_data("Test").relative_x;
+	}
+
 	if(!m_file_path.empty()){
 
 		std::filesystem::path path = m_file_path;

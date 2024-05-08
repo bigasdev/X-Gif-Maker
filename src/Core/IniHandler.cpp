@@ -1,5 +1,7 @@
 #include "IniHandler.hpp"
 
+#include <chrono>
+
 IniHandler::IniHandler()
 {
     std::cout << "INFO: Started IniHandler\n";
@@ -109,6 +111,8 @@ void IniHandler::create_ini_file(IniData data, std::string path)
 
 IniData IniHandler::get_ini_data(std::string name)
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
     if(ini_files.size() == 0){
         IniData data;
         data.fileName = "config.ini";
@@ -119,10 +123,16 @@ IniData IniHandler::get_ini_data(std::string name)
 
     for(auto& ini : ini_files){
         if(ini.name == name){
+            auto end = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double, std::nano> elapsed = end - start;
+
+            std::cout << "INFO: Ini file found in " << elapsed.count() << " nanoseconds\n";
+
             return ini;
         }else{
             create_ini_file(IniData(), "config.ini");
         }
     }
+    
     return IniData();
 }
