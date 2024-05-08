@@ -18,9 +18,12 @@ void IniHandler::load_ini_files(std::string path)
     file.load(path);
 
     for(const auto& sectionPair : file){
+        if(sectionPair.first == "config")continue;
+        
         IniData data;
         data.fileName = path;
         data.name = sectionPair.first;
+
 
         std::unordered_map<std::string, std::string> fieldMap = {
             {"fileName", data.fileName},
@@ -30,6 +33,7 @@ void IniHandler::load_ini_files(std::string path)
         };
 
         for(auto& [key,val] : sectionPair.second){
+
             if(fieldMap.count(key) > 0) {
                 fieldMap[key] = val.as<std::string>();
             }
@@ -56,6 +60,8 @@ void IniHandler::update_ini_files()
     if(file["config"]["lastWriteTime"].as<std::string>() != std::to_string(std::filesystem::last_write_time("config.ini").time_since_epoch().count())){
 
         for(auto& ini : ini_files){
+            if(ini.name == "")continue;
+
             ini.name = file[ini.name]["name"].as<std::string>();
             ini.relative_x = file[ini.name]["relative_x"].as<int>();
             ini.relative_y = file[ini.name]["relative_y"].as<int>();
@@ -90,6 +96,8 @@ void IniHandler::update_ini_file(IniData data)
 
 void IniHandler::create_ini_file(IniData data, std::string path)
 {
+    F_ASSERT(data.name != "");
+
     ini::IniFile file;
 
     std::cout << "INFO: Creating ini file " << path << data.name << "\n";
