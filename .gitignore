@@ -17,6 +17,7 @@
 mono_crash.*
 
 # Build results
+scripts_dlls/*.exe
 ffmpeg.exe
 video2gif.bat
 make/
