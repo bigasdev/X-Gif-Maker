@@ -58,6 +58,52 @@ void MainScene::init()
 	m_app->get_ini_handler()->load_ini_files("config.ini");
 }
 
+//Convert command so we can attach it to another thread
+void convert_command(const std::string& strCmdText) {
+    system(("CMD.exe " + strCmdText).c_str());
+	is_convertion_running = false;
+}
+
+//Convert function
+void convert_file(std::string file){
+	std::filesystem::path path = file;
+	std::string filename = path.filename().string();
+	std::string filenameWithoutExtension = filename.substr(0, filename.find_last_of("."));
+
+	std::string command = "-w 1024 -q 6 -o \"" + m_folder_path + "\\" + filenameWithoutExtension + ".gif\""; // Default command
+	std::cout << command << std::endl;
+    // Assuming you have defined the enum Quality { high, medium, low }
+    //Quality quality = Quality::high; // Adjust this based on your needs
+
+    // Adjust the command based on quality
+    /*if (quality == Quality::medium) {
+        command = "-w 600 -o results/$2.gif";
+    } else if (quality == Quality::low) {
+        command = "-w 450 -q 4 -o results/$2.gif";
+    }*/
+
+    std::string content = "video2gif.bat \"" + file + "\" " + command;
+    std::string strCmdText = "/K " + content;
+
+	//Launching it in another thread and detaching it
+	/*is_convertion_running = true;
+	convert_thread = std::thread(convert_command, strCmdText);
+	convert_thread.detach();*/
+	system(("CMD.exe " + strCmdText).c_str());
+}
+
+//Main convert function that will use the selected files in queue
+void convert_selected_files(){
+	if(m_selected_files.size() == 0)return;
+
+	F_ASSERT(m_folder_path != "");
+
+	for(auto& file : m_selected_files){
+		std::cout << "Converting file: " << file->get_complete_file_path() << "\n";
+		convert_file(file->get_complete_file_path());
+	}
+}
+
 
 void MainScene::update(double deltaTime)
 {
@@ -116,6 +162,34 @@ void MainScene::update(double deltaTime)
 			}
 		}
 	}
+
+	//buttons
+	{
+		if(Mouse::is_at_area({m_app->get_ini_handler()->get_ini_data("ConvertOneButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertOneButton").relative_y, 40, 40})){
+			if(m_current_mouse_key == LEFT_CLICK){
+				m_file_path = Data_Loader::load_file("*.mp4");
+
+				if(m_file_path != ""){
+					convert_file(m_file_path);
+				}
+				m_current_mouse_key = NO_KEY;
+			}
+		}
+
+		if(Mouse::is_at_area({m_app->get_ini_handler()->get_ini_data("ConvertAllButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertAllButton").relative_y, 40, 40})){
+			if(m_current_mouse_key == LEFT_CLICK){
+				//convert_selected_files();
+				m_current_mouse_key = NO_KEY;
+			}
+		}
+
+		if(Mouse::is_at_area({m_app->get_ini_handler()->get_ini_data("ConvertSelectedButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertSelectedButton").relative_y, 40, 40})){
+			if(m_current_mouse_key == LEFT_CLICK){
+				convert_selected_files();
+				m_current_mouse_key = NO_KEY;
+			}
+		}
+	}
 }
 
 
@@ -161,52 +235,6 @@ void base_ui(){
 	ImGui::End();
 }
 
-//Convert command so we can attach it to another thread
-void convert_command(const std::string& strCmdText) {
-    system(("CMD.exe " + strCmdText).c_str());
-	is_convertion_running = false;
-}
-
-//Convert function
-void convert_file(std::string file){
-	std::filesystem::path path = file;
-	std::string filename = path.filename().string();
-	std::string filenameWithoutExtension = filename.substr(0, filename.find_last_of("."));
-
-	std::string command = "-w 1024 -q 6 -o \"" + m_folder_path + "\\" + filenameWithoutExtension + ".gif\""; // Default command
-	std::cout << command << std::endl;
-    // Assuming you have defined the enum Quality { high, medium, low }
-    //Quality quality = Quality::high; // Adjust this based on your needs
-
-    // Adjust the command based on quality
-    /*if (quality == Quality::medium) {
-        command = "-w 600 -o results/$2.gif";
-    } else if (quality == Quality::low) {
-        command = "-w 450 -q 4 -o results/$2.gif";
-    }*/
-
-    std::string content = "video2gif.bat \"" + file + "\" " + command;
-    std::string strCmdText = "/K " + content;
-
-	//Launching it in another thread and detaching it
-	/*is_convertion_running = true;
-	convert_thread = std::thread(convert_command, strCmdText);
-	convert_thread.detach();*/
-	system(("CMD.exe " + strCmdText).c_str());
-}
-
-//Main convert function that will use the selected files in queue
-void convert_selected_files(){
-	if(m_selected_files.size() == 0)return;
-
-	F_ASSERT(m_folder_path != "");
-
-	for(auto& file : m_selected_files){
-		std::cout << "Converting file: " << file->get_complete_file_path() << "\n";
-		convert_file(file->get_complete_file_path());
-	}
-}
-
 //the main ui
 void MainScene::ui(){
 	//status bar
@@ -245,6 +273,11 @@ void MainScene::draw()
 	if(m_folder_path != ""){
 		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("FolderName").relative_x, m_app->get_ini_handler()->get_ini_data("FolderName").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
 	}
+
+	//drawing the buttons
+	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertOneButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertOneButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
+	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertAllButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertAllButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
+	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertSelectedButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertSelectedButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
 }
 
 void MainScene::input(SDL_Event event)
