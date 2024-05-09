@@ -12,6 +12,9 @@ std::string m_folder_path = "";
 std::thread convert_thread;
 std::vector<FileEntity*> m_selected_files;
 
+static const char* m_selected_width = NULL;
+static const char* m_selected_quality = NULL;
+
 std::atomic<bool> is_convertion_running(false);
 
 //Textures
@@ -235,6 +238,29 @@ void base_ui(){
 	ImGui::End();
 }
 
+void video_settings(){
+	ImGui::SetNextWindowPos(ImVec2(	m_app_ptr->get_ini_handler()->get_ini_data("VideoSettings").relative_x, m_app_ptr->get_ini_handler()->get_ini_data("VideoSettings").relative_y));
+	ImGui::SetNextWindowSize(ImVec2(200, 600));
+	ImGui::Begin("Video Settings", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+	ImGui::Text("Video Settings");
+	const char* width[] = { "200", "400", "600", "800", "1024" };
+	ImGui::Text("Gif Width:");
+	if (ImGui::BeginCombo("#select_width", m_selected_width)) // The second parameter is the label previewed before opening the combo.
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(width); n++)
+		{
+			bool is_selected = (m_selected_width == width[n]); // You can store your selection however you want, outside or inside your objects
+			if (ImGui::Selectable(width[n], is_selected))
+				m_selected_width = width[n];
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::End();
+
+}
+
 //the main ui
 void MainScene::ui(){
 	//status bar
@@ -242,6 +268,7 @@ void MainScene::ui(){
 
 	//base ui
 	base_ui();
+	video_settings();
 }
 
 void MainScene::draw()
