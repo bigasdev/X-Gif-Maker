@@ -84,36 +84,16 @@ void App::init(const char* title, uint32_t xpos, uint32_t ypos, uint32_t width, 
 
 		//This is true if the renderer was created
 		if (m_renderer) {
-			SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
+			SDL_SetRenderDrawColor(m_renderer, 50, 40, 0, 255);
 			std::cout << "Renderer created!..." << std::endl;
 			m_has_splash_screen = splash_screen;
 
 			//Initializing the GUI
 			TTF_Init();
-			GUI::setup(m_window, m_renderer);
-
-			m_resources_ptr = new Resources(m_renderer);
 
 			m_atlas_ptr = new Atlas(m_renderer, 1);
 
-			s_main_font = TTF_OpenFont("res/font/zpix.ttf", 12);
-
-			m_cd = new Cooldown();
-			m_camera = new Camera(nullptr, m_window_size);
-
-			m_logger = new Logger(m_resources_ptr->GetAsset("logger")->GetTexture());
-			m_logger->init(m_atlas_ptr, s_main_font, vec2f(46, 14));
-
-			//Starting scenes
-			if(m_has_splash_screen){
-				m_current_scene = new IntroScene(this, m_logger, m_cd, m_camera);
-			}else{
-				m_current_scene = new MainScene(this, m_logger, m_cd, m_camera);
-			}
-			m_next_scene = new MainScene(this, m_logger, m_cd, m_camera);
-			
-
-			m_current_scene->init();
+			s_main_font = TTF_OpenFont("res/font/pixolleta.ttf", 10);
 		}
 		m_is_running = true;
 		}
@@ -122,10 +102,42 @@ void App::init(const char* title, uint32_t xpos, uint32_t ypos, uint32_t width, 
 	}
 }
 
+void App::load()
+{
+	if(m_is_loaded) return;
+	//loading resources
+	{
+		GUI::setup(m_window, m_renderer);
+
+		m_resources_ptr = new Resources(m_renderer);
+		m_cd = new Cooldown();
+		m_camera = new Camera(nullptr, m_window_size);
+
+		m_logger = new Logger(m_resources_ptr->GetAsset("logger")->GetTexture());
+		m_logger->init(m_atlas_ptr, s_main_font, vec2f(46, 14));
+
+		m_ini_handler_ptr = new IniHandler();
+
+			//Starting scenes
+		if(m_has_splash_screen){
+			m_current_scene = new IntroScene(this, m_logger, m_cd, m_camera);
+		}else{
+			m_current_scene = new MainScene(this, m_logger, m_cd, m_camera);
+		}
+		m_next_scene = new MainScene(this, m_logger, m_cd, m_camera);
+			
+
+		m_is_loaded = true;
+		m_current_scene->init();
+	}
+}
+
 //This function will be the core of all the events that some scripts can require
 //And will be responsible for listening to the inputs
 void App::handle_events()
 {
+	if(!m_is_loaded) return;
+
 	SDL_Event event;
 	SDL_PollEvent(&event);
 
@@ -154,8 +166,10 @@ void App::handle_events()
 		//mCurrentScene->Input(event.key.keysym.scancode);
 		switch (event.key.keysym.scancode) {
 		case SDL_SCANCODE_D:
+#if F_ENABLE_DEBUG
 			debug_mode = !debug_mode;
 			m_logger->log("Debug mode: " + std::to_string(debug_mode));
+#endif
 			break;
 		case SDL_SCANCODE_A:
 
@@ -202,6 +216,8 @@ void App::handle_events()
 
 void App::update(double deltaTime)
 {
+	if(!m_is_loaded) return;
+
 	m_cd->update(deltaTime);
 	m_logger->update(deltaTime);
 
@@ -214,12 +230,15 @@ void App::render()
 	SDL_SetRenderDrawColor(m_renderer, m_window_color.x, m_window_color.y, m_window_color.z, 255);
 	SDL_RenderClear(m_renderer);
 	//rendering loop here
-	{
+	if(m_is_loaded){
 		//scene drawing
 		if (m_current_scene != nullptr)m_current_scene->draw();
 
 		//logger rendering
 		m_logger->draw();
+	}else{
+		m_atlas_ptr->draw((m_window_size.x - 70)/2, (m_window_size.y - 50)/2, "Loading...", s_main_font, {255,255,255,255});
+
 	}
 	SDL_RenderPresent(m_renderer);
 }
@@ -292,6 +311,11 @@ Resources* App::get_resources()
 Atlas* App::get_atlas()
 {
 	return m_atlas_ptr;
+}
+
+IniHandler *App::get_ini_handler()
+{
+    return m_ini_handler_ptr;
 }
 
 bool App::running()
