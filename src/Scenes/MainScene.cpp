@@ -1,6 +1,7 @@
 #include "MainScene.hpp"
 
 #include "../ImGui/tinyfiledialogs.h"
+#include "../Utils/Gizmos.hpp"
 
 //Used to reference the app in local functions
 App* m_app_ptr = nullptr;
@@ -225,6 +226,7 @@ void MainScene::draw()
 	for(auto file : m_files){
 		//convert file to just the entity base class
 		m_app->get_atlas()->draw(&file, m_camera);
+		Gizmos::draw_area(file.get_pos(), 40, m_app->get_atlas(), {255,0,0});
 
 		if(file.is_hovered()){
 			//std::cout << "Hovered" << std::endl;
