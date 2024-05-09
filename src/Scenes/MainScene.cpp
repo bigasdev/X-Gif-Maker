@@ -90,7 +90,7 @@ void MainScene::update(double deltaTime)
 	}
 
 	for(auto& file : m_files){
-		file.hover(file.is_close_to_pos(vec2f(Mouse::get_mouse_pos().x, Mouse::get_mouse_pos().y), 40));
+		file.hover(Mouse::is_at_area({file.get_pos().x, file.get_pos().y, 40, 40}));
 
 		if(Math::round(file.get_pos().y) != 80)
 			file.set_pos(file.get_pos().x, Math::lerp(file.get_pos().y, 80, 0.2) );

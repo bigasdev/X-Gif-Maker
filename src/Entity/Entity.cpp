@@ -136,7 +136,8 @@ bool Entity::is_moving()
 
 bool Entity::is_close_to_pos(vec2f pos, float radius)
 {
-    return pos.x - radius < m_pos.x && m_pos.x < pos.x + radius && pos.y - radius < m_pos.y && m_pos.y < pos.y + radius;
+    return (pos.x + radius < m_pos.x && m_pos.x < pos.x + radius) && 
+           (pos.y - radius < m_pos.y && m_pos.y < pos.y + radius);
 }
 
 void Entity::hit(float damage, Entity* from)
