@@ -322,6 +322,9 @@ void MainScene::draw()
 	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertOneButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertOneButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
 	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertAllButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertAllButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
 	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertSelectedButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertSelectedButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
+
+	Gizmos::draw_line(vec2f(50, 50), vec2f(150, 150), m_app->get_atlas(), {255,0,0});
+	Gizmos::draw_circle(vec2f(200, 200), 50, m_app->get_atlas(), {255,0,0});
 }
 
 void MainScene::input(SDL_Event event)
