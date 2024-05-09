@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#ifdef F_ENABLE_DEBUG
+#endif
+
 #ifdef F_ENABLE_ASSERTS
 #define F_ASSERT(x) { \
     if(!(x)){ \

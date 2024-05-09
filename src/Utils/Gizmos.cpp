@@ -2,8 +2,7 @@
 
 void Gizmos::draw_area(vec2f pos, float radius, Atlas* atlas, vec3f color)
 {
-    if(!debug_mode)return;
-
+#if F_ENABLE_DEBUG
     for(int i = 0 ; i < radius ; ++i){
         if(i == 0){
             for(int j = 0 ; j < radius ; ++j){
@@ -25,4 +24,5 @@ void Gizmos::draw_area(vec2f pos, float radius, Atlas* atlas, vec3f color)
 
         atlas->draw_pixel(pos.x, pos.y+i, color.x, color.y, color.z, 255);
     }
+#endif
 }

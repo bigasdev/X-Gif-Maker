@@ -3,7 +3,6 @@
 #ifndef GIZMOS_HPP
 #define GIZMOS_HPP
 
-#include "../Core/App.hpp"
 #include "../Renderer/Atlas.hpp"
 #include "Common.hpp"
 

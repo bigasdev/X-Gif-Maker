@@ -166,8 +166,10 @@ void App::handle_events()
 		//mCurrentScene->Input(event.key.keysym.scancode);
 		switch (event.key.keysym.scancode) {
 		case SDL_SCANCODE_D:
+#if F_ENABLE_DEBUG
 			debug_mode = !debug_mode;
 			m_logger->log("Debug mode: " + std::to_string(debug_mode));
+#endif
 			break;
 		case SDL_SCANCODE_A:
 

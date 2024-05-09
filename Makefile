@@ -6,7 +6,7 @@ CC = g++ -std=c++17
 #CPP = .\src\Entity/*.cpp .\src\Scenes/*.cpp
 # imgui dependencies
 BIN = bin/*.o
-DEBUG_FLAGS = -DF_ENABLE_ASSERTS
+DEBUG_FLAGS = -DF_ENABLE_ASSERTS -DF_ENABLE_DEBUG
 
 bin_dir:
 	mkdir bin
