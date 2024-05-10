@@ -63,6 +63,7 @@ void Entity::input(SDL_Event event)
 
 SDL_Texture* Entity::get_texture()
 {
+	
 	return m_texture;
 }
 void Entity::set_texture(SDL_Texture* _texture)
@@ -77,6 +78,11 @@ void Entity::set_texture(SDL_Texture* _texture)
 void Entity::set_renderer(EntityRenderer *_renderer)
 {
 	m_renderer = _renderer;
+}
+
+void Entity::set_current_sprite(Sprite _sprite)
+{
+	m_current_sprite = _sprite;
 }
 
 void Entity::add_sprite_animation(SpriteAnimation _animation)
@@ -97,6 +103,11 @@ void Entity::set_animation(std::string _name)
 SDL_Rect Entity::get_current_frame()
 {
 	return m_current_frame;
+}
+
+Sprite Entity::get_current_sprite()
+{
+	return m_current_sprite;
 }
 
 vec2f Entity::get_pos()

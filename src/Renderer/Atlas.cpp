@@ -98,6 +98,24 @@ void Atlas::draw(float p_x, float p_y, const char* p_text, TTF_Font* font, SDL_C
 	SDL_DestroyTexture(message);
 }
 
+void Atlas::draw_from_sheet(Entity *entity, Camera *camera)
+{
+	Sprite curr_sprite = entity->get_current_sprite();
+
+	int scaled_x = curr_sprite.sprite_scale.x * (m_game_scale+curr_sprite.sprite_scale_multiplier);
+	int scaled_y = curr_sprite.sprite_scale.y * (m_game_scale+curr_sprite.sprite_scale_multiplier);
+
+	std::cout << m_game_scale << " " << curr_sprite.sprite_scale_multiplier << "\n";
+
+	std::cout << scaled_x << " " << scaled_y << "\n";
+
+	SDL_Rect src = {curr_sprite.sprite_pos.x, curr_sprite.sprite_pos.y, curr_sprite.sprite_scale.x, curr_sprite.sprite_scale.y};
+
+	SDL_Rect dst = {entity->get_pos().x - camera->get_pos().x, entity->get_pos().y - camera->get_pos().y, scaled_x, scaled_y};
+
+	SDL_RenderCopyEx(m_renderer_ptr, entity->get_current_sprite().texture, &src, &dst, entity->get_angle(), 0, SDL_FLIP_NONE);
+}
+
 SDL_Renderer *Atlas::get_renderer()
 {
     return m_renderer_ptr;

@@ -13,6 +13,15 @@ using Random = effolkronium::random_static;
 #include <vector>
 #include <string>
 
+struct Sprite{
+	SDL_Texture* texture;
+
+	vec2f sprite_pos;
+	vec2f sprite_scale;
+
+	int sprite_scale_multiplier;
+};
+
 //main class for the entities, in our app everything that will be displayed and have interaction is an entity
 class Entity {
 public:
@@ -28,6 +37,7 @@ public:
 	void set_speed(float _speed);
 	void set_texture(SDL_Texture* _texture);
 	void set_renderer(EntityRenderer* _renderer);
+	void set_current_sprite(Sprite _sprite);
 
 	//animation stuff
 	void add_sprite_animation(SpriteAnimation _animation);
@@ -43,6 +53,7 @@ public:
 	//getters
 	SDL_Texture* get_texture();
 	SDL_Rect get_current_frame();
+	Sprite get_current_sprite();
 	vec2f get_pos();
 	vec2f get_scale();
 	float get_speed();
@@ -72,6 +83,7 @@ protected:
 
 	//draw/pos stuff
 	EntityRenderer* m_renderer;
+	Sprite m_current_sprite;
 	vec2f m_pos;
 	float m_angle = 0;
 	vec2f m_scale = vec2f(1, 1);
