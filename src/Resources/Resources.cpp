@@ -120,6 +120,7 @@ AssetData *Resources::GetAsset(std::string name)
 {
     //we get the asset by the name
     try{
+        
         return mAssets.at(name);
     }catch(const std::out_of_range& e){
         SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Asset %s not found!", name);
