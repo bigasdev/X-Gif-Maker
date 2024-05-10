@@ -16,6 +16,7 @@ public:
 	void draw(Entity* entity, Camera* camera);
 	void draw(std::unique_ptr<Entity> entity, Camera* camera);
 	void draw(float p_x, float p_y, const char* p_text, TTF_Font* font, SDL_Color textColor);
+	void draw_from_sheet(Entity* entity, Camera* camera);
 
 	//getters
 	SDL_Renderer* get_renderer();

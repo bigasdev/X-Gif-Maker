@@ -12,6 +12,8 @@ std::string m_folder_path = "";
 std::thread convert_thread;
 std::vector<FileEntity*> m_selected_files;
 
+Entity* m_test_entity = nullptr;
+
 static const char* m_selected_width = "800";
 static const char* m_selected_quality = "5";
 
@@ -55,6 +57,9 @@ void MainScene::init()
 	//
 	//
 	load_assets();
+
+	m_test_entity = new Entity(vec2f(300, 200), vec2f(54, 54), nullptr, 0);
+	m_test_entity->set_current_sprite({m_app->get_resources()->GetAsset("assets")->GetTexture(), vec2f(16, 16), vec2f(8, 8), 3});
 	
 	//F_ASSERT(m_files.size() > 0);
 
@@ -196,6 +201,8 @@ void MainScene::update(double deltaTime)
 			}
 		}
 	}
+
+	m_test_entity->set_current_sprite({m_app->get_resources()->GetAsset("assets")->GetTexture(), vec2f(m_app->get_ini_handler()->get_ini_data("SpriteTest").relative_x, m_app->get_ini_handler()->get_ini_data("SpriteTest").relative_y), vec2f(8, 8), 3});
 }
 
 
@@ -323,8 +330,11 @@ void MainScene::draw()
 	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertAllButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertAllButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
 	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertSelectedButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertSelectedButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
 
-	Gizmos::draw_line(vec2f(50, 50), vec2f(150, 150), m_app->get_atlas(), {255,0,0});
+	Gizmos::draw_line(vec2f(50, 50), vec2f(200, 200), m_app->get_atlas(), {255,0,0});
 	Gizmos::draw_circle(vec2f(200, 200), 50, m_app->get_atlas(), {255,0,0});
+	Gizmos::draw_circle(m_test_entity->get_pos(), 15, m_app->get_atlas(), {0,255,0});
+
+	m_app->get_atlas()->draw_from_sheet(m_test_entity, m_camera);
 }
 
 void MainScene::input(SDL_Event event)
