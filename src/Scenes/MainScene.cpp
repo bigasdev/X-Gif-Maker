@@ -202,7 +202,7 @@ void MainScene::update(double deltaTime)
 		}
 	}
 
-	m_test_entity->set_current_sprite({m_app->get_resources()->GetAsset("assets")->GetTexture(), vec2f(m_app->get_ini_handler()->get_ini_data("SpriteTest").relative_x, m_app->get_ini_handler()->get_ini_data("SpriteTest").relative_y), vec2f(8, 8), 3});
+	m_test_entity->set_current_sprite({m_app->get_resources()->GetAsset("assets")->GetTexture(), vec2f(m_app->get_ini_handler()->get_ini_data("SpriteTest").relative_x, m_app->get_ini_handler()->get_ini_data("SpriteTest").relative_y), vec2f(8, 8), 6});
 }
 
 
@@ -330,9 +330,9 @@ void MainScene::draw()
 	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertAllButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertAllButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
 	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertSelectedButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertSelectedButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
 
-	Gizmos::draw_line(vec2f(50, 50), vec2f(200, 200), m_app->get_atlas(), {255,0,0});
-	Gizmos::draw_circle(vec2f(200, 200), 50, m_app->get_atlas(), {255,0,0});
-	Gizmos::draw_circle(m_test_entity->get_pos(), 15, m_app->get_atlas(), {0,255,0});
+	//Gizmos::draw_line(vec2f(50, 50), vec2f(200, 200), m_app->get_atlas(), {255,0,0});
+	//Gizmos::draw_circle(vec2f(200, 200), 50, m_app->get_atlas(), {255,0,0});
+	//Gizmos::draw_circle(m_test_entity->get_pos(), 15, m_app->get_atlas(), {0,255,0});
 
 	m_app->get_atlas()->draw_from_sheet(m_test_entity, m_camera);
 }
