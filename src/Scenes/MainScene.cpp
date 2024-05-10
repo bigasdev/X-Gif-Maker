@@ -89,82 +89,16 @@ void convert_file(std::string file){
     std::string strCmdText = "/K " + content;
 
 	//Launching it in another thread and detaching it
-	/*is_convertion_running = true;
+	is_convertion_running = true;
 	convert_thread = std::thread(convert_command, strCmdText);
-	convert_thread.detach();*/
-	system(("CMD.exe " + strCmdText).c_str());
+	convert_thread.detach();
 }
-
-//Main convert function that will use the selected files in queue
-void convert_selected_files(){
-	if(m_selected_files.size() == 0)return;
-
-	F_ASSERT(m_folder_path != "");
-
-	for(auto& file : m_selected_files){
-		std::cout << "Converting file: " << file->get_complete_file_path() << "\n";
-		convert_file(file->get_complete_file_path());
-	}
-}
-
 
 void MainScene::update(double deltaTime)
 {
+	if(is_convertion_running) return;
 	//system
 	m_app->get_ini_handler()->update_ini_files();
-
-	/*for(size_t i = 0 ; i < 10; ++i){
-		m_app->get_ini_handler()->get_ini_data("FolderName").relative_x;
-		m_app->get_ini_handler()->get_ini_data("Test").relative_x;
-	}*/
-
-	if(!m_file_path.empty()){
-
-		std::filesystem::path path = m_file_path;
-		std::string filename = path.filename().string();
-		
-		//yes its really hard to understand and maintain this stuff, need to rework it asap
-		int x = 90;
-		if(m_files.size() > 0){
-			x = m_files[m_files.size() - 1].get_pos().x + 70;
-		}
-		FileEntity file(vec2f(x, 50), vec2f(54, 54), m_app->get_resources()->GetAsset("new_file")->GetTexture(), 0);
-		file.set_file_path(filename, path.string());
-
-		F_ASSERT(file.get_file_path() != "");
-
-		m_files.push_back(file);
-
-		m_file_path = "";
-	}
-
-	for(auto& file : m_files){
-		file.hover(Mouse::is_at_area({file.get_pos().x, file.get_pos().y, 40, 40}));
-
-		if(Math::round(file.get_pos().y) != 80)
-			file.set_pos(file.get_pos().x, Math::lerp(file.get_pos().y, 80, 0.2) );
-
-		if(file.is_hovered()){
-			file.set_pos(file.get_pos().x, Math::lerp(file.get_pos().y, 60, 0.2) );
-			if(m_current_mouse_key == LEFT_CLICK){
-				std::cout << "Clicked" << std::endl;
-
-				for(auto& sel_file : m_selected_files){
-					if(sel_file == &file){
-						m_selected_files.erase(std::remove(m_selected_files.begin(), m_selected_files.end(), sel_file), m_selected_files.end());
-
-										
-						m_current_mouse_key = NO_KEY;
-						return;
-					}
-				}
-
-				m_selected_files.push_back(&file);
-				
-				m_current_mouse_key = NO_KEY;
-			}
-		}
-	}
 
 	//buttons
 	{
@@ -178,17 +112,9 @@ void MainScene::update(double deltaTime)
 				m_current_mouse_key = NO_KEY;
 			}
 		}
-
-		if(Mouse::is_at_area({m_app->get_ini_handler()->get_ini_data("ConvertAllButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertAllButton").relative_y, 40, 40})){
+		if(Mouse::is_at_area({m_app->get_ini_handler()->get_ini_data("SelectFolder").relative_x, m_app->get_ini_handler()->get_ini_data("SelectFolder").relative_y, 40, 40})){
 			if(m_current_mouse_key == LEFT_CLICK){
-				//convert_selected_files();
-				m_current_mouse_key = NO_KEY;
-			}
-		}
-
-		if(Mouse::is_at_area({m_app->get_ini_handler()->get_ini_data("ConvertSelectedButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertSelectedButton").relative_y, 40, 40})){
-			if(m_current_mouse_key == LEFT_CLICK){
-				convert_selected_files();
+				m_folder_path = Data_Loader::load_folder("Select a folder");
 				m_current_mouse_key = NO_KEY;
 			}
 		}
@@ -291,34 +217,13 @@ void MainScene::draw()
 	m_app->get_atlas()->draw(m_bg_tx, vec2f(1200, 600), 1, 0, 0, false);
 	GUI::draw([this](){this->ui();});
 	//m_app->get_atlas()->draw(m_add_symbol_tx, vec2f(44, 44), 1, 544, 517, false);
-
-	for(auto file : m_files){
-		//convert file to just the entity base class
-		m_app->get_atlas()->draw(&file, m_camera);
-		Gizmos::draw_area(file.get_pos(), 40, m_app->get_atlas(), {255,0,0});
-
-		if(file.is_hovered()){
-			//std::cout << "Hovered" << std::endl;
-			m_app->get_atlas()->draw(m_file_hover_tx, vec2f(14, 8), 1, file.get_pos().x + 20, file.get_pos().y - 15, false);
-		}
-
-		m_app->get_atlas()->draw(file.get_pos().x-5, file.get_pos().y + 32, file.get_file_path().c_str(), m_app->get_main_font(), {101,115,146,255});
-	}
-
-	for(size_t i = 0; i < m_selected_files.size(); ++i){
-		int x = Math::clamp(800, 800 + (50*i), 1200);
-
-		m_app->get_atlas()->draw(m_selected_files[i]->get_texture(), vec2f(54,54), 1, x, 320,false);	
-	}
-
 	if(m_folder_path != ""){
 		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("FolderName").relative_x, m_app->get_ini_handler()->get_ini_data("FolderName").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
 	}
 
 	//drawing the buttons
 	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertOneButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertOneButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
-	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertAllButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertAllButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
-	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertSelectedButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertSelectedButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
+	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("SelectFolder").relative_x, m_app->get_ini_handler()->get_ini_data("SelectFolder").relative_y), 40, m_app->get_atlas(), {255,0,0});
 
 	//Gizmos::draw_line(vec2f(50, 50), vec2f(200, 200), m_app->get_atlas(), {255,0,0});
 	//Gizmos::draw_circle(vec2f(200, 200), 50, m_app->get_atlas(), {255,0,0});
@@ -355,9 +260,6 @@ void MainScene::input(SDL_Event event)
 		case SDL_KEYDOWN:
 			switch (event.key.keysym.scancode) {
 				case SDL_SCANCODE_D:
-					{
-						convert_selected_files();
-					}
 
 				break;
 				case SDL_SCANCODE_F:
