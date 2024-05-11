@@ -207,23 +207,29 @@ void MainScene::ui(){
 	if(debug_mode)status_bar_ui();
 
 	//base ui
-	base_ui();
+	//base_ui();
 	video_settings();
 }
 
 void MainScene::draw()
 {
 	//ui
-	m_app->get_atlas()->draw(m_bg_tx, vec2f(1200, 600), 1, 0, 0, false);
+	m_app->get_atlas()->draw(m_bg_tx, m_app->get_window_size(), 1, 0, 0, false);
 	GUI::draw([this](){this->ui();});
 	//m_app->get_atlas()->draw(m_add_symbol_tx, vec2f(44, 44), 1, 544, 517, false);
 	if(m_folder_path != ""){
 		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("FolderName").relative_x, m_app->get_ini_handler()->get_ini_data("FolderName").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
 	}
 
+	//tutorial texts
+	{
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("PressE").relative_x, m_app->get_ini_handler()->get_ini_data("PressE").relative_y, "Select file", m_app->get_main_font(), {255,255,255,125});
+		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("PressF").relative_x, m_app->get_ini_handler()->get_ini_data("PressF").relative_y, "Choose destination", m_app->get_main_font(), {255,255,255,125});
+	}
+
 	//drawing the buttons
 	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertOneButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertOneButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
-	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("SelectFolder").relative_x, m_app->get_ini_handler()->get_ini_data("SelectFolder").relative_y), 40, m_app->get_atlas(), {255,0,0});
+	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("SelectFolder").relative_x, m_app->get_ini_handler()->get_ini_data("SelectFolder").relative_y), 16, m_app->get_atlas(), {255,0,0});
 
 	//Gizmos::draw_line(vec2f(50, 50), vec2f(200, 200), m_app->get_atlas(), {255,0,0});
 	//Gizmos::draw_circle(vec2f(200, 200), 50, m_app->get_atlas(), {255,0,0});

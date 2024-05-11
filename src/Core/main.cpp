@@ -17,7 +17,7 @@ int main(int args, char *argv[]) {
 	//App
 	std::unique_ptr<App> mApp = std::make_unique<App>();
 	
-	mApp->init("Fortress framework v0.1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 600, false, false);
+	mApp->init("Fortress framework v0.1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 760, 500, false, false);
 
 	while (mApp->running()) {
 
