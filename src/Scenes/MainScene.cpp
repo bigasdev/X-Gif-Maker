@@ -221,6 +221,9 @@ void MainScene::draw()
 		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("FolderName").relative_x, m_app->get_ini_handler()->get_ini_data("FolderName").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
 	}
 
+	//convertion state
+	m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("ConvertionState").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertionState").relative_y, is_convertion_running ? "Converting..." : "READY TO CONVERT", m_app->get_main_font(), {0,255,0,255});
+
 	//tutorial texts
 	{
 		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("PressE").relative_x, m_app->get_ini_handler()->get_ini_data("PressE").relative_y, "Select file", m_app->get_main_font(), {255,255,255,125});
