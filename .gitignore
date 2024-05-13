@@ -391,7 +391,7 @@ FodyWeavers.xsd
 !.vscode/c_cpp_properties.json
 !.vscode/commandbar.json
 !.vscode/extensions.json
-!.vscode/todo.md
+!.vscode/app.drawio
 *.code-workspace
 
 # Local History for Visual Studio Code
