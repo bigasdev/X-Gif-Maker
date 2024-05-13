@@ -42,6 +42,10 @@ void MainScene::load_assets()
 
 	m_file_hover_tx = m_resources->GetAsset("hover")->GetTexture();
 	m_bg_tx = m_resources->GetAsset("main_scene")->GetTexture();
+
+	auto partial_scene = std::make_unique<PartialScene>(m_app, m_logger, m_cd, m_camera);
+        
+    m_partial_scenes.push_back(std::move(partial_scene));
 }
 
 void MainScene::init()
@@ -56,6 +60,10 @@ void MainScene::init()
 	//F_ASSERT(m_files.size() > 0);
 
 	m_ini_handler->load_ini_files("config.ini");
+
+	for(auto& scene : m_partial_scenes){
+		scene->init();
+	}
 }
 
 //Convert command so we can attach it to another thread
@@ -99,6 +107,11 @@ void MainScene::update(double deltaTime)
 	if(is_convertion_running) return;
 	//system
 	m_ini_handler->update_ini_files();
+
+	//partial scenes
+	for(auto& scene : m_partial_scenes){
+		scene->update(deltaTime);
+	}
 
 	//buttons
 	{
@@ -213,6 +226,11 @@ void MainScene::ui(){
 
 void MainScene::draw()
 {
+	//partial scenes
+	for(auto& scene : m_partial_scenes){
+		scene->draw();
+	}
+
 	//ui
 	m_atlas->draw(m_bg_tx, m_app->get_window_size(), 1, 0, 0, false);
 	GUI::draw([this](){this->ui();});
@@ -243,6 +261,11 @@ void MainScene::input(SDL_Event event)
 {
 	//example of a input listening
 	//mHero->Input(event);	
+
+	//partial scenes
+	for(auto& scene : m_partial_scenes){
+		scene->input(event);
+	}
 
 	switch (event.type) {
 		case SDL_DROPFILE:
@@ -316,5 +339,8 @@ void MainScene::input(SDL_Event event)
 
 void MainScene::clean()
 {
-	
+	//partial scenes
+	for(auto& scene : m_partial_scenes){
+		scene->clean();
+	}
 }
