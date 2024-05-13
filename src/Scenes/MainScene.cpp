@@ -1,6 +1,7 @@
 #include "MainScene.hpp"
 
 #include "../ImGui/tinyfiledialogs.h"
+#include "TestPartialScene.hpp"
 #include "../Utils/Gizmos.hpp"
 
 //Used to reference the app in local functions
@@ -44,8 +45,12 @@ void MainScene::load_assets()
 	m_bg_tx = m_resources->GetAsset("main_scene")->GetTexture();
 
 	auto partial_scene = std::make_unique<PartialScene>(m_app, m_logger, m_cd, m_camera);
+	std::unique_ptr<TestPartialScene> test_partial = std::make_unique<TestPartialScene>(m_app, m_logger, m_cd, m_camera);
+
+	test_partial->add_string(&m_folder_path);
         
     m_partial_scenes.push_back(std::move(partial_scene));
+	m_partial_scenes.push_back(std::move(test_partial));
 }
 
 void MainScene::init()
@@ -227,9 +232,6 @@ void MainScene::ui(){
 void MainScene::draw()
 {
 	//partial scenes
-	for(auto& scene : m_partial_scenes){
-		scene->draw();
-	}
 
 	//ui
 	m_atlas->draw(m_bg_tx, m_app->get_window_size(), 1, 0, 0, false);
@@ -255,6 +257,9 @@ void MainScene::draw()
 	//Gizmos::draw_line(vec2f(50, 50), vec2f(200, 200), m_app->get_atlas(), {255,0,0});
 	//Gizmos::draw_circle(vec2f(200, 200), 50, m_app->get_atlas(), {255,0,0});
 	//Gizmos::draw_circle(m_test_entity->get_pos(), 15, m_app->get_atlas(), {0,255,0});
+	for(auto& scene : m_partial_scenes){
+		scene->draw();
+	}
 }
 
 void MainScene::input(SDL_Event event)
