@@ -343,4 +343,5 @@ void MainScene::clean()
 	for(auto& scene : m_partial_scenes){
 		scene->clean();
 	}
+	m_partial_scenes.clear();
 }
