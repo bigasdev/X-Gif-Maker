@@ -11,7 +11,6 @@
 #include "../Tools/Cooldown.hpp"
 #include "../Tools/Logger.hpp"
 #include "../Utils/Mouse.hpp"
-#include "../Utils/MainScene/GUIAssets.hpp"
 
 #include "SDL.h"
 #include "SDL_image.h"
@@ -44,7 +43,4 @@ protected:
 	Logger* m_logger = nullptr;
 	Cooldown* m_cd = nullptr;
 	Camera* m_camera = nullptr;
-
-	//Utils variables
-	GUIAssets m_GUI_assets;
 };
