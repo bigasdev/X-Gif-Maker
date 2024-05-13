@@ -43,14 +43,6 @@ void MainScene::load_assets()
 
 	m_file_hover_tx = m_resources->GetAsset("hover")->GetTexture();
 	m_bg_tx = m_resources->GetAsset("main_scene")->GetTexture();
-
-	auto partial_scene = std::make_unique<PartialScene>(m_app, m_logger, m_cd, m_camera);
-	std::unique_ptr<TestPartialScene> test_partial = std::make_unique<TestPartialScene>(m_app, m_logger, m_cd, m_camera);
-
-	test_partial->add_string(&m_folder_path);
-        
-    m_partial_scenes.push_back(std::move(partial_scene));
-	m_partial_scenes.push_back(std::move(test_partial));
 }
 
 void MainScene::init()
