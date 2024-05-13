@@ -40,8 +40,8 @@ void MainScene::load_assets()
 	m_folder_path = SDL_GetBasePath();
 	F_ASSERT(m_folder_path != "");
 
-	m_file_hover_tx = m_app->get_resources()->GetAsset("hover")->GetTexture();
-	m_bg_tx = m_app->get_resources()->GetAsset("main_scene")->GetTexture();
+	m_file_hover_tx = m_resources->GetAsset("hover")->GetTexture();
+	m_bg_tx = m_resources->GetAsset("main_scene")->GetTexture();
 }
 
 void MainScene::init()
@@ -55,7 +55,7 @@ void MainScene::init()
 
 	//F_ASSERT(m_files.size() > 0);
 
-	m_app->get_ini_handler()->load_ini_files("config.ini");
+	m_ini_handler->load_ini_files("config.ini");
 }
 
 //Convert command so we can attach it to another thread
@@ -98,11 +98,11 @@ void MainScene::update(double deltaTime)
 {
 	if(is_convertion_running) return;
 	//system
-	m_app->get_ini_handler()->update_ini_files();
+	m_ini_handler->update_ini_files();
 
 	//buttons
 	{
-		if(Mouse::is_at_area({m_app->get_ini_handler()->get_ini_data("ConvertOneButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertOneButton").relative_y, 40, 40})){
+		if(Mouse::is_at_area({m_ini_handler->get_ini_data("ConvertOneButton").relative_x, m_ini_handler->get_ini_data("ConvertOneButton").relative_y, 40, 40})){
 			if(m_current_mouse_key == LEFT_CLICK){
 				m_file_path = Data_Loader::load_file("*.mp4");
 
@@ -112,7 +112,7 @@ void MainScene::update(double deltaTime)
 				m_current_mouse_key = NO_KEY;
 			}
 		}
-		if(Mouse::is_at_area({m_app->get_ini_handler()->get_ini_data("SelectFolder").relative_x, m_app->get_ini_handler()->get_ini_data("SelectFolder").relative_y, 40, 40})){
+		if(Mouse::is_at_area({m_ini_handler->get_ini_data("SelectFolder").relative_x, m_ini_handler->get_ini_data("SelectFolder").relative_y, 40, 40})){
 			if(m_current_mouse_key == LEFT_CLICK){
 				m_folder_path = Data_Loader::load_folder("Select a folder");
 				m_current_mouse_key = NO_KEY;
@@ -214,25 +214,25 @@ void MainScene::ui(){
 void MainScene::draw()
 {
 	//ui
-	m_app->get_atlas()->draw(m_bg_tx, m_app->get_window_size(), 1, 0, 0, false);
+	m_atlas->draw(m_bg_tx, m_app->get_window_size(), 1, 0, 0, false);
 	GUI::draw([this](){this->ui();});
 	//m_app->get_atlas()->draw(m_add_symbol_tx, vec2f(44, 44), 1, 544, 517, false);
 	if(m_folder_path != ""){
-		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("FolderName").relative_x, m_app->get_ini_handler()->get_ini_data("FolderName").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_atlas->draw(m_ini_handler->get_ini_data("FolderName").relative_x, m_ini_handler->get_ini_data("FolderName").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
 	}
 
 	//convertion state
-	m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("ConvertionState").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertionState").relative_y, is_convertion_running ? "Converting..." : "READY TO CONVERT", m_app->get_main_font(), {0,255,0,255});
+	m_atlas->draw(m_ini_handler->get_ini_data("ConvertionState").relative_x, m_ini_handler->get_ini_data("ConvertionState").relative_y, is_convertion_running ? "Converting..." : "READY TO CONVERT", m_app->get_main_font(), {0,255,0,255});
 
 	//tutorial texts
 	{
-		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("PressE").relative_x, m_app->get_ini_handler()->get_ini_data("PressE").relative_y, "Select file", m_app->get_main_font(), {255,255,255,125});
-		m_app->get_atlas()->draw(m_app->get_ini_handler()->get_ini_data("PressF").relative_x, m_app->get_ini_handler()->get_ini_data("PressF").relative_y, "Choose destination", m_app->get_main_font(), {255,255,255,125});
+		m_atlas->draw(m_ini_handler->get_ini_data("PressE").relative_x, m_ini_handler->get_ini_data("PressE").relative_y, "Select file", m_app->get_main_font(), {255,255,255,125});
+		m_atlas->draw(m_ini_handler->get_ini_data("PressF").relative_x, m_ini_handler->get_ini_data("PressF").relative_y, "Choose destination", m_app->get_main_font(), {255,255,255,125});
 	}
 
 	//drawing the buttons
-	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("ConvertOneButton").relative_x, m_app->get_ini_handler()->get_ini_data("ConvertOneButton").relative_y), 40, m_app->get_atlas(), {255,0,0});
-	Gizmos::draw_area(vec2f(m_app->get_ini_handler()->get_ini_data("SelectFolder").relative_x, m_app->get_ini_handler()->get_ini_data("SelectFolder").relative_y), 16, m_app->get_atlas(), {255,0,0});
+	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("ConvertOneButton").relative_x, m_ini_handler->get_ini_data("ConvertOneButton").relative_y), 40, m_atlas, {255,0,0});
+	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("SelectFolder").relative_x, m_ini_handler->get_ini_data("SelectFolder").relative_y), 16, m_atlas, {255,0,0});
 
 	//Gizmos::draw_line(vec2f(50, 50), vec2f(200, 200), m_app->get_atlas(), {255,0,0});
 	//Gizmos::draw_circle(vec2f(200, 200), 50, m_app->get_atlas(), {255,0,0});

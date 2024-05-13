@@ -8,7 +8,7 @@ GameScene::GameScene(App *app, Logger *logger, Cooldown *cooldown, Camera *camer
 
 void GameScene::load_assets()
 {
-    m_GUI_assets.load_assets(m_app->get_resources());
+    
 }
 
 void GameScene::init()

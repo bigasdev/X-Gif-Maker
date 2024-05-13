@@ -2,6 +2,7 @@
 
 #include "../Core/App.hpp"
 #include "../Core/Assert.h"
+#include "../Core/IniHandler.hpp"
 #include "../Renderer/AppGui.hpp"
 #include "../Renderer/Atlas.hpp"
 #include "../Renderer/Camera.hpp"
@@ -43,4 +44,7 @@ protected:
 	Logger* m_logger = nullptr;
 	Cooldown* m_cd = nullptr;
 	Camera* m_camera = nullptr;
+	Resources* m_resources = nullptr;
+	IniHandler* m_ini_handler = nullptr;
+	Atlas* m_atlas = nullptr;
 };
