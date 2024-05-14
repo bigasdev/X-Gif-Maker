@@ -8,6 +8,10 @@ on:
 jobs:
   generate-log:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./.vscode
     
     steps:
     - name: Checkout repository
@@ -15,4 +19,4 @@ jobs:
       
     - name: Generate Log
       run: |
-        grep -r "@done" ../../.vscode/todo.todo ../../.vscode/issues.todo > done_log.txt
+        grep -r "@done" todo.todo issues.todo > done_log.txt
