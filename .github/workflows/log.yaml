@@ -16,6 +16,13 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+
+    - name: Check files
+      run: |
+        echo "Contents of todo.todo:"
+        cat todo.todo
+        echo "Contents of issues.todo:"
+        cat issues.todo
       
     - name: Generate Log
       run: |
