@@ -1,0 +1,18 @@
+- App logo/visuals
+    - Tinker the logo
+    - Create the logo
+    - File image for the drag and drop menu
+    - Folder image for the destination menu
+    - Export all the single assets in a spritesheet
+    - Animation for the ready/stop state
+
+- App architecture
+    - Fix the .dlls for release
+    - Fonts cleanup
+
+- App features
+    - Button to select the file
+    - Button to start the convert
+    - Show file name in the drag and drop menu
+    - Show folder name in the dest menu like parent\\folder
+    - Stop the program from working while converting
