@@ -12,7 +12,6 @@
 #include "../Tools/Cooldown.hpp"
 #include "../Tools/Logger.hpp"
 #include "../Utils/Mouse.hpp"
-#include "PartialScene.hpp"
 
 #include "SDL.h"
 #include "SDL_image.h"
@@ -26,12 +25,11 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
-#include <memory>
 
 //the scene class, we'll use this to create the behaviours of our app.
-class Scene {
+class PartialScene {
 public:
-	Scene(App* app, Logger* logger, Cooldown* cooldown, Camera* camera);
+	PartialScene(App* app, Logger* logger, Cooldown* cooldown, Camera* camera);
 
 	virtual void init();
 	virtual void input(SDL_Event event);
@@ -49,6 +47,4 @@ protected:
 	Resources* m_resources = nullptr;
 	IniHandler* m_ini_handler = nullptr;
 	Atlas* m_atlas = nullptr;
-
-	std::vector<std::unique_ptr<PartialScene>> m_partial_scenes;
 };

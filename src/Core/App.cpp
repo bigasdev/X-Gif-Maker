@@ -58,7 +58,7 @@ void App::init(const char* title, uint32_t xpos, uint32_t ypos, uint32_t width, 
 		int h = 0, w = 0;
 		SDL_GetWindowSize(m_window, &h, &w);
 		//ensure the window cant be so small
-		SDL_SetWindowMinimumSize(m_window, 1000, 400);
+		SDL_SetWindowMinimumSize(m_window, 380, 250);
 		m_window_size = vec2f(h, w);
 
 		//This is true if the windows was created
