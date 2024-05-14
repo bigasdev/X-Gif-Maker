@@ -19,7 +19,7 @@ jobs:
       
     - name: Generate Log
       run: |
-        grep -r "@done" todo.todo issues.todo > done_log.txt
+        grep "@done" todo.todo issues.todo >> done_log.txt
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
