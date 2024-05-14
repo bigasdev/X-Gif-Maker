@@ -24,6 +24,7 @@ SDL_Texture* m_file_selected_tx = nullptr;
 SDL_Texture* m_add_symbol_tx = nullptr;
 SDL_Texture* m_bg_tx = nullptr;
 
+
 MainScene::MainScene(App* app, Logger* logger, Cooldown* cooldown, Camera* camera):Scene(app, logger, cooldown, camera)
 {
 	m_app_ptr = app;
@@ -245,6 +246,11 @@ void MainScene::draw()
 	//drawing the buttons
 	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("ConvertOneButton").relative_x, m_ini_handler->get_ini_data("ConvertOneButton").relative_y), 40, m_atlas, {255,0,0});
 	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("SelectFolder").relative_x, m_ini_handler->get_ini_data("SelectFolder").relative_y), 16, m_atlas, {255,0,0});
+	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("SelectFile").relative_x, m_ini_handler->get_ini_data("SelectFile").relative_y), 16, m_atlas, {255,0,0});
+
+	//file and folder feedback
+	m_atlas->draw(m_folder_path == "" ? m_resources->GetAsset("folder")->GetTexture() : m_resources->GetAsset("folder_selected")->GetTexture(), vec2f(20, 15), 2, m_ini_handler->get_ini_data("folder").relative_x,m_ini_handler->get_ini_data("folder").relative_y , false);
+	m_atlas->draw(m_file_path == "" ? m_resources->GetAsset("file")->GetTexture() : m_resources->GetAsset("file_selected")->GetTexture(), vec2f(22, 25), 2, m_ini_handler->get_ini_data("file").relative_x,m_ini_handler->get_ini_data("file").relative_y , false);
 
 	//Gizmos::draw_line(vec2f(50, 50), vec2f(200, 200), m_app->get_atlas(), {255,0,0});
 	//Gizmos::draw_circle(vec2f(200, 200), 50, m_app->get_atlas(), {255,0,0});
@@ -297,9 +303,9 @@ void MainScene::input(SDL_Event event)
 				case SDL_SCANCODE_E:
 					m_file_path = Data_Loader::load_file("*.mp4");
 
-					if(m_file_path != ""){
+					/*if(m_file_path != ""){
 						convert_file(m_file_path);
-					}
+					}*/
 				break;
 				case SDL_SCANCODE_A:
 					

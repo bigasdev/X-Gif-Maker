@@ -1,10 +1,12 @@
 - App logo/visuals
     - Tinker the logo
     - Create the logo
-    - File image for the drag and drop menu
-    - Folder image for the destination menu
-    - Export all the single assets in a spritesheet
+    - File image for the drag and drop menu @done
+    - Folder image for the destination menu @done
+    - Export all the single assets in a spritesheet @done
     - Animation for the ready/stop state
+    - Button to remove the selected file @done
+    - Convert button
 
 - App architecture
     - Fix the .dlls for release @done
