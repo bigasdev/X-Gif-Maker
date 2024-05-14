@@ -27,6 +27,11 @@ jobs:
     - name: Generate Log
       run: |
         grep "@done$" todo.todo issues.todo >> done_log.txt
+
+    - name: Wait for file creation (optional)
+      run: |
+        sleep 5  # Wait for 5 seconds
+        
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
