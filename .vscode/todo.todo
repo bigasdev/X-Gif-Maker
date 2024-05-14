@@ -7,12 +7,13 @@
     - Animation for the ready/stop state
 
 - App architecture
-    - Fix the .dlls for release
+    - Fix the .dlls for release @done
     - Fonts cleanup @done
 
 - App features
     - Button to select the file
     - Button to start the convert
+    - Button to remove the current file
     - Show file name in the drag and drop menu
     - Show folder name in the dest menu like parent\\folder
     - Stop the program from working while converting
