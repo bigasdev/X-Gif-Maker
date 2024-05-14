@@ -9,6 +9,7 @@
 - App architecture
     - Fix the .dlls for release
     - Fonts cleanup
+    - Github log for the .todo files
 
 - App features
     - Button to select the file

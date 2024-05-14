@@ -1,0 +1,18 @@
+name: Generate Done Log
+
+on:
+  push:
+    branches:
+      - dev # Change this to your main branch name
+
+jobs:
+  generate-log:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Generate Log
+      run: |
+        grep -r "@done" todo.todo issues.todo > done_log.txt
