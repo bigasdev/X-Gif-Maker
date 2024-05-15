@@ -14,7 +14,7 @@
 ;Custom Variables
 
 ;Define name of the product
-!define PRODUCT "Twitter-Gif-Maker"
+!define PRODUCT "X-Gif-Maker"
 
 ;Define website of the product
 !define PRODUCT_URL "https://bigasdev.net/?tab=home"

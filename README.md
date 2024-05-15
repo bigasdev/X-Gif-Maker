@@ -1,5 +1,5 @@
 <p align="center">
-<img width="96" src="res/icon/icon.png" style="image-rendering: pixelated; "alt=" Fortress logo" align="right">
+<img width="128" src="res/sprites/core/logo.png" style="image-rendering: pixelated; "alt=" Fortress logo" align="right">
 </p>
 
 <h1 align="center">X-Gif-Maker</h1>
@@ -14,6 +14,7 @@
 _Turn your videos into GIFs in a snap! Customize settings to shrink file sizes, suitable for sharing on social media platforms._
 
 ## Introduction
+
 This is a revamped version of my [Twitter-Gif-Maker Tool](https://github.com/bigasdev/Twitter-Gif-Maker), which I originally created a while back to support my game development posts on Twitter.
 
 The purpose of this project was to refine and test my work-in-progress framework called Fortress, and to optimize the tool with an elegant interface for easier usability.
@@ -24,11 +25,11 @@ The purpose of this project was to refine and test my work-in-progress framework
 
 <img src="media/interface.png">
 
-- Straightforward usage: simply drag and drop your file or select it to convert it to a .gif format, saving it to any folder.
-- Options to adjust your .gif quality and width.
-- Shortcut keys provided for all actions for quick iterations.
-- Utilizes multithreading to prevent the program from becoming unresponsive during video conversion.
-- Beautiful pixel-art UI.
+-   Straightforward usage: simply drag and drop your file or select it to convert it to a .gif format, saving it to any folder.
+-   Options to adjust your .gif quality and width.
+-   Shortcut keys provided for all actions for quick iterations.
+-   Utilizes multithreading to prevent the program from becoming unresponsive during video conversion.
+-   Beautiful pixel-art UI.
 
 ## Feedback
 
