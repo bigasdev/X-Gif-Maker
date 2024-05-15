@@ -230,9 +230,6 @@ void MainScene::draw()
 	m_atlas->draw(m_bg_tx, m_app->get_window_size(), 1, 0, 0, false);
 	GUI::draw([this](){this->ui();});
 	//m_app->get_atlas()->draw(m_add_symbol_tx, vec2f(44, 44), 1, 544, 517, false);
-	if(m_folder_path != ""){
-		m_atlas->draw(m_ini_handler->get_ini_data("FolderName").relative_x, m_ini_handler->get_ini_data("FolderName").relative_y, m_folder_path.c_str(), m_app->get_main_font(), {255,255,255,255});
-	}
 
 	//convertion state
 	m_atlas->draw(m_ini_handler->get_ini_data("ConvertionState").relative_x, m_ini_handler->get_ini_data("ConvertionState").relative_y, is_convertion_running ? "Converting..." : "READY TO CONVERT", m_app->get_main_font(), {0,255,0,255});
@@ -247,6 +244,23 @@ void MainScene::draw()
 	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("ConvertOneButton").relative_x, m_ini_handler->get_ini_data("ConvertOneButton").relative_y), 40, m_atlas, {255,0,0});
 	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("SelectFolder").relative_x, m_ini_handler->get_ini_data("SelectFolder").relative_y), 16, m_atlas, {255,0,0});
 	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("SelectFile").relative_x, m_ini_handler->get_ini_data("SelectFile").relative_y), 16, m_atlas, {255,0,0});
+	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("RemoveFile").relative_x, m_ini_handler->get_ini_data("RemoveFile").relative_y), 50, m_atlas, {255,0,0});
+
+
+	if(m_folder_path != ""){
+		std::string folder_name = m_folder_path.substr(m_folder_path.find_first_of("\\")+1, 38);
+
+		m_atlas->draw(m_ini_handler->get_ini_data("FolderName").relative_x, m_ini_handler->get_ini_data("FolderName").relative_y, folder_name.c_str(), m_app->get_main_font(), {255,255,255,255});
+	}
+
+	if(m_file_path != ""){
+		std::filesystem::path path = m_file_path;
+		std::string filename = path.filename().string();
+		std::string filenameWithoutExtension = filename.substr(0, filename.find_last_of("."));
+		filenameWithoutExtension = filenameWithoutExtension.substr(0, 38);
+
+		m_atlas->draw(m_ini_handler->get_ini_data("FileName").relative_x, m_ini_handler->get_ini_data("FileName").relative_y, filenameWithoutExtension.c_str(), m_app->get_main_font(), {255,255,255,255});
+	}
 
 	//file and folder feedback
 	m_atlas->draw(m_folder_path == "" ? m_resources->GetAsset("folder")->GetTexture() : m_resources->GetAsset("folder_selected")->GetTexture(), vec2f(20, 15), 2, m_ini_handler->get_ini_data("folder").relative_x,m_ini_handler->get_ini_data("folder").relative_y , false);

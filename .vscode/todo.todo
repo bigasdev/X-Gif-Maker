@@ -17,5 +17,5 @@
     - Button to start the convert
     - Button to remove the current file
     - Show file name in the drag and drop menu
-    - Show folder name in the dest menu like parent\\folder
+    - Show folder name in the dest menu like parent\\folder @done
     - Stop the program from working while converting
