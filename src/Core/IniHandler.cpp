@@ -119,11 +119,11 @@ void IniHandler::create_ini_file(IniData data, std::string path)
     ini_files.push_back(data);
 }
 
-IniData IniHandler::get_ini_data(std::string name)
+IniData* IniHandler::get_ini_data(std::string name)
 {
     for(auto& ini : ini_files){
         if(ini.name == name){
-            return ini;
+            return &ini;
         }
     }
 
@@ -133,5 +133,5 @@ IniData IniHandler::get_ini_data(std::string name)
 
     create_ini_file(data, "config.ini");
     
-    return data;
+    return &data;
 }

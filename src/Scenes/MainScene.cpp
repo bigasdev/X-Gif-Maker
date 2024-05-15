@@ -24,6 +24,19 @@ SDL_Texture* m_file_selected_tx = nullptr;
 SDL_Texture* m_add_symbol_tx = nullptr;
 SDL_Texture* m_bg_tx = nullptr;
 
+//Data
+IniData* data_press_e = nullptr;
+IniData* data_press_f = nullptr;
+IniData* data_convert_button = nullptr;
+IniData* data_convertion_state = nullptr;
+IniData* data_folder_name = nullptr;
+IniData* data_file_name = nullptr;
+IniData* data_settings = nullptr;
+IniData* data_remove_file = nullptr;
+IniData* data_select_folder = nullptr;
+IniData* data_file = nullptr;
+IniData* data_folder = nullptr;
+
 
 MainScene::MainScene(App* app, Logger* logger, Cooldown* cooldown, Camera* camera):Scene(app, logger, cooldown, camera)
 {
@@ -58,6 +71,21 @@ void MainScene::init()
 	//F_ASSERT(m_files.size() > 0);
 
 	m_ini_handler->load_ini_files("config.ini");
+
+	//Ini loading
+	{
+		data_press_e = m_ini_handler->get_ini_data("PressE");
+		data_press_f = m_ini_handler->get_ini_data("PressF");
+		data_convert_button = m_ini_handler->get_ini_data("ConvertOneButton");
+		data_convertion_state = m_ini_handler->get_ini_data("ConvertionState");
+		data_folder_name = m_ini_handler->get_ini_data("FolderName");
+		data_file_name = m_ini_handler->get_ini_data("FileName");
+		data_settings = m_ini_handler->get_ini_data("VideoSettings");
+		data_remove_file = m_ini_handler->get_ini_data("RemoveFile");
+		data_select_folder = m_ini_handler->get_ini_data("SelectFolder");
+		data_file = m_ini_handler->get_ini_data("file");
+		data_folder = m_ini_handler->get_ini_data("folder");
+	}
 
 	for(auto& scene : m_partial_scenes){
 		scene->init();
@@ -115,7 +143,7 @@ void MainScene::update(double deltaTime)
 
 	//buttons
 	{
-		if(Mouse::is_at_area({m_ini_handler->get_ini_data("ConvertOneButton").relative_x, m_ini_handler->get_ini_data("ConvertOneButton").relative_y, 40, 40})){
+		if(Mouse::is_at_area({data_convert_button->relative_x, data_convert_button->relative_y, 40, 40})){
 			if(m_current_mouse_key == LEFT_CLICK){
 				if(m_file_path != ""){
 					convert_file(m_file_path);
@@ -123,21 +151,17 @@ void MainScene::update(double deltaTime)
 				m_current_mouse_key = NO_KEY;
 			}
 		}
-		if(Mouse::is_at_area({m_ini_handler->get_ini_data("RemoveFile").relative_x, m_ini_handler->get_ini_data("RemoveFile").relative_y, 50, 50})){
+		if(Mouse::is_at_area({data_remove_file->relative_x, data_remove_file->relative_y, 50, 50})){
 			if(m_current_mouse_key == LEFT_CLICK){
 				if(m_file_path != ""){
 					m_file_path = "";
+				}else{
+					m_file_path = Data_Loader::load_file("*.mp4");
 				}
 				m_current_mouse_key = NO_KEY;
 			}
 		}
-		if(Mouse::is_at_area({m_ini_handler->get_ini_data("SelectFile").relative_x, m_ini_handler->get_ini_data("SelectFile").relative_y, 24, 24})){
-			if(m_current_mouse_key == LEFT_CLICK){
-				m_file_path = Data_Loader::load_file("*.mp4");
-				m_current_mouse_key = NO_KEY;
-			}
-		}
-		if(Mouse::is_at_area({m_ini_handler->get_ini_data("SelectFolder").relative_x, m_ini_handler->get_ini_data("SelectFolder").relative_y, 24, 24})){
+		if(Mouse::is_at_area({data_select_folder->relative_x, data_select_folder->relative_y, 24, 24})){
 			if(m_current_mouse_key == LEFT_CLICK){
 				m_folder_path = Data_Loader::load_folder("Select a folder");
 				m_current_mouse_key = NO_KEY;
@@ -190,7 +214,7 @@ void base_ui(){
 }
 
 void video_settings(){
-	ImGui::SetNextWindowPos(ImVec2(	m_app_ptr->get_ini_handler()->get_ini_data("VideoSettings").relative_x, m_app_ptr->get_ini_handler()->get_ini_data("VideoSettings").relative_y));
+	ImGui::SetNextWindowPos(ImVec2(	data_settings->relative_x, data_settings->relative_y));
 	ImGui::SetNextWindowSize(ImVec2(200, 600));
 	ImGui::Begin("Video Settings", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
 	ImGui::Text("Video Settings");
@@ -245,26 +269,22 @@ void MainScene::draw()
 	GUI::draw([this](){this->ui();});
 	//m_app->get_atlas()->draw(m_add_symbol_tx, vec2f(44, 44), 1, 544, 517, false);
 
-	//convertion state
-	m_atlas->draw(m_ini_handler->get_ini_data("ConvertionState").relative_x, m_ini_handler->get_ini_data("ConvertionState").relative_y, is_convertion_running ? "Converting..." : "READY TO CONVERT", m_app->get_main_font(), {0,255,0,255});
-
 	//tutorial texts
 	{
-		m_atlas->draw(m_ini_handler->get_ini_data("PressE").relative_x, m_ini_handler->get_ini_data("PressE").relative_y, "Select file", m_app->get_main_font(), {255,255,255,125});
-		m_atlas->draw(m_ini_handler->get_ini_data("PressF").relative_x, m_ini_handler->get_ini_data("PressF").relative_y, "Choose destination", m_app->get_main_font(), {255,255,255,125});
+		m_atlas->draw(data_press_e->relative_x, data_press_e->relative_y, "Select file", m_app->get_main_font(), {255,255,255,125});
+		m_atlas->draw(data_press_f->relative_x, data_press_f->relative_y, "Choose destination", m_app->get_main_font(), {255,255,255,125});
 	}
 
 	//drawing the buttons
-	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("ConvertOneButton").relative_x, m_ini_handler->get_ini_data("ConvertOneButton").relative_y), 40, m_atlas, {255,0,0});
-	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("SelectFolder").relative_x, m_ini_handler->get_ini_data("SelectFolder").relative_y), 24, m_atlas, {255,0,0});
-	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("SelectFile").relative_x, m_ini_handler->get_ini_data("SelectFile").relative_y), 24, m_atlas, {255,0,0});
-	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("RemoveFile").relative_x, m_ini_handler->get_ini_data("RemoveFile").relative_y), 50, m_atlas, {255,0,0});
+	Gizmos::draw_area(vec2f(data_convert_button->relative_x, data_convert_button->relative_y), 40, m_atlas, {255,0,0});
+	Gizmos::draw_area(vec2f(data_select_folder->relative_x, data_select_folder->relative_y), 24, m_atlas, {255,0,0});
+	Gizmos::draw_area(vec2f(data_remove_file->relative_x, data_remove_file->relative_y), 50, m_atlas, {255,0,0});
 
 
 	if(m_folder_path != ""){
 		std::string folder_name = m_folder_path.substr(m_folder_path.find_first_of("\\")+1, 38);
 
-		m_atlas->draw(m_ini_handler->get_ini_data("FolderName").relative_x, m_ini_handler->get_ini_data("FolderName").relative_y, folder_name.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_atlas->draw(data_folder_name->relative_x, data_folder_name->relative_y, folder_name.c_str(), m_app->get_main_font(), {255,255,255,255});
 	}
 
 	if(m_file_path != ""){
@@ -273,12 +293,22 @@ void MainScene::draw()
 		std::string filenameWithoutExtension = filename.substr(0, filename.find_last_of("."));
 		filenameWithoutExtension = filenameWithoutExtension.substr(0, 38);
 
-		m_atlas->draw(m_ini_handler->get_ini_data("FileName").relative_x, m_ini_handler->get_ini_data("FileName").relative_y, filenameWithoutExtension.c_str(), m_app->get_main_font(), {255,255,255,255});
+		m_atlas->draw(data_file_name->relative_x, data_file_name->relative_y, filenameWithoutExtension.c_str(), m_app->get_main_font(), {255,255,255,255});
 	}
 
+	if(is_convertion_running){
+		m_atlas->draw(m_resources->GetAsset("ready_bar")->GetTexture(), vec2f(269, 16), 3, 0, 0 , false);
+	}else{
+		m_atlas->draw(m_resources->GetAsset("stop_vfx")->GetTexture(), vec2f(268, 20), 3, 0, 0 , false);
+		m_atlas->draw(m_resources->GetAsset("stop_bar")->GetTexture(), vec2f(259, 4), 3, 12, 15 , false);
+	}
+
+		//convertion state
+	m_atlas->draw(data_convertion_state->relative_x, data_convertion_state->relative_y, is_convertion_running ? "Converting..." : "READY TO CONVERT", m_app->get_main_font(), {255,255,255,255});
+
 	//file and folder feedback
-	m_atlas->draw(m_folder_path == "" ? m_resources->GetAsset("folder")->GetTexture() : m_resources->GetAsset("folder_selected")->GetTexture(), vec2f(20, 15), 2, m_ini_handler->get_ini_data("folder").relative_x,m_ini_handler->get_ini_data("folder").relative_y , false);
-	m_atlas->draw(m_file_path == "" ? m_resources->GetAsset("file")->GetTexture() : m_resources->GetAsset("file_selected")->GetTexture(), vec2f(22, 25), 2, m_ini_handler->get_ini_data("file").relative_x,m_ini_handler->get_ini_data("file").relative_y , false);
+	m_atlas->draw(m_folder_path == "" ? m_resources->GetAsset("folder")->GetTexture() : m_resources->GetAsset("folder_selected")->GetTexture(), vec2f(20, 15), 2, data_folder->relative_x, data_folder->relative_y , false);
+	m_atlas->draw(m_file_path == "" ? m_resources->GetAsset("file")->GetTexture() : m_resources->GetAsset("file_selected")->GetTexture(), vec2f(22, 25), 2, data_file->relative_x, data_file->relative_y , false);
 
 	//Gizmos::draw_line(vec2f(50, 50), vec2f(200, 200), m_app->get_atlas(), {255,0,0});
 	//Gizmos::draw_circle(vec2f(200, 200), 50, m_app->get_atlas(), {255,0,0});
