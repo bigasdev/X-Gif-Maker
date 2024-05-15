@@ -104,7 +104,9 @@ void MainScene::update(double deltaTime)
 {
 	if(is_convertion_running) return;
 	//system
+#if F_ENABLE_DEBUG
 	m_ini_handler->update_ini_files();
+#endif
 
 	//partial scenes
 	for(auto& scene : m_partial_scenes){
