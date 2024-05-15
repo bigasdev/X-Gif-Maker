@@ -143,7 +143,8 @@ void MainScene::update(double deltaTime)
 
 	//buttons
 	{
-		if(Mouse::is_at_area({data_convert_button->relative_x, data_convert_button->relative_y, 40, 40})){
+		if(Mouse::is_at_area({data_convert_button->relative_x, data_convert_button->relative_y, 156, 78})){
+			std::cout << "Mouse is at the button" << std::endl;
 			if(m_current_mouse_key == LEFT_CLICK){
 				if(m_file_path != ""){
 					convert_file(m_file_path);
@@ -276,7 +277,7 @@ void MainScene::draw()
 	}
 
 	//drawing the buttons
-	Gizmos::draw_area(vec2f(data_convert_button->relative_x, data_convert_button->relative_y), 40, m_atlas, {255,0,0});
+	Gizmos::draw_area(vec2f(data_convert_button->relative_x, data_convert_button->relative_y), 90, m_atlas, {255,0,0});
 	Gizmos::draw_area(vec2f(data_select_folder->relative_x, data_select_folder->relative_y), 24, m_atlas, {255,0,0});
 	Gizmos::draw_area(vec2f(data_remove_file->relative_x, data_remove_file->relative_y), 50, m_atlas, {255,0,0});
 
@@ -296,7 +297,7 @@ void MainScene::draw()
 		m_atlas->draw(data_file_name->relative_x, data_file_name->relative_y, filenameWithoutExtension.c_str(), m_app->get_main_font(), {255,255,255,255});
 	}
 
-	if(is_convertion_running){
+	if(!is_convertion_running){
 		m_atlas->draw(m_resources->GetAsset("ready_bar")->GetTexture(), vec2f(269, 16), 3, 0, 0 , false);
 	}else{
 		m_atlas->draw(m_resources->GetAsset("stop_vfx")->GetTexture(), vec2f(268, 20), 3, 0, 0 , false);
