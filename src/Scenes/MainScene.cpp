@@ -115,15 +115,27 @@ void MainScene::update(double deltaTime)
 	{
 		if(Mouse::is_at_area({m_ini_handler->get_ini_data("ConvertOneButton").relative_x, m_ini_handler->get_ini_data("ConvertOneButton").relative_y, 40, 40})){
 			if(m_current_mouse_key == LEFT_CLICK){
-				m_file_path = Data_Loader::load_file("*.mp4");
-
 				if(m_file_path != ""){
 					convert_file(m_file_path);
 				}
 				m_current_mouse_key = NO_KEY;
 			}
 		}
-		if(Mouse::is_at_area({m_ini_handler->get_ini_data("SelectFolder").relative_x, m_ini_handler->get_ini_data("SelectFolder").relative_y, 40, 40})){
+		if(Mouse::is_at_area({m_ini_handler->get_ini_data("RemoveFile").relative_x, m_ini_handler->get_ini_data("RemoveFile").relative_y, 50, 50})){
+			if(m_current_mouse_key == LEFT_CLICK){
+				if(m_file_path != ""){
+					m_file_path = "";
+				}
+				m_current_mouse_key = NO_KEY;
+			}
+		}
+		if(Mouse::is_at_area({m_ini_handler->get_ini_data("SelectFile").relative_x, m_ini_handler->get_ini_data("SelectFile").relative_y, 24, 24})){
+			if(m_current_mouse_key == LEFT_CLICK){
+				m_file_path = Data_Loader::load_file("*.mp4");
+				m_current_mouse_key = NO_KEY;
+			}
+		}
+		if(Mouse::is_at_area({m_ini_handler->get_ini_data("SelectFolder").relative_x, m_ini_handler->get_ini_data("SelectFolder").relative_y, 24, 24})){
 			if(m_current_mouse_key == LEFT_CLICK){
 				m_folder_path = Data_Loader::load_folder("Select a folder");
 				m_current_mouse_key = NO_KEY;
@@ -242,8 +254,8 @@ void MainScene::draw()
 
 	//drawing the buttons
 	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("ConvertOneButton").relative_x, m_ini_handler->get_ini_data("ConvertOneButton").relative_y), 40, m_atlas, {255,0,0});
-	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("SelectFolder").relative_x, m_ini_handler->get_ini_data("SelectFolder").relative_y), 16, m_atlas, {255,0,0});
-	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("SelectFile").relative_x, m_ini_handler->get_ini_data("SelectFile").relative_y), 16, m_atlas, {255,0,0});
+	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("SelectFolder").relative_x, m_ini_handler->get_ini_data("SelectFolder").relative_y), 24, m_atlas, {255,0,0});
+	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("SelectFile").relative_x, m_ini_handler->get_ini_data("SelectFile").relative_y), 24, m_atlas, {255,0,0});
 	Gizmos::draw_area(vec2f(m_ini_handler->get_ini_data("RemoveFile").relative_x, m_ini_handler->get_ini_data("RemoveFile").relative_y), 50, m_atlas, {255,0,0});
 
 
@@ -278,6 +290,8 @@ void MainScene::input(SDL_Event event)
 {
 	//example of a input listening
 	//mHero->Input(event);	
+
+	if(is_convertion_running) return;
 
 	//partial scenes
 	for(auto& scene : m_partial_scenes){
