@@ -1,0 +1,30 @@
+- App logo/visuals
+    - Tinker the logo @done
+    - Create the logo @done
+    - File image for the drag and drop menu @done
+    - Folder image for the destination menu @done
+    - Export all the single assets in a spritesheet @done
+    - Animation for the ready/stop state @done
+    - Button to remove the selected file @done
+    - Convert button @done
+
+- App architecture
+    - Fix the .dlls for release @done
+    - Fonts cleanup @done
+
+- App features
+    - Button to select the file @done
+    - Button to start the convert @done
+    - Button to remove the current file @done
+    - Show file name in the drag and drop menu @done
+    - Show folder name in the dest menu like parent\\folder @done
+    - Stop the program from working while converting @done
+    - Change app name @done
+    - Create and change icon for the app @done
+
+- App last touches
+    - Features new screenshot
+    - GIF 
+    - Link the badges to the repo
+    - Write some tests to do
+    - Clean the repo

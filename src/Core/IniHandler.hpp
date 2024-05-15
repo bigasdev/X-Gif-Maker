@@ -36,7 +36,7 @@ public:
     void update_ini_file(IniData data);
 
     void create_ini_file(IniData data, std::string path);
-    IniData get_ini_data(std::string name);
+    IniData* get_ini_data(std::string name);
 
 private:
     std::vector<IniData> ini_files;

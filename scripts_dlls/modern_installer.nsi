@@ -14,7 +14,7 @@
 ;Custom Variables
 
 ;Define name of the product
-!define PRODUCT "Twitter-Gif-Maker"
+!define PRODUCT "X-Gif-Maker"
 
 ;Define website of the product
 !define PRODUCT_URL "https://bigasdev.net/?tab=home"
@@ -30,7 +30,7 @@ Unicode true
 Name "${PRODUCT}"
 
 ;The output file path of the installer to be created
-OutFile "TGM-Installer.exe"
+OutFile "XGM-Installer.exe"
 
 ;The default installation directory
 InstallDir "$PROGRAMFILES\${PRODUCT}"
