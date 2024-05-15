@@ -19,7 +19,10 @@ This is a revamped version of my [Twitter-Gif-Maker Tool](https://github.com/big
 
 The purpose of this project was to refine and test my work-in-progress framework called Fortress, and to optimize the tool with an elegant interface for easier usability.
 
-**GIF**
+<img src="media/$05151959.gif">
+<div style="text-align:center">
+<small>This gif was created with X-Gif-Maker!</small>
+</div>
 
 ## Features
 
