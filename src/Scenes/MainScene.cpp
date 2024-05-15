@@ -61,7 +61,7 @@ void MainScene::load_assets()
 
 void MainScene::init()
 {
-	m_cd->set_state("init_event", .1f, [&] {	m_logger->log("Starting the MainScene!");});
+	//m_cd->set_state("init_event", .1f, [&] {	m_logger->log("Starting the MainScene!");});
 	m_app->change_background_color(vec3f(42, 47, 78));
 	
 	//
