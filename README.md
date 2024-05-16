@@ -6,7 +6,7 @@
 
 <div align="center">
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bigasdev/X-Gif-Maker/build.yaml)![GitHub License](https://img.shields.io/github/license/bigasdev/X-Gif-Maker)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bigasdev/X-Gif-Maker/build.yaml)
 ![GitHub Release](https://img.shields.io/github/v/release/bigasdev/X-Gif-Maker)
 
 </div>
