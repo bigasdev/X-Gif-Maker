@@ -105,7 +105,7 @@ void convert_file(std::string file){
 	std::string filenameWithoutExtension = filename.substr(0, filename.find_last_of("."));
 
 
-	std::string command = "-w " + std::string(m_selected_width) + " -f 45" + " -q " + m_selected_quality + " -o \"" + m_folder_path + "\\" + filenameWithoutExtension + ".gif\""; // Default command
+	std::string command = "-w " + std::string(m_selected_width) + " -f 30" + " -q " + m_selected_quality + " -o \"" + m_folder_path + "\\" + filenameWithoutExtension + ".gif\""; // Default command
 
 	//std::string command = "-w 1024 -q 6 -o \"" + m_folder_path + "\\" + filenameWithoutExtension + ".gif\""; // Default command
 	std::cout << command << std::endl;
