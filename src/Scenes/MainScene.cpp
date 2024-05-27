@@ -15,6 +15,7 @@ std::vector<FileEntity*> m_selected_files;
 
 static const char* m_selected_width = "800";
 static const char* m_selected_quality = "5";
+static const char* m_selected_fps = "20";
 
 std::atomic<bool> is_convertion_running(false);
 
@@ -95,6 +96,13 @@ void MainScene::init()
 //Convert command so we can attach it to another thread
 void convert_command(const std::string& strCmdText) {
     system(("CMD.exe " + strCmdText).c_str());
+
+	if(m_folder_path != ""){
+		//open the folder path
+		std::string command = "explorer " + m_folder_path;
+		system(command.c_str());
+	}
+
 	is_convertion_running = false;
 }
 
@@ -105,7 +113,7 @@ void convert_file(std::string file){
 	std::string filenameWithoutExtension = filename.substr(0, filename.find_last_of("."));
 
 
-	std::string command = "-w " + std::string(m_selected_width) + " -q " + m_selected_quality + " -o \"" + m_folder_path + "\\" + filenameWithoutExtension + ".gif\""; // Default command
+	std::string command = "-w " + std::string(m_selected_width) + " -f " + m_selected_fps + " -q " + m_selected_quality + " -o \"" + m_folder_path + "\\" + filenameWithoutExtension + ".gif\""; // Default command
 
 	//std::string command = "-w 1024 -q 6 -o \"" + m_folder_path + "\\" + filenameWithoutExtension + ".gif\""; // Default command
 	std::cout << command << std::endl;
@@ -221,6 +229,7 @@ void video_settings(){
 	ImGui::Text("Video Settings");
 	const char* width[] = { "200", "400", "600", "800", "1024" };
 	const char* quality[] = { "1", "2", "3", "4", "5", "6" };
+	const char* fps[] = { "10", "15", "20", "25", "30", "35", "40", "45" };
 	ImGui::Text("Gif Width:");
 	if (ImGui::BeginCombo("##select_width", m_selected_width)) // The second parameter is the label previewed before opening the combo.
 	{
@@ -242,6 +251,19 @@ void video_settings(){
 			bool is_selected = (m_selected_quality == quality[n]); // You can store your selection however you want, outside or inside your objects
 			if (ImGui::Selectable(quality[n], is_selected))
 				m_selected_quality = quality[n];
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::Text("Gif FPS:");
+	if (ImGui::BeginCombo("##select_fps", m_selected_fps)) // The second parameter is the label previewed before opening the combo.
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(fps); n++)
+		{
+			bool is_selected = (m_selected_fps == fps[n]); // You can store your selection however you want, outside or inside your objects
+			if (ImGui::Selectable(fps[n], is_selected))
+				m_selected_fps = fps[n];
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
 		}
