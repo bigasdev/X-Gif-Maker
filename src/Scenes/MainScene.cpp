@@ -3,6 +3,7 @@
 #include "../ImGui/tinyfiledialogs.h"
 #include "TestPartialScene.hpp"
 #include "../Utils/Gizmos.hpp"
+#include "GameScene.hpp"
 
 //Used to reference the app in local functions
 App* m_app_ptr = nullptr;
@@ -37,6 +38,7 @@ IniData* data_remove_file = nullptr;
 IniData* data_select_folder = nullptr;
 IniData* data_file = nullptr;
 IniData* data_folder = nullptr;
+IniData* change_game_scene = nullptr;
 
 
 MainScene::MainScene(App* app, Logger* logger, Cooldown* cooldown, Camera* camera):Scene(app, logger, cooldown, camera)
@@ -86,6 +88,7 @@ void MainScene::init()
 		data_select_folder = m_ini_handler->get_ini_data("SelectFolder");
 		data_file = m_ini_handler->get_ini_data("file");
 		data_folder = m_ini_handler->get_ini_data("folder");
+		change_game_scene = m_ini_handler->get_ini_data("ChangeGameScene");
 	}
 
 	for(auto& scene : m_partial_scenes){
@@ -173,6 +176,12 @@ void MainScene::update(double deltaTime)
 		if(Mouse::is_at_area({data_select_folder->relative_x, data_select_folder->relative_y, 24, 24})){
 			if(m_current_mouse_key == LEFT_CLICK){
 				m_folder_path = Data_Loader::load_folder("Select a folder");
+				m_current_mouse_key = NO_KEY;
+			}
+		}
+		if(Mouse::is_at_area({change_game_scene->relative_x, change_game_scene->relative_y, 24, 24})){
+			if(m_current_mouse_key == LEFT_CLICK){
+				m_app->change_scene(new GameScene(m_app, m_logger, m_cd, m_camera));
 				m_current_mouse_key = NO_KEY;
 			}
 		}
@@ -302,6 +311,7 @@ void MainScene::draw()
 	Gizmos::draw_area(vec2f(data_convert_button->relative_x, data_convert_button->relative_y), 90, m_atlas, {255,0,0});
 	Gizmos::draw_area(vec2f(data_select_folder->relative_x, data_select_folder->relative_y), 24, m_atlas, {255,0,0});
 	Gizmos::draw_area(vec2f(data_remove_file->relative_x, data_remove_file->relative_y), 50, m_atlas, {255,0,0});
+	Gizmos::draw_area(vec2f(change_game_scene->relative_x, change_game_scene->relative_y), 24, m_atlas, {255,0,0});
 
 
 	if(m_folder_path != ""){
