@@ -51,7 +51,7 @@ void convert(){
         batchFile << "copy \"" << m_files[i] << "\" ." << std::endl;
         batchFile << "ren \"" << m_files[i].substr(m_files[i].find_last_of("\\") + 1) << "\" \"image" << i + 1 << ".png\"" << std::endl;
     }
-    batchFile << "ffmpeg -framerate 1 -i image%%d.png -vf \"scale=800:-1\" -t 5 output.gif" << std::endl;
+    batchFile << "ffmpeg -framerate 1 -i image%%d.png -vf \"pad=800:600:(ow-iw)/2:(oh-ih)/2\" -t 5 output.gif" << std::endl;
     for (size_t i = 0; i < m_files.size(); ++i) {
         batchFile << "del image" << i + 1 << ".png" << std::endl;
     }
