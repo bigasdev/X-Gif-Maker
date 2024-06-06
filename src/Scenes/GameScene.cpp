@@ -1,5 +1,10 @@
 #include "GameScene.hpp"
 
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <fstream>
+
 SDL_Texture* m_bg_tx_game = nullptr;
 
 std::vector<std::string> m_files;
@@ -34,22 +39,28 @@ void GameScene::ui()
 }
 
 void convert(){
-    std::cout << "Converting..." << std::endl;
+    std::string batchFilePath = "convert_images.bat";
 
-    std::string command = "@echo off\n";
-    for (size_t i = 0; i < m_files.size(); ++i) {
-        command += "copy \"" + m_files[i] + "\" .\n";
-        command += "ren \"" + m_files[i].substr(m_files[i].find_last_of("\\") + 1) + "\" \"image" + std::to_string(i + 1) + ".png\"\n";
-    }
-    command += "ffmpeg -framerate 1 -i image%%d.png -vf \"scale=800:600\" -t 5 output.gif\n";
-    for (size_t i = 0; i < m_files.size(); ++i) {
-        command += "del image" + std::to_string(i + 1) + ".png\n";
+    std::ofstream batchFile(batchFilePath);
+    if (!batchFile.is_open()) {
+        std::cerr << "Failed to create/open batch file." << std::endl;
     }
 
-    std::cout << command.c_str() << std::endl;
+    batchFile << "@echo off" << std::endl;
+    for (size_t i = 0; i < m_files.size(); ++i) {
+        batchFile << "copy \"" << m_files[i] << "\" ." << std::endl;
+        batchFile << "ren \"" << m_files[i].substr(m_files[i].find_last_of("\\") + 1) << "\" \"image" << i + 1 << ".png\"" << std::endl;
+    }
+    batchFile << "ffmpeg -framerate 1 -i image%%d.png -vf \"scale=800:-1\" -t 5 output.gif" << std::endl;
+    for (size_t i = 0; i < m_files.size(); ++i) {
+        batchFile << "del image" << i + 1 << ".png" << std::endl;
+    }
 
-    // Execute the command
-    int result = system(command.c_str());
+    batchFile.close();
+
+    //std::remove("convert_images.bat");
+
+    int result = system(batchFilePath.c_str());
     if (result != 0) {
         std::cerr << "Command execution failed." << std::endl;
     }
