@@ -12,7 +12,8 @@ SDL_Texture* m_bg_tx_game = nullptr;
 
 std::vector<std::string> m_files;
 
-static const char* SequencerItemTypeNames[] = { "Camera","Music", "ScreenEffect", "FadeIn", "Animation" };
+static const char* SequencerItemTypeNames[20];
+int m_current_file_idx = 0;
 
 struct MySequence : public ImSequencer::SequenceInterface
 {
@@ -48,7 +49,10 @@ struct MySequence : public ImSequencer::SequenceInterface
          *type = item.mType;
    }
    virtual void Add(int type) { myItems.push_back(MySequenceItem{ type, 0, 10, false }); };
-   virtual void Del(int index) { myItems.erase(myItems.begin() + index); }
+   virtual void Del(int index) { 
+	  myItems.erase(myItems.begin() + index);
+	  m_current_file_idx--;
+	}
    virtual void Duplicate(int index) { myItems.push_back(myItems[index]); }
 
    virtual size_t GetCustomHeight(int index) { return myItems[index].mExpanded ? 300 : 0; }
@@ -140,13 +144,13 @@ void GameScene::init()
     load_assets();
 
 	//
-   	mySequence.mFrameMin = -100;
+	for(int i = 0; i < sizeof(SequencerItemTypeNames) / sizeof(char*); i++){
+		SequencerItemTypeNames[i] = "None";
+	}
+	//
+
+   	mySequence.mFrameMin = 0;
    	mySequence.mFrameMax = 1000;
-   	mySequence.myItems.push_back(MySequence::MySequenceItem{ 0, 10, 30, false });
-   	mySequence.myItems.push_back(MySequence::MySequenceItem{ 1, 20, 30, false });
-   	mySequence.myItems.push_back(MySequence::MySequenceItem{ 3, 12, 60, false });
-   	mySequence.myItems.push_back(MySequence::MySequenceItem{ 2, 61, 90, false });
-   	mySequence.myItems.push_back(MySequence::MySequenceItem{ 4, 90, 99, false });
 }
 
 void GameScene::update(double deltaTime)
@@ -156,28 +160,23 @@ void GameScene::update(double deltaTime)
 
 void GameScene::ui()
 {
+	if(m_files.size() <= 0) return;
+
 	{
 		// let's create the sequencer
-         static int selectedEntry = -1;
-         static int firstFrame = 0;
-         static bool expanded = true;
-         static int currentFrame = 100;
+        static int selectedEntry = -1;
+        static int firstFrame = 0;
+        static bool expanded = true;
+        static int currentFrame = 0;
 
-         ImGui::PushItemWidth(130);
-         ImGui::InputInt("Frame Min", &mySequence.mFrameMin);
-         ImGui::SameLine();
-         ImGui::InputInt("Frame ", &currentFrame);
-         ImGui::SameLine();
-         ImGui::InputInt("Frame Max", &mySequence.mFrameMax);
-         ImGui::PopItemWidth();
-         Sequencer(&mySequence, &currentFrame, &expanded, &selectedEntry, &firstFrame, ImSequencer::SEQUENCER_EDIT_STARTEND | ImSequencer::SEQUENCER_ADD | ImSequencer::SEQUENCER_DEL | ImSequencer::SEQUENCER_COPYPASTE | ImSequencer::SEQUENCER_CHANGE_FRAME);
-         // add a UI to edit that particular item
-         if (selectedEntry != -1)
-         {
-           const MySequence::MySequenceItem &item = mySequence.myItems[selectedEntry];
-           ImGui::Text("I am a %s, please edit me", SequencerItemTypeNames[item.mType]);
-           // switch (type) ....
-         }
+        ImGui::PushItemWidth(130);
+        ImGui::InputInt("Frame Min", &mySequence.mFrameMin);
+        ImGui::SameLine();
+        ImGui::InputInt("Frame ", &currentFrame);
+        ImGui::SameLine();
+        ImGui::InputInt("Frame Max", &mySequence.mFrameMax);
+        ImGui::PopItemWidth();
+        Sequencer(&mySequence, &currentFrame, &expanded, &selectedEntry, &firstFrame, ImSequencer::SEQUENCER_EDIT_STARTEND | ImSequencer::SEQUENCER_ADD | ImSequencer::SEQUENCER_DEL | ImSequencer::SEQUENCER_COPYPASTE | ImSequencer::SEQUENCER_CHANGE_FRAME);
 	}
 }
 
@@ -230,6 +229,12 @@ void GameScene::input(SDL_Event event)
 	switch (event.type) {
 		case SDL_DROPFILE:
             m_files.push_back(event.drop.file);
+
+			SequencerItemTypeNames[m_current_file_idx] = event.drop.file;
+			mySequence.myItems.push_back(MySequence::MySequenceItem{ m_current_file_idx, 0, 30, false });
+
+			m_current_file_idx++;
+
 			std::cout << "File dropped on window: " << event.drop.file << std::endl;
 			//convert_file();
 		break;
