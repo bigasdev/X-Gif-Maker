@@ -32,7 +32,17 @@ struct MySequence : public ImSequencer::SequenceInterface
    virtual const char* GetItemLabel(int index) const
    {
       static char tmps[512];
-      snprintf(tmps, 512, "[%02d] %s", index, SequencerItemTypeNames[myItems[index].mType]);
+	  const char* itemName = SequencerItemTypeNames[myItems[index].mType];
+      if (itemName) {
+			size_t len = strlen(itemName);
+			if (len > 10) {
+				snprintf(tmps, 512, "[%02d] %.10s..", index, itemName);
+			} else {
+				snprintf(tmps, 512, "[%02d] %s", index, itemName);
+			}
+		} else {
+			snprintf(tmps, 512, "[%02d] %s", index, "Unknown");
+		}
       return tmps;
    }
 
@@ -48,7 +58,7 @@ struct MySequence : public ImSequencer::SequenceInterface
       if (type)
          *type = item.mType;
    }
-   virtual void Add(int type) { myItems.push_back(MySequenceItem{ type, 0, 10, false }); };
+   virtual void Add(int type) { myItems.push_back(MySequenceItem{ type, 0, 30, false }); };
    virtual void Del(int index) { 
 	  myItems.erase(myItems.begin() + index);
 	  m_current_file_idx--;
@@ -160,8 +170,6 @@ void GameScene::update(double deltaTime)
 
 void GameScene::ui()
 {
-	if(m_files.size() <= 0) return;
-
 	{
 		// let's create the sequencer
         static int selectedEntry = -1;
@@ -169,14 +177,24 @@ void GameScene::ui()
         static bool expanded = true;
         static int currentFrame = 0;
 
-        ImGui::PushItemWidth(130);
-        ImGui::InputInt("Frame Min", &mySequence.mFrameMin);
-        ImGui::SameLine();
-        ImGui::InputInt("Frame ", &currentFrame);
-        ImGui::SameLine();
-        ImGui::InputInt("Frame Max", &mySequence.mFrameMax);
-        ImGui::PopItemWidth();
-        Sequencer(&mySequence, &currentFrame, &expanded, &selectedEntry, &firstFrame, ImSequencer::SEQUENCER_EDIT_STARTEND | ImSequencer::SEQUENCER_ADD | ImSequencer::SEQUENCER_DEL | ImSequencer::SEQUENCER_COPYPASTE | ImSequencer::SEQUENCER_CHANGE_FRAME);
+        //Sequencer(&mySequence, &currentFrame, &expanded, &selectedEntry, &firstFrame, ImSequencer::SEQUENCER_EDIT_STARTEND | ImSequencer::SEQUENCER_ADD | ImSequencer::SEQUENCER_DEL | ImSequencer::SEQUENCER_COPYPASTE | ImSequencer::SEQUENCER_CHANGE_FRAME);
+		ImGui::SetNextWindowPos(ImVec2(0, 150));
+		ImGui::SetNextWindowSize(ImVec2(804, 230));
+		if (ImGui::Begin("Timeline", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize)) {
+			ImGui::PushItemWidth(130);
+			ImGui::InputInt("Frame Min", &mySequence.mFrameMin);
+			ImGui::SameLine();
+			ImGui::InputInt("Frame ", &currentFrame);
+			ImGui::SameLine();
+			ImGui::InputInt("Frame Max", &mySequence.mFrameMax);
+			ImGui::PopItemWidth();
+			// Inside the window, you can place your UI elements or other content
+			// For example:
+			Sequencer(&mySequence, &currentFrame, &expanded, &selectedEntry, &firstFrame, ImSequencer::SEQUENCER_EDIT_STARTEND | ImSequencer::SEQUENCER_ADD | ImSequencer::SEQUENCER_DEL | ImSequencer::SEQUENCER_COPYPASTE | ImSequencer::SEQUENCER_CHANGE_FRAME);
+			
+			// End the window
+			ImGui::End();
+		}
 	}
 }
 
@@ -213,10 +231,6 @@ void GameScene::draw()
 {
 	//ui
 	GUI::draw([this](){this->ui();});
-
-    for(int i = 0; i < m_files.size(); i++){
-        m_atlas->draw(50, 130 + i * 10 , m_files[i].c_str(), m_app->get_main_font(), {255,255,255,255} );
-    }
 }
 
 void GameScene::input(SDL_Event event)
