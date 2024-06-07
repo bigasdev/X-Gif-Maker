@@ -163,9 +163,10 @@ void GameScene::init()
    	mySequence.mFrameMax = 1000;
 }
 
+
 void GameScene::update(double deltaTime)
 {
-
+	if(m_files.size() <= 0)return;
 }
 
 void GameScene::ui()
@@ -206,6 +207,34 @@ void convert(){
     if (!batchFile.is_open()) {
         std::cerr << "Failed to create/open batch file." << std::endl;
     }
+
+	//first we try to create the files txt
+	{
+		std::ofstream outfile("files.txt"); // Open file for writing
+
+		// Check if the file is successfully opened
+		if (!outfile.is_open()) {
+			std::cerr << "Error opening file for writing!" << std::endl;
+			return;
+		}
+
+		for(int i = 0; i < mySequence.myItems.size(); i++){
+			int *x;
+			int *y;
+			int sum;
+
+			mySequence.Get(i, &x, &y, nullptr, nullptr);
+			sum = *y-*x;
+
+			std::cout << *x << " " << *y << " " << sum << std::endl;
+
+			outfile << "file image" << i+1 << ".jpeg" << std::endl;
+    		outfile << "outpoint " << sum << std::endl;
+		}
+
+		// Close the file
+		outfile.close();
+	}
 
     batchFile << "@echo off" << std::endl;
     for (size_t i = 0; i < m_files.size(); ++i) {
