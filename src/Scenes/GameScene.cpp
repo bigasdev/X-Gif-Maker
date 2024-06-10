@@ -30,7 +30,7 @@ std::string m_current_extension = "";
 //preview variables
 int m_current_frame = 0;
 float timer = 0.0f;
-float m_frame_time = 1.0f;
+float m_frame_time = 0.5f;
 int m_max_frames = 10;
 bool m_is_playing = false;
 
@@ -97,9 +97,16 @@ void GameScene::ui()
         static bool expanded = true;
         static int currentFrame = 0;
 
+		if(m_is_playing){
+			currentFrame = m_current_frame;
+		}else{
+			m_current_frame = currentFrame;
+		}
+
         //Sequencer(&mySequence, &currentFrame, &expanded, &selectedEntry, &firstFrame, ImSequencer::SEQUENCER_EDIT_STARTEND | ImSequencer::SEQUENCER_ADD | ImSequencer::SEQUENCER_DEL | ImSequencer::SEQUENCER_COPYPASTE | ImSequencer::SEQUENCER_CHANGE_FRAME);
 		ImGui::SetNextWindowPos(ImVec2(0, 210));
 		ImGui::SetNextWindowSize(ImVec2(550, 170));
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));
 		if (ImGui::Begin("Timeline", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize)) {
 			ImGui::PushItemWidth(130);
 			ImGui::InputInt("Frame Min", &m_timeline.mFrameMin);
@@ -120,6 +127,7 @@ void GameScene::ui()
 		if(ImGui::Begin("Settings", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize)){
 			ImGui::End();
 		}
+		ImGui::PopStyleColor();
 	}
 }
 
@@ -128,7 +136,8 @@ void GameScene::draw()
 	//ui
 	GUI::draw([this](){this->ui();});
 
-	if(!m_is_playing)return;
+	if(m_is_playing)
+		m_atlas->draw(20, 20, std::to_string(m_current_frame).c_str(), m_app->get_main_font(), {255,255,255});
 
 	auto condition = [&](const GifFrame& vf){
 		return m_current_frame >= vf.frame_start && m_current_frame <= vf.frame_end;
@@ -139,8 +148,6 @@ void GameScene::draw()
 	if(frame != nullptr){
 		m_atlas->draw(frame->m_texture, {256,192}, 1, Math::mid(m_app->get_window_size().x, 256), 10, false);
 	}
-
-	m_atlas->draw(20, 20, std::to_string(m_current_frame).c_str(), m_app->get_main_font(), {255,255,255});
 }
 
 std::string get_filename(std::string path)
