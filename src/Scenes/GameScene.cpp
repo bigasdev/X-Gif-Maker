@@ -145,8 +145,10 @@ std::vector<VideoFrame> m_video_frames;
 
 int m_current_frame = 0;
 float timer = 0.0f;
-float m_frame_time = 30.0f;
+float m_frame_time = 1.0f;
 int m_max_frames = 10;
+
+bool m_is_playing = false;
 
 GameScene::GameScene(App *app, Logger *logger, Cooldown *cooldown, Camera *camera):Scene(app, logger, cooldown, camera)
 {
@@ -185,7 +187,9 @@ void GameScene::update(double deltaTime)
 		mySequence.Get(i, &m_video_frames[0].frame_start, &m_video_frames[0].frame_end, nullptr, nullptr);
 	}
 
-	timer += deltaTime;
+	if(!m_is_playing)return;
+
+	timer += 1*deltaTime;
 	if(timer >= m_frame_time){
 		timer = 0.0f;
 		m_current_frame++;
@@ -288,6 +292,17 @@ void GameScene::draw()
 	//ui
 	GUI::draw([this](){this->ui();});
 
+	if(!m_is_playing)return;
+
+	auto frame = Vec::find_vec_element<VideoFrame>(m_video_frames, [&](const VideoFrame& vf){
+		std::cout << "trying to find the frame " << *vf.frame_start << " " << *vf.frame_end << " " << m_current_frame << "\n";
+		return m_current_frame >= *vf.frame_start && m_current_frame < *vf.frame_end;
+	});
+
+	if(frame != nullptr){
+		m_atlas->draw(frame->m_texture, {200,200}, 1, m_app->get_window_size().x/2, 50, false);
+	}
+
 	m_atlas->draw(20, 20, std::to_string(m_current_frame).c_str(), m_app->get_main_font(), {255,255,255});
 }
 
@@ -347,7 +362,7 @@ void GameScene::input(SDL_Event event)
 					
 				break;
 				case SDL_SCANCODE_T:
-					
+					m_is_playing = !m_is_playing;
 				break;
 				case SDL_SCANCODE_RETURN:
 					
