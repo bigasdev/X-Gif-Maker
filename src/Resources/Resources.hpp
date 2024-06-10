@@ -17,6 +17,7 @@ public:
 
 	void LoadFolder(std::string path);
 	void LoadAssets();
+	SDL_Texture* LoadTexture(const char* file);
 	SDL_Texture* SaveTexture(const char* file);
 	SDL_Texture* GetTexture(const char* file, bool debug);
 	SDL_Texture* HandleMap(const char* file);

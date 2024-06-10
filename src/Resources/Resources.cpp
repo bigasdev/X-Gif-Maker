@@ -73,6 +73,19 @@ void Resources::LoadAssets()
     std::cout << "Finished the assets loading! \n" << std::endl;
 }
 
+SDL_Texture *Resources::LoadTexture(const char *file)
+{
+    SDL_Texture* texture;
+    SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", file);
+    texture = IMG_LoadTexture(mRenderer, file);
+    if (texture) {
+        SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loaded %s", file);
+    }
+    else {
+        SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Texture can't be loaded!");
+    }
+    return texture;
+}
 
 SDL_Texture *Resources::SaveTexture(const char *file)
 {

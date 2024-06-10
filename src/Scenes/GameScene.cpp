@@ -7,6 +7,7 @@
 #include "../ImGui/ImSequencer.h"
 #include "../ImGui/imgui.h"
 #include "../ImGui/imgui_internal.h"
+#include "../Utils/Vec.hpp"
 
 SDL_Texture* m_bg_tx_game = nullptr;
 
@@ -58,7 +59,7 @@ struct MySequence : public ImSequencer::SequenceInterface
       if (type)
          *type = item.mType;
    }
-   virtual void Add(int type) { myItems.push_back(MySequenceItem{ type, 0, 30, false }); };
+   virtual void Add(int type) { myItems.push_back(MySequenceItem{ type, 0, 2, false }); };
    virtual void Del(int index) { 
 	  myItems.erase(myItems.begin() + index);
 	  m_current_file_idx--;
@@ -132,8 +133,20 @@ struct MySequence : public ImSequencer::SequenceInterface
    }
 };
 
-MySequence mySequence;
+struct VideoFrame{
+	std::string m_file_path;
+	SDL_Texture* m_texture;
+	int* frame_start;
+	int* frame_end;
+};
 
+MySequence mySequence;
+std::vector<VideoFrame> m_video_frames;
+
+int m_current_frame = 0;
+float timer = 0.0f;
+float m_frame_time = 30.0f;
+int m_max_frames = 10;
 
 GameScene::GameScene(App *app, Logger *logger, Cooldown *cooldown, Camera *camera):Scene(app, logger, cooldown, camera)
 {
@@ -160,13 +173,26 @@ void GameScene::init()
 	//
 
    	mySequence.mFrameMin = 0;
-   	mySequence.mFrameMax = 1000;
+   	mySequence.mFrameMax = 10;
 }
 
 
 void GameScene::update(double deltaTime)
 {
 	if(m_files.size() <= 0)return;
+
+	for(int i = 0; i < m_video_frames.size(); i++){
+		mySequence.Get(i, &m_video_frames[0].frame_start, &m_video_frames[0].frame_end, nullptr, nullptr);
+	}
+
+	timer += deltaTime;
+	if(timer >= m_frame_time){
+		timer = 0.0f;
+		m_current_frame++;
+		if(m_current_frame >= m_max_frames){
+			m_current_frame = 0;
+		}
+	}
 }
 
 void GameScene::ui()
@@ -179,8 +205,8 @@ void GameScene::ui()
         static int currentFrame = 0;
 
         //Sequencer(&mySequence, &currentFrame, &expanded, &selectedEntry, &firstFrame, ImSequencer::SEQUENCER_EDIT_STARTEND | ImSequencer::SEQUENCER_ADD | ImSequencer::SEQUENCER_DEL | ImSequencer::SEQUENCER_COPYPASTE | ImSequencer::SEQUENCER_CHANGE_FRAME);
-		ImGui::SetNextWindowPos(ImVec2(0, 150));
-		ImGui::SetNextWindowSize(ImVec2(804, 230));
+		ImGui::SetNextWindowPos(ImVec2(0, 210));
+		ImGui::SetNextWindowSize(ImVec2(804, 170));
 		if (ImGui::Begin("Timeline", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize)) {
 			ImGui::PushItemWidth(130);
 			ImGui::InputInt("Frame Min", &mySequence.mFrameMin);
@@ -261,6 +287,8 @@ void GameScene::draw()
 {
 	//ui
 	GUI::draw([this](){this->ui();});
+
+	m_atlas->draw(20, 20, std::to_string(m_current_frame).c_str(), m_app->get_main_font(), {255,255,255});
 }
 
 void GameScene::input(SDL_Event event)
@@ -275,7 +303,9 @@ void GameScene::input(SDL_Event event)
             m_files.push_back(event.drop.file);
 
 			SequencerItemTypeNames[m_current_file_idx] = event.drop.file;
-			mySequence.myItems.push_back(MySequence::MySequenceItem{ m_current_file_idx, 0, 30, false });
+			mySequence.myItems.push_back(MySequence::MySequenceItem{ m_current_file_idx, 0, 2, false });
+
+			m_video_frames.push_back(VideoFrame{event.drop.file, m_resources->LoadTexture(event.drop.file)});
 
 			m_current_file_idx++;
 
