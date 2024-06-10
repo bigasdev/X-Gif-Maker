@@ -8,6 +8,7 @@
 #include "../ImGui/imgui.h"
 #include "../ImGui/imgui_internal.h"
 #include "../Utils/Vec.hpp"
+#include "../Utils/Math.hpp"
 
 SDL_Texture* m_bg_tx_game = nullptr;
 
@@ -136,8 +137,8 @@ struct MySequence : public ImSequencer::SequenceInterface
 struct VideoFrame{
 	std::string m_file_path;
 	SDL_Texture* m_texture;
-	int* frame_start;
-	int* frame_end;
+	int frame_start;
+	int frame_end;
 };
 
 MySequence mySequence;
@@ -184,7 +185,12 @@ void GameScene::update(double deltaTime)
 	if(m_files.size() <= 0)return;
 
 	for(int i = 0; i < m_video_frames.size(); i++){
-		mySequence.Get(i, &m_video_frames[0].frame_start, &m_video_frames[0].frame_end, nullptr, nullptr);
+		int* x;
+		int* y;
+		mySequence.Get(i, &x, &y, nullptr, nullptr);
+
+		m_video_frames[i].frame_start = *x;
+		m_video_frames[i].frame_end = *y;
 	}
 
 	if(!m_is_playing)return;
@@ -210,7 +216,7 @@ void GameScene::ui()
 
         //Sequencer(&mySequence, &currentFrame, &expanded, &selectedEntry, &firstFrame, ImSequencer::SEQUENCER_EDIT_STARTEND | ImSequencer::SEQUENCER_ADD | ImSequencer::SEQUENCER_DEL | ImSequencer::SEQUENCER_COPYPASTE | ImSequencer::SEQUENCER_CHANGE_FRAME);
 		ImGui::SetNextWindowPos(ImVec2(0, 210));
-		ImGui::SetNextWindowSize(ImVec2(804, 170));
+		ImGui::SetNextWindowSize(ImVec2(550, 170));
 		if (ImGui::Begin("Timeline", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize)) {
 			ImGui::PushItemWidth(130);
 			ImGui::InputInt("Frame Min", &mySequence.mFrameMin);
@@ -224,6 +230,11 @@ void GameScene::ui()
 			Sequencer(&mySequence, &currentFrame, &expanded, &selectedEntry, &firstFrame, ImSequencer::SEQUENCER_EDIT_STARTEND | ImSequencer::SEQUENCER_ADD | ImSequencer::SEQUENCER_DEL | ImSequencer::SEQUENCER_COPYPASTE | ImSequencer::SEQUENCER_CHANGE_FRAME);
 			
 			// End the window
+			ImGui::End();
+		}
+		ImGui::SetNextWindowPos(ImVec2(552, 210));
+		ImGui::SetNextWindowSize(ImVec2(254, 170));
+		if(ImGui::Begin("Settings", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize)){
 			ImGui::End();
 		}
 	}
@@ -294,13 +305,14 @@ void GameScene::draw()
 
 	if(!m_is_playing)return;
 
-	auto frame = Vec::find_vec_element<VideoFrame>(m_video_frames, [&](const VideoFrame& vf){
-		std::cout << "trying to find the frame " << *vf.frame_start << " " << *vf.frame_end << " " << m_current_frame << "\n";
-		return m_current_frame >= *vf.frame_start && m_current_frame < *vf.frame_end;
-	});
+	auto condition = [&](const VideoFrame& vf){
+		return m_current_frame >= vf.frame_start && m_current_frame <= vf.frame_end;
+	};
+
+	auto frame = Vec::find_vec_element<VideoFrame>(m_video_frames, condition);
 
 	if(frame != nullptr){
-		m_atlas->draw(frame->m_texture, {200,200}, 1, m_app->get_window_size().x/2, 50, false);
+		m_atlas->draw(frame->m_texture, {256,192}, 1, Math::mid(m_app->get_window_size().x, 256), 10, false);
 	}
 
 	m_atlas->draw(20, 20, std::to_string(m_current_frame).c_str(), m_app->get_main_font(), {255,255,255});

@@ -23,6 +23,11 @@ int Math::round(double value)
     return (int)(value + 0.5);
 }
 
+int Math::floor(double value)
+{
+    return (int)value;
+}
+
 double Math::sign(double value)
 {
     if (value > 0)
@@ -61,4 +66,26 @@ double Math::sqrt(double value)
         }
     }
     return result;
+}
+
+int Math::dist(int a, int b)
+{
+    return abs(a - b);
+}
+
+int Math::dist_vec(vec2f a, vec2f b)
+{
+    return dist(a.x, b.x) + dist(a.y, b.y);
+}
+
+int Math::mid(int a, int b)
+{
+    return (a-b) / 2; 
+}
+
+vec2f Math::mid_vec(vec2f a, vec2f b)
+{
+    b.x = b.x/2;
+    b.y = b.y/2;
+    return vec2f(mid(a.x, b.x), mid(a.y, b.y));
 }
