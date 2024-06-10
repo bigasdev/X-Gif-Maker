@@ -7,7 +7,28 @@
 
 #include <ctime> 
 
-static const char* SequencerItemTypeNames[20];
+static const char* SequencerItemTypeNames[20] = {
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+};
 
 struct Timeline : public ImSequencer::SequenceInterface
 {

@@ -52,12 +52,6 @@ void GameScene::init()
     //
     load_assets();
 
-	// initializing the default names for the timeline
-	for(int i = 0; i < sizeof(SequencerItemTypeNames) / sizeof(char*); i++){
-		SequencerItemTypeNames[i] = "None";
-	}
-	//
-
    	m_timeline.mFrameMin = 0;
    	m_timeline.mFrameMax = 10;
 }
