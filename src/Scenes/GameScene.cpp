@@ -8,11 +8,11 @@
 #include "../Utils/Math.hpp"
 #include "ConvertionHandler.hpp"
 
-std::vector<std::string> m_files;
+std::vector<std::string> m_files_path;
 
 int m_current_file_idx = 0;
 
-struct VideoFrame{
+struct GifFrame{
 	std::string m_file_path;
 	SDL_Texture* m_texture;
 	int frame_start;
@@ -20,15 +20,15 @@ struct VideoFrame{
 };
 
 Timeline m_timeline;
-std::vector<VideoFrame> m_video_frames;
+std::vector<GifFrame> m_video_frames;
 
 //preview variables
 int m_current_frame = 0;
 float timer = 0.0f;
 float m_frame_time = 1.0f;
 int m_max_frames = 10;
-
 bool m_is_playing = false;
+
 
 GameScene::GameScene(App *app, Logger *logger, Cooldown *cooldown, Camera *camera):Scene(app, logger, cooldown, camera)
 {
@@ -60,7 +60,7 @@ void GameScene::init()
 
 void GameScene::update(double deltaTime)
 {
-	if(m_files.size() <= 0)return;
+	if(m_files_path.size() <= 0)return;
 
 	for(int i = 0; i < m_video_frames.size(); i++){
 		int* x;
@@ -125,11 +125,11 @@ void GameScene::draw()
 
 	if(!m_is_playing)return;
 
-	auto condition = [&](const VideoFrame& vf){
+	auto condition = [&](const GifFrame& vf){
 		return m_current_frame >= vf.frame_start && m_current_frame <= vf.frame_end;
 	};
 
-	auto frame = Vec::find_vec_element<VideoFrame>(m_video_frames, condition);
+	auto frame = Vec::find_vec_element<GifFrame>(m_video_frames, condition);
 
 	if(frame != nullptr){
 		m_atlas->draw(frame->m_texture, {256,192}, 1, Math::mid(m_app->get_window_size().x, 256), 10, false);
@@ -147,12 +147,12 @@ void GameScene::input(SDL_Event event)
 
 	switch (event.type) {
 		case SDL_DROPFILE:
-            m_files.push_back(event.drop.file);
+            m_files_path.push_back(event.drop.file);
 
 			SequencerItemTypeNames[m_current_file_idx] = event.drop.file;
 			m_timeline.myItems.push_back(Timeline::MySequenceItem{ m_current_file_idx, 0, 2, false });
 
-			m_video_frames.push_back(VideoFrame{event.drop.file, m_resources->LoadTexture(event.drop.file)});
+			m_video_frames.push_back(GifFrame{event.drop.file, m_resources->LoadTexture(event.drop.file)});
 
 			m_current_file_idx++;
 		break;
@@ -178,10 +178,10 @@ void GameScene::input(SDL_Event event)
 
 				break;
 				case SDL_SCANCODE_F:
-					Convertion::convert(m_timeline, m_files, "output", "output");
+					Convertion::convert(m_timeline, m_files_path, "output", "output");
 					break;
 				case SDL_SCANCODE_E:
-					m_files.clear();
+					m_files_path.clear();
 
 					/*if(m_file_path != ""){
 						convert_file(m_file_path);
