@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
+#include <filesystem>
 #include "../Utils/Vec.hpp"
 #include "../Utils/Math.hpp"
 #include "ConvertionHandler.hpp"
@@ -14,6 +15,7 @@ int m_current_file_idx = 0;
 
 struct GifFrame{
 	std::string m_file_path;
+	std::string m_file_name;
 	SDL_Texture* m_texture;
 	int frame_start;
 	int frame_end;
@@ -138,6 +140,14 @@ void GameScene::draw()
 	m_atlas->draw(20, 20, std::to_string(m_current_frame).c_str(), m_app->get_main_font(), {255,255,255});
 }
 
+std::string get_filename(std::string path)
+{
+	std::filesystem::path p(path);
+	std::string file_name = p.filename().string();
+	file_name = file_name.substr(0, file_name.find_last_of("."));
+	return file_name;
+}
+
 void GameScene::input(SDL_Event event)
 {
 	//partial scenes
@@ -149,10 +159,10 @@ void GameScene::input(SDL_Event event)
 		case SDL_DROPFILE:
             m_files_path.push_back(event.drop.file);
 
-			SequencerItemTypeNames[m_current_file_idx] = event.drop.file;
+			SequencerItemTypeNames[m_current_file_idx] = get_filename(event.drop.file).c_str();
 			m_timeline.myItems.push_back(Timeline::MySequenceItem{ m_current_file_idx, 0, 2, false });
 
-			m_video_frames.push_back(GifFrame{event.drop.file, m_resources->LoadTexture(event.drop.file)});
+			m_video_frames.push_back(GifFrame{event.drop.file, get_filename(event.drop.file), m_resources->LoadTexture(event.drop.file)});
 
 			m_current_file_idx++;
 		break;

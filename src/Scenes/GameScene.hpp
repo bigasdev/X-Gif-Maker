@@ -30,7 +30,7 @@ struct Timeline : public ImSequencer::SequenceInterface
       if (itemName) {
 			size_t len = strlen(itemName);
 			if (len > 10) {
-				snprintf(tmps, 512, "[%02d] %.10s..", index, itemName);
+				snprintf(tmps, 512, "[%02d] %.20s..", index, itemName);
 			} else {
 				snprintf(tmps, 512, "[%02d] %s", index, itemName);
 			}
