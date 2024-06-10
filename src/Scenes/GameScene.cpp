@@ -8,8 +8,6 @@
 #include "../Utils/Math.hpp"
 #include "ConvertionHandler.hpp"
 
-SDL_Texture* m_bg_tx_game = nullptr;
-
 std::vector<std::string> m_files;
 
 int m_current_file_idx = 0;
@@ -21,9 +19,10 @@ struct VideoFrame{
 	int frame_end;
 };
 
-Timeline mySequence;
+Timeline m_timeline;
 std::vector<VideoFrame> m_video_frames;
 
+//preview variables
 int m_current_frame = 0;
 float timer = 0.0f;
 float m_frame_time = 1.0f;
@@ -38,7 +37,6 @@ GameScene::GameScene(App *app, Logger *logger, Cooldown *cooldown, Camera *camer
 
 void GameScene::load_assets()
 {
-    m_bg_tx_game = m_resources->GetAsset("main_scene")->GetTexture();
     
 }
 
@@ -49,14 +47,14 @@ void GameScene::init()
     //
     load_assets();
 
-	//
+	// initializing the default names for the timeline
 	for(int i = 0; i < sizeof(SequencerItemTypeNames) / sizeof(char*); i++){
 		SequencerItemTypeNames[i] = "None";
 	}
 	//
 
-   	mySequence.mFrameMin = 0;
-   	mySequence.mFrameMax = 10;
+   	m_timeline.mFrameMin = 0;
+   	m_timeline.mFrameMax = 10;
 }
 
 
@@ -67,7 +65,7 @@ void GameScene::update(double deltaTime)
 	for(int i = 0; i < m_video_frames.size(); i++){
 		int* x;
 		int* y;
-		mySequence.Get(i, &x, &y, nullptr, nullptr);
+		m_timeline.Get(i, &x, &y, nullptr, nullptr);
 
 		m_video_frames[i].frame_start = *x;
 		m_video_frames[i].frame_end = *y;
@@ -99,15 +97,15 @@ void GameScene::ui()
 		ImGui::SetNextWindowSize(ImVec2(550, 170));
 		if (ImGui::Begin("Timeline", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize)) {
 			ImGui::PushItemWidth(130);
-			ImGui::InputInt("Frame Min", &mySequence.mFrameMin);
+			ImGui::InputInt("Frame Min", &m_timeline.mFrameMin);
 			ImGui::SameLine();
 			ImGui::InputInt("Frame ", &currentFrame);
 			ImGui::SameLine();
-			ImGui::InputInt("Frame Max", &mySequence.mFrameMax);
+			ImGui::InputInt("Frame Max", &m_timeline.mFrameMax);
 			ImGui::PopItemWidth();
 			// Inside the window, you can place your UI elements or other content
 			// For example:
-			Sequencer(&mySequence, &currentFrame, &expanded, &selectedEntry, &firstFrame, ImSequencer::SEQUENCER_EDIT_STARTEND | ImSequencer::SEQUENCER_ADD | ImSequencer::SEQUENCER_DEL | ImSequencer::SEQUENCER_COPYPASTE | ImSequencer::SEQUENCER_CHANGE_FRAME);
+			Sequencer(&m_timeline, &currentFrame, &expanded, &selectedEntry, &firstFrame, ImSequencer::SEQUENCER_EDIT_STARTEND | ImSequencer::SEQUENCER_ADD | ImSequencer::SEQUENCER_DEL | ImSequencer::SEQUENCER_COPYPASTE | ImSequencer::SEQUENCER_CHANGE_FRAME);
 			
 			// End the window
 			ImGui::End();
@@ -152,14 +150,11 @@ void GameScene::input(SDL_Event event)
             m_files.push_back(event.drop.file);
 
 			SequencerItemTypeNames[m_current_file_idx] = event.drop.file;
-			mySequence.myItems.push_back(Timeline::MySequenceItem{ m_current_file_idx, 0, 2, false });
+			m_timeline.myItems.push_back(Timeline::MySequenceItem{ m_current_file_idx, 0, 2, false });
 
 			m_video_frames.push_back(VideoFrame{event.drop.file, m_resources->LoadTexture(event.drop.file)});
 
 			m_current_file_idx++;
-
-			std::cout << "File dropped on window: " << event.drop.file << std::endl;
-			//convert_file();
 		break;
 
 		case SDL_MOUSEBUTTONDOWN:
@@ -183,7 +178,7 @@ void GameScene::input(SDL_Event event)
 
 				break;
 				case SDL_SCANCODE_F:
-					Convertion::convert(mySequence, m_files, "output", "output");
+					Convertion::convert(m_timeline, m_files, "output", "output");
 					break;
 				case SDL_SCANCODE_E:
 					m_files.clear();
