@@ -24,6 +24,9 @@ struct GifFrame{
 Timeline m_timeline;
 std::vector<GifFrame> m_video_frames;
 
+//control variables
+std::string m_current_extension = "";
+
 //preview variables
 int m_current_frame = 0;
 float timer = 0.0f;
@@ -148,6 +151,13 @@ std::string get_filename(std::string path)
 	return file_name;
 }
 
+std::string get_extension(std::string path){
+	std::filesystem::path p(path);
+	std::string extension = p.filename().string();
+	extension = extension.substr(extension.find_last_of(".")+1);
+	return extension;
+}
+
 void GameScene::input(SDL_Event event)
 {
 	//partial scenes
@@ -157,6 +167,15 @@ void GameScene::input(SDL_Event event)
 
 	switch (event.type) {
 		case SDL_DROPFILE:
+			if(m_current_extension == ""){
+				m_current_extension = get_extension(event.drop.file);
+			}
+
+			if(m_current_extension != get_extension(event.drop.file)){
+				m_logger->log("Please add a " + m_current_extension + " file!");
+				return;
+			}
+
             m_files_path.push_back(event.drop.file);
 
 			SequencerItemTypeNames[m_current_file_idx] = get_filename(event.drop.file).c_str();
