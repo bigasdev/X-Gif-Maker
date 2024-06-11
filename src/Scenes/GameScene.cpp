@@ -166,6 +166,10 @@ void GameScene::draw()
 	//ui
 	GUI::draw([this](){this->ui();});
 
+	for(auto &f : m_video_frames){
+		m_atlas->draw(20, 35, f.m_file_name.c_str(), m_app->get_main_font(), {255,255,255});
+	}
+
 	if(m_is_playing)
 		m_atlas->draw(20, 20, std::to_string(m_current_frame).c_str(), m_app->get_main_font(), {255,255,255});
 }
@@ -184,6 +188,8 @@ std::string get_extension(std::string path){
 	extension = extension.substr(extension.find_last_of(".")+1);
 	return extension;
 }
+
+std::vector<std::string> filenames_storage;
 
 void GameScene::input(SDL_Event event)
 {
@@ -205,7 +211,9 @@ void GameScene::input(SDL_Event event)
 
             m_files_path.push_back(event.drop.file);
 
-			SequencerItemTypeNames[m_current_file_idx] = get_filename(event.drop.file).c_str();
+			filenames_storage.push_back(get_filename(event.drop.file));
+
+			SequencerItemTypeNames[m_current_file_idx] = filenames_storage.back().c_str();
 			m_timeline.myItems.push_back(Timeline::MySequenceItem{ m_current_file_idx, 0, 2, false });
 
 			m_video_frames.push_back(GifFrame{event.drop.file, get_filename(event.drop.file), m_resources->LoadTexture(event.drop.file)});
