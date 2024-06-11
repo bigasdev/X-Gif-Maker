@@ -40,6 +40,18 @@ namespace Vec{
 			}
 		}
 	}
+	template <typename T>
+	void remove_vec_element(std::vector<T> &vec, T &element, std::function<void()> finish_function)
+	{
+		for (auto it = vec.begin(); it != vec.end(); ) {
+			if (*it == element) {
+				finish_function();
+				it = vec.erase(it); // erase returns the next iterator
+			} else {
+				++it; // only increment if not erasing
+			}
+		}
+	}
 
 	template <typename T>
 	T* find_vec_element(std::vector<T>& vec, std::function<bool(const T&)> condition)

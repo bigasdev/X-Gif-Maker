@@ -68,6 +68,12 @@ void GameScene::init()
 
    	m_timeline.mFrameMin = 0;
    	m_timeline.mFrameMax = 10;
+	m_timeline.m_del_callback = [&](int index) {
+		m_video_frames.erase(m_video_frames.begin() + index);
+	};
+	m_timeline.m_duplicated_callback = [&](int index) {
+		m_video_frames.push_back(m_video_frames[index]);
+	};
 
 	//
 	m_right_door_x = 0;
@@ -132,7 +138,7 @@ void GameScene::ui()
 			ImGui::PopItemWidth();
 			// Inside the window, you can place your UI elements or other content
 			// For example:
-			Sequencer(&m_timeline, &currentFrame, &expanded, &selectedEntry, &firstFrame, ImSequencer::SEQUENCER_EDIT_STARTEND | ImSequencer::SEQUENCER_ADD | ImSequencer::SEQUENCER_DEL | ImSequencer::SEQUENCER_COPYPASTE | ImSequencer::SEQUENCER_CHANGE_FRAME);
+			Sequencer(&m_timeline, &currentFrame, &expanded, &selectedEntry, &firstFrame, ImSequencer::SEQUENCER_DEL | ImSequencer::SEQUENCER_CHANGE_FRAME | ImSequencer::SEQUENCER_EDIT_STARTEND);
 			
 			// End the window
 			ImGui::End();
@@ -165,10 +171,6 @@ void GameScene::draw()
 
 	//ui
 	GUI::draw([this](){this->ui();});
-
-	for(auto &f : m_video_frames){
-		m_atlas->draw(20, 35, f.m_file_name.c_str(), m_app->get_main_font(), {255,255,255});
-	}
 
 	if(m_is_playing)
 		m_atlas->draw(20, 20, std::to_string(m_current_frame).c_str(), m_app->get_main_font(), {255,255,255});

@@ -6,6 +6,7 @@
 #include "../ImGui/imgui_internal.h"
 
 #include <ctime> 
+#include <functional>
 
 static const char* SequencerItemTypeNames[20] = {
    "None",
@@ -75,9 +76,13 @@ struct Timeline : public ImSequencer::SequenceInterface
    }
    virtual void Add(int type) { myItems.push_back(MySequenceItem{ type, 0, 2, false }); };
    virtual void Del(int index) { 
+     if(m_del_callback) m_del_callback(index);
 	  myItems.erase(myItems.begin() + index);
 	}
-   virtual void Duplicate(int index) { myItems.push_back(myItems[index]); }
+   virtual void Duplicate(int index) { 
+      if(m_duplicated_callback) m_duplicated_callback(index);
+      myItems.push_back(myItems[index]); 
+   }
 
    virtual size_t GetCustomHeight(int index) { return myItems[index].mExpanded ? 300 : 0; }
 
@@ -91,6 +96,8 @@ struct Timeline : public ImSequencer::SequenceInterface
       bool mExpanded;
    };
    std::vector<MySequenceItem> myItems;
+   std::function<void(int)> m_del_callback;
+   std::function<void(int)> m_duplicated_callback;
    //RampEdit rampEdit;
 
    virtual void DoubleClick(int index) {
