@@ -9,6 +9,10 @@
 #include "../Utils/Math.hpp"
 #include "ConvertionHandler.hpp"
 
+SDL_Texture* m_bg_texture = nullptr;
+SDL_Texture* m_left_door = nullptr;
+SDL_Texture* m_right_door = nullptr;
+
 std::vector<std::string> m_files_path;
 
 int m_current_file_idx = 0;
@@ -34,6 +38,13 @@ float m_frame_time = 0.5f;
 int m_max_frames = 10;
 bool m_is_playing = false;
 
+//door variables
+float m_right_door_x = 0;
+float m_left_door_x = 0;
+float m_door_speed = 3.5f;
+int m_right_door_pos = 340;
+int m_left_door_pos = -330;
+
 
 GameScene::GameScene(App *app, Logger *logger, Cooldown *cooldown, Camera *camera):Scene(app, logger, cooldown, camera)
 {
@@ -42,23 +53,33 @@ GameScene::GameScene(App *app, Logger *logger, Cooldown *cooldown, Camera *camer
 
 void GameScene::load_assets()
 {
-    
+    m_bg_texture = m_resources->GetAsset("image_gif_scene")->GetTexture();
+	m_left_door = m_resources->GetAsset("left_door")->GetTexture();
+	m_right_door = m_resources->GetAsset("right_door")->GetTexture();
 }
 
 void GameScene::init()
 {
     m_cd->set_state("init_event", .1f, [&] {	m_logger->log("Starting the GameScene!");});
+	m_app->change_background_color({25,26,50});
 
     //
     load_assets();
 
    	m_timeline.mFrameMin = 0;
    	m_timeline.mFrameMax = 10;
+
+	//
+	m_right_door_x = 0;
+	m_left_door_x = 0;
 }
 
 
 void GameScene::update(double deltaTime)
 {
+	m_left_door_x = Math::lerp(m_left_door_x, m_left_door_pos, m_door_speed * deltaTime);
+	m_right_door_x = Math::lerp(m_right_door_x, m_right_door_pos, m_door_speed * deltaTime);
+
 	if(m_files_path.size() <= 0)return;
 
 	for(int i = 0; i < m_video_frames.size(); i++){
@@ -127,12 +148,6 @@ void GameScene::ui()
 
 void GameScene::draw()
 {
-	//ui
-	GUI::draw([this](){this->ui();});
-
-	if(m_is_playing)
-		m_atlas->draw(20, 20, std::to_string(m_current_frame).c_str(), m_app->get_main_font(), {255,255,255});
-
 	auto condition = [&](const GifFrame& vf){
 		return m_current_frame >= vf.frame_start && m_current_frame <= vf.frame_end;
 	};
@@ -140,8 +155,19 @@ void GameScene::draw()
 	auto frame = Vec::find_vec_element<GifFrame>(m_video_frames, condition);
 
 	if(frame != nullptr){
-		m_atlas->draw(frame->m_texture, {256,192}, 1, Math::mid(m_app->get_window_size().x, 256), 10, false);
+		m_atlas->draw(frame->m_texture, {256,192}, 1, Math::mid(m_app->get_window_size().x, 256)-18, 10, false);
 	}
+
+	m_atlas->draw(m_bg_texture, {401, 107}, 2, 0, 0, false);
+
+	m_atlas->draw(m_left_door, {401, 107}, 2, m_left_door_x, 0, false);
+	m_atlas->draw(m_right_door, {401, 107}, 2, m_right_door_x, 0, false);
+
+	//ui
+	GUI::draw([this](){this->ui();});
+
+	if(m_is_playing)
+		m_atlas->draw(20, 20, std::to_string(m_current_frame).c_str(), m_app->get_main_font(), {255,255,255});
 }
 
 std::string get_filename(std::string path)
@@ -205,7 +231,7 @@ void GameScene::input(SDL_Event event)
 		case SDL_KEYDOWN:
 			switch (event.key.keysym.scancode) {
 				case SDL_SCANCODE_D:
-
+					m_app->return_scene();
 				break;
 				case SDL_SCANCODE_F:
 					Convertion::convert(m_timeline, m_files_path, "output", "output");

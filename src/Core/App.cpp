@@ -25,6 +25,7 @@ Camera* m_camera = nullptr;
 //Scenes
 Scene* m_current_scene = nullptr;
 Scene* m_next_scene = nullptr;
+Scene* m_last_scene = nullptr;
 
 TTF_Font* s_main_font;
 
@@ -256,9 +257,17 @@ void App::clean()
 
 void App::change_scene(Scene* scene)
 {
+	m_last_scene = m_current_scene;
 	m_current_scene->clean();
 	m_current_scene = scene;
 	m_current_scene->init();
+}
+
+void App::return_scene()
+{
+	if(m_last_scene != nullptr){
+		change_scene(m_last_scene);
+	}
 }
 
 void App::change_to_next_scene()

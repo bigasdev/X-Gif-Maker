@@ -27,6 +27,7 @@ public:
 
 	//Functionality
 	void change_scene(Scene* scene);
+	void return_scene();
 	void change_to_next_scene();
 
 	//Util methods
