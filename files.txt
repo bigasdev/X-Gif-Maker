@@ -1,2 +1,6 @@
 file image1.jpeg
-outpoint 30
+outpoint 2
+file image2.jpeg
+outpoint 2
+file image3.jpeg
+outpoint 2

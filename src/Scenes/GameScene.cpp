@@ -9,6 +9,7 @@
 #include "../Utils/Math.hpp"
 #include "ConvertionHandler.hpp"
 #include "../Utils/Gizmos.hpp"
+#include "../Core/DataLoader.hpp"
 
 SDL_Texture* m_bg_texture = nullptr;
 SDL_Texture* m_left_door = nullptr;
@@ -137,7 +138,12 @@ void GameScene::update(double deltaTime)
 
 	if(Mouse::is_at_area({m_convert_button->relative_x,m_convert_button->relative_y, 25, 25})){
 		if(m_is_mouse_down){
-			//Convertion::convert(m_timeline, m_files_path, "output", "output");
+			auto path = Data_Loader::save_file("*.mp4");
+			std::cout << path << "\n";
+			
+			if(path != "")
+				Convertion::convert(m_timeline, m_files_path, "output", path);
+
 			m_is_mouse_down = false;
 		}
 	}

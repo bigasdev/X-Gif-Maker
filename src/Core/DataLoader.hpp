@@ -11,6 +11,7 @@
 namespace Data_Loader{
     const char* load_file(const char* filter);
     const char* load_folder(const char* title);
+    const char* save_file(const char* filter);
 }
 
 #endif

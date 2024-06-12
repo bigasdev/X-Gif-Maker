@@ -24,3 +24,16 @@ const char *Data_Loader::load_folder(const char *title)
 
     return folder;
 }
+
+const char *Data_Loader::save_file(const char *filter)
+{
+    char const * lFilterPatterns[1]={filter};
+    auto file = tinyfd_saveFileDialog("Save File", NULL, 1, lFilterPatterns, NULL);
+
+    if (!file) {
+        std::cout << "No file selected" << std::endl;
+        return "";
+    }
+
+    return file;
+}
