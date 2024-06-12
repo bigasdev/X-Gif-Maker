@@ -31,6 +31,7 @@ std::vector<GifFrame> m_video_frames;
 
 //control variables
 std::string m_current_extension = "";
+bool m_is_hovering = false;
 
 //preview variables
 int m_current_frame = 0;
@@ -53,6 +54,10 @@ IniData* m_convert_button;
 //private control variables
 bool m_is_mouse_down = false;
 
+//cursors
+SDL_Cursor* cursor = nullptr;
+SDL_Cursor* cursor_hand = nullptr;
+
 GameScene::GameScene(App *app, Logger *logger, Cooldown *cooldown, Camera *camera):Scene(app, logger, cooldown, camera)
 {
 	
@@ -63,6 +68,9 @@ void GameScene::load_assets()
     m_bg_texture = m_resources->GetAsset("image_gif_scene")->GetTexture();
 	m_left_door = m_resources->GetAsset("left_door")->GetTexture();
 	m_right_door = m_resources->GetAsset("right_door")->GetTexture();
+
+	cursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
+	cursor_hand = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
 }
 
 void GameScene::init()
@@ -99,6 +107,12 @@ void GameScene::update(double deltaTime)
 	m_ini_handler->update_ini_files();
 #endif
 
+	if(Mouse::is_at_area({m_preview_button->relative_x,m_preview_button->relative_y, 25, 25}) || Mouse::is_at_area({m_convert_button->relative_x,m_convert_button->relative_y, 25, 25})){
+		m_is_hovering = true;
+	}else{
+		m_is_hovering = false;
+	}
+
 	m_left_door_x = Math::lerp(m_left_door_x, m_left_door_pos, m_door_speed * deltaTime);
 	m_right_door_x = Math::lerp(m_right_door_x, m_right_door_pos, m_door_speed * deltaTime);
 
@@ -117,6 +131,7 @@ void GameScene::update(double deltaTime)
 		if(m_is_mouse_down){
 			m_is_playing = !m_is_playing;
 			m_is_mouse_down = false;
+			
 		}
 	}
 
@@ -208,6 +223,12 @@ void GameScene::draw()
 	//gizmos stuff
 	Gizmos::draw_area({m_preview_button->relative_x,m_preview_button->relative_y}, 25, m_atlas, {255,0,0});
 	Gizmos::draw_area({m_convert_button->relative_x,m_convert_button->relative_y}, 25, m_atlas, {255,0,0});
+
+	if(m_is_hovering){
+		SDL_SetCursor(cursor_hand);
+	}else{
+		SDL_SetCursor(cursor);
+	}
 }
 
 std::string get_filename(std::string path)

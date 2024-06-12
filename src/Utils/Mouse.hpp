@@ -22,7 +22,7 @@ namespace Mouse {
 				this->point = point;
 			}
 			void disable_cursor(){
-				SDL_ShowCursor(true);
+				//SDL_ShowCursor(true);
 			}
 			void update(){
 				vec2f mousePos = get_mouse_pos();
