@@ -39,7 +39,7 @@ void Convertion::convert(std::vector<GifFrame> frames, std::string output, std::
     //batchFile << "ffmpeg -i image%%d.jpeg -vf \"pad=180:100:(ow-iw)/2:(oh-ih)/2\" -t 5 output.gif" << std::endl;
     //generate pallete
     batchFile << "ffmpeg -f concat -i files.txt -vf palettegen=reserve_transparent=1 palette.png" << std::endl;
-    batchFile << "ffmpeg -f concat -i files.txt -vf \"pad=1600:1200:(ow-iw)/2:(oh-ih)/2\" -t 15 " << output << std::endl;
+    batchFile << "ffmpeg -f concat -safe 0 -i files.txt -i palette.png -filter_complex \"[0:v]pad=1600:1200:(ow-iw)/2:(oh-ih)/2,paletteuse\" -t 15 " << output << std::endl;
     for (size_t i = 0; i < frames.size(); ++i) {
         batchFile << "del image" << i + 1 << extension << std::endl;
         batchFile << "del palette.png" << std::endl;
