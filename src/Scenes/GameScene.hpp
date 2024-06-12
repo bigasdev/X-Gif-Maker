@@ -153,6 +153,14 @@ struct Timeline : public ImSequencer::SequenceInterface
    }
 };
 
+struct GifFrame{
+	std::string m_file_path;
+	std::string m_file_name;
+	SDL_Texture* m_texture;
+	int frame_start;
+	int frame_end;
+};
+
 class GameScene : public Scene {
 public:
 	GameScene(App* app, Logger* logger, Cooldown* cooldown, Camera* camera);

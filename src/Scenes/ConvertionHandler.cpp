@@ -1,6 +1,6 @@
 #include "ConvertionHandler.hpp"
 
-void Convertion::convert(Timeline mySequence, std::vector<std::string> m_files, std::string output_folder, std::string output_name)
+void Convertion::convert(std::vector<GifFrame> frames, std::string output)
 {
     std::string batchFilePath = "convert_images.bat";
 
@@ -19,15 +19,8 @@ void Convertion::convert(Timeline mySequence, std::vector<std::string> m_files, 
 			return;
 		}
 
-		for(int i = 0; i < mySequence.myItems.size(); i++){
-			int *x;
-			int *y;
-			int sum;
-
-			mySequence.Get(i, &x, &y, nullptr, nullptr);
-			sum = *y-*x;
-
-			std::cout << *x << " " << *y << " " << sum << std::endl;
+		for(int i = 0; i < frames.size(); i++){
+			int sum = frames[i].frame_end - frames[i].frame_start;
 
 			outfile << "file image" << i+1 << ".jpeg" << std::endl;
     		outfile << "outpoint " << sum << std::endl;
@@ -38,14 +31,14 @@ void Convertion::convert(Timeline mySequence, std::vector<std::string> m_files, 
 	}
 
     batchFile << "@echo off" << std::endl;
-    for (size_t i = 0; i < m_files.size(); ++i) {
-        std::cout << m_files[i] << std::endl;
-        batchFile << "copy \"" << m_files[i] << "\" ." << std::endl;
-        batchFile << "ren \"" << m_files[i].substr(m_files[i].find_last_of("\\") + 1) << "\" \"image" << i + 1 << ".jpeg\"" << std::endl;
+    for (size_t i = 0; i < frames.size(); ++i) {
+        std::cout << frames[i].m_file_path << std::endl;
+        batchFile << "copy \"" << frames[i].m_file_path << "\" ." << std::endl;
+        batchFile << "ren \"" << frames[i].m_file_path.substr(frames[i].m_file_path.find_last_of("\\") + 1) << "\" \"image" << i + 1 << ".jpeg\"" << std::endl;
     }
     //batchFile << "ffmpeg -i image%%d.jpeg -vf \"pad=180:100:(ow-iw)/2:(oh-ih)/2\" -t 5 output.gif" << std::endl;
-    batchFile << "ffmpeg -f concat -i files.txt -vf \"pad=1600:1200:(ow-iw)/2:(oh-ih)/2\" -t 15 " << output_name << std::endl;
-    for (size_t i = 0; i < m_files.size(); ++i) {
+    batchFile << "ffmpeg -f concat -i files.txt -vf \"pad=1600:1200:(ow-iw)/2:(oh-ih)/2\" -t 15 " << output << std::endl;
+    for (size_t i = 0; i < frames.size(); ++i) {
         batchFile << "del image" << i + 1 << ".jpeg" << std::endl;
     }
 

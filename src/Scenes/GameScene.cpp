@@ -19,14 +19,6 @@ std::vector<std::string> m_files_path;
 
 int m_current_file_idx = 0;
 
-struct GifFrame{
-	std::string m_file_path;
-	std::string m_file_name;
-	SDL_Texture* m_texture;
-	int frame_start;
-	int frame_end;
-};
-
 Timeline m_timeline;
 std::vector<GifFrame> m_video_frames;
 
@@ -140,9 +132,10 @@ void GameScene::update(double deltaTime)
 		if(m_is_mouse_down){
 			auto path = Data_Loader::save_file("*.mp4");
 			std::cout << path << "\n";
-			
-			if(path != "")
-				Convertion::convert(m_timeline, m_files_path, "output", path);
+
+			if(path != ""){
+				Convertion::convert(m_video_frames, path);
+			}
 
 			m_is_mouse_down = false;
 		}
@@ -305,7 +298,7 @@ void GameScene::input(SDL_Event event)
 					m_app->return_scene();
 				break;
 				case SDL_SCANCODE_F:
-					Convertion::convert(m_timeline, m_files_path, "output", "output");
+					//Convertion::convert(m_timeline, m_files_path, "output", "output");
 					break;
 				case SDL_SCANCODE_E:
 					m_files_path.clear();
