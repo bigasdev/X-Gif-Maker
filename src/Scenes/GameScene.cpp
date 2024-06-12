@@ -8,6 +8,7 @@
 #include "../Utils/Vec.hpp"
 #include "../Utils/Math.hpp"
 #include "ConvertionHandler.hpp"
+#include "../Utils/Gizmos.hpp"
 
 SDL_Texture* m_bg_texture = nullptr;
 SDL_Texture* m_left_door = nullptr;
@@ -45,6 +46,12 @@ float m_door_speed = 3.5f;
 int m_right_door_pos = 340;
 int m_left_door_pos = -330;
 
+//data
+IniData* m_preview_button;
+IniData* m_convert_button;
+
+//private control variables
+bool m_is_mouse_down = false;
 
 GameScene::GameScene(App *app, Logger *logger, Cooldown *cooldown, Camera *camera):Scene(app, logger, cooldown, camera)
 {
@@ -66,6 +73,11 @@ void GameScene::init()
     //
     load_assets();
 
+	//data stuff
+	m_ini_handler->load_ini_files("config.ini");
+	m_preview_button = m_ini_handler->get_ini_data("preview_img_button");
+	m_convert_button = m_ini_handler->get_ini_data("convert_img_button");
+
    	m_timeline.mFrameMin = 0;
    	m_timeline.mFrameMax = 10;
 	m_timeline.m_del_callback = [&](int index) {
@@ -83,6 +95,10 @@ void GameScene::init()
 
 void GameScene::update(double deltaTime)
 {
+#if F_ENABLE_DEBUG
+	m_ini_handler->update_ini_files();
+#endif
+
 	m_left_door_x = Math::lerp(m_left_door_x, m_left_door_pos, m_door_speed * deltaTime);
 	m_right_door_x = Math::lerp(m_right_door_x, m_right_door_pos, m_door_speed * deltaTime);
 
@@ -95,6 +111,20 @@ void GameScene::update(double deltaTime)
 
 		m_video_frames[i].frame_start = *x;
 		m_video_frames[i].frame_end = *y;
+	}
+
+	if(Mouse::is_at_area({m_preview_button->relative_x,m_preview_button->relative_y, 25, 25})){
+		if(m_is_mouse_down){
+			m_is_playing = !m_is_playing;
+			m_is_mouse_down = false;
+		}
+	}
+
+	if(Mouse::is_at_area({m_convert_button->relative_x,m_convert_button->relative_y, 25, 25})){
+		if(m_is_mouse_down){
+			//Convertion::convert(m_timeline, m_files_path, "output", "output");
+			m_is_mouse_down = false;
+		}
 	}
 
 	if(!m_is_playing)return;
@@ -174,6 +204,10 @@ void GameScene::draw()
 
 	if(m_is_playing)
 		m_atlas->draw(20, 20, std::to_string(m_current_frame).c_str(), m_app->get_main_font(), {255,255,255});
+
+	//gizmos stuff
+	Gizmos::draw_area({m_preview_button->relative_x,m_preview_button->relative_y}, 25, m_atlas, {255,0,0});
+	Gizmos::draw_area({m_convert_button->relative_x,m_convert_button->relative_y}, 25, m_atlas, {255,0,0});
 }
 
 std::string get_filename(std::string path)
@@ -226,7 +260,7 @@ void GameScene::input(SDL_Event event)
 		case SDL_MOUSEBUTTONDOWN:
 			switch (event.button.button) {
 				case SDL_BUTTON_LEFT:
-
+					m_is_mouse_down = true;
 				break;
 			}
 
