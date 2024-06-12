@@ -134,7 +134,7 @@ void GameScene::update(double deltaTime)
 			std::cout << path << "\n";
 
 			if(path != ""){
-				Convertion::convert(m_video_frames, path);
+				Convertion::convert(m_video_frames, path, m_current_extension);
 			}
 
 			m_is_mouse_down = false;
@@ -241,7 +241,7 @@ std::string get_filename(std::string path)
 std::string get_extension(std::string path){
 	std::filesystem::path p(path);
 	std::string extension = p.filename().string();
-	extension = extension.substr(extension.find_last_of(".")+1);
+	extension = extension.substr(extension.find_last_of("."));
 	return extension;
 }
 

@@ -1,6 +1,6 @@
 #include "ConvertionHandler.hpp"
 
-void Convertion::convert(std::vector<GifFrame> frames, std::string output)
+void Convertion::convert(std::vector<GifFrame> frames, std::string output, std::string extension)
 {
     std::string batchFilePath = "convert_images.bat";
 
@@ -22,7 +22,7 @@ void Convertion::convert(std::vector<GifFrame> frames, std::string output)
 		for(int i = 0; i < frames.size(); i++){
 			int sum = frames[i].frame_end - frames[i].frame_start;
 
-			outfile << "file image" << i+1 << ".jpeg" << std::endl;
+			outfile << "file image" << i+1 << extension << std::endl;
     		outfile << "outpoint " << sum << std::endl;
 		}
 
@@ -34,12 +34,12 @@ void Convertion::convert(std::vector<GifFrame> frames, std::string output)
     for (size_t i = 0; i < frames.size(); ++i) {
         std::cout << frames[i].m_file_path << std::endl;
         batchFile << "copy \"" << frames[i].m_file_path << "\" ." << std::endl;
-        batchFile << "ren \"" << frames[i].m_file_path.substr(frames[i].m_file_path.find_last_of("\\") + 1) << "\" \"image" << i + 1 << ".jpeg\"" << std::endl;
+        batchFile << "ren \"" << frames[i].m_file_path.substr(frames[i].m_file_path.find_last_of("\\") + 1) << "\" \"image" << i + 1 << extension << std::endl;
     }
     //batchFile << "ffmpeg -i image%%d.jpeg -vf \"pad=180:100:(ow-iw)/2:(oh-ih)/2\" -t 5 output.gif" << std::endl;
     batchFile << "ffmpeg -f concat -i files.txt -vf \"pad=1600:1200:(ow-iw)/2:(oh-ih)/2\" -t 15 " << output << std::endl;
     for (size_t i = 0; i < frames.size(); ++i) {
-        batchFile << "del image" << i + 1 << ".jpeg" << std::endl;
+        batchFile << "del image" << i + 1 << extension << std::endl;
     }
 
     batchFile.close();
