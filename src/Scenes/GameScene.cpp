@@ -130,7 +130,7 @@ void GameScene::update(double deltaTime)
 
 	if(Mouse::is_at_area({m_convert_button->relative_x,m_convert_button->relative_y, 25, 25})){
 		if(m_is_mouse_down){
-			auto path = Data_Loader::save_file("*.mp4");
+			auto path = Data_Loader::save_file("*.gif");
 			std::cout << path << "\n";
 
 			if(path != ""){
