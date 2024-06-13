@@ -10,5 +10,5 @@
 #include <vector>
 
 namespace Convertion{
-    void convert(std::vector<GifFrame> frames, std::string output, std::string extension = ".jpeg");
+    void convert(std::vector<GifFrame> frames, std::string output, bool has_pallete, std::string extension = ".jpeg");
 }

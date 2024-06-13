@@ -134,7 +134,7 @@ void GameScene::update(double deltaTime)
 			std::cout << path << "\n";
 
 			if(path != ""){
-				Convertion::convert(m_video_frames, path, m_current_extension);
+				Convertion::convert(m_video_frames, path, false, m_current_extension);
 			}
 
 			m_is_mouse_down = false;
