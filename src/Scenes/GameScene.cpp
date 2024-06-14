@@ -51,6 +51,13 @@ bool m_is_mouse_down = false;
 SDL_Cursor* cursor = nullptr;
 SDL_Cursor* cursor_hand = nullptr;
 
+//convertion variables
+bool m_is_fullscreen = false;
+bool m_is_looping = true;
+bool m_is_open_folder = true;
+int m_width = 800;
+int m_height = 600;
+
 GameScene::GameScene(App *app, Logger *logger, Cooldown *cooldown, Camera *camera):Scene(app, logger, cooldown, camera)
 {
 	
@@ -190,6 +197,11 @@ void GameScene::ui()
 		ImGui::SetNextWindowPos(ImVec2(552, 210));
 		ImGui::SetNextWindowSize(ImVec2(254, 170));
 		if(ImGui::Begin("Settings", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize)){
+			ImGui::Checkbox("Transparent background", &m_is_fullscreen);
+			ImGui::Checkbox("Loop", &m_is_looping);
+			ImGui::Checkbox("Open folder after convertion", &m_is_open_folder);
+			ImGui::InputInt("Width", &m_width);
+			ImGui::InputInt("Height", &m_height);
 			ImGui::End();
 		}
 		ImGui::PopStyleColor();
