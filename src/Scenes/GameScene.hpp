@@ -160,6 +160,13 @@ struct GifFrame{
 	int frame_start;
 	int frame_end;
 };
+struct GifSettings{
+	bool m_is_transparent = false;
+	bool m_is_looping = true;
+	bool m_is_open_folder = true;
+	int m_width = 800;
+	int m_height = 600;
+};
 
 class GameScene : public Scene {
 public:

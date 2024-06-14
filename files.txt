@@ -1,0 +1,4 @@
+file image1.png
+outpoint 2
+file image2.png
+outpoint 2

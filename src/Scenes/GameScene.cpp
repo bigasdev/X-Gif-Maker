@@ -52,11 +52,7 @@ SDL_Cursor* cursor = nullptr;
 SDL_Cursor* cursor_hand = nullptr;
 
 //convertion variables
-bool m_is_fullscreen = false;
-bool m_is_looping = true;
-bool m_is_open_folder = true;
-int m_width = 800;
-int m_height = 600;
+GifSettings m_gif_settings;
 
 GameScene::GameScene(App *app, Logger *logger, Cooldown *cooldown, Camera *camera):Scene(app, logger, cooldown, camera)
 {
@@ -141,7 +137,7 @@ void GameScene::update(double deltaTime)
 			std::cout << path << "\n";
 
 			if(path != ""){
-				Convertion::convert(m_video_frames, path, false, m_current_extension);
+				Convertion::convert(m_video_frames, path, m_gif_settings, m_current_extension);
 			}
 
 			m_is_mouse_down = false;
@@ -197,11 +193,11 @@ void GameScene::ui()
 		ImGui::SetNextWindowPos(ImVec2(552, 210));
 		ImGui::SetNextWindowSize(ImVec2(254, 170));
 		if(ImGui::Begin("Settings", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize)){
-			ImGui::Checkbox("Transparent background", &m_is_fullscreen);
-			ImGui::Checkbox("Loop", &m_is_looping);
-			ImGui::Checkbox("Open folder after convertion", &m_is_open_folder);
-			ImGui::InputInt("Width", &m_width);
-			ImGui::InputInt("Height", &m_height);
+			ImGui::Checkbox("Transparent background", &m_gif_settings.m_is_transparent);
+			ImGui::Checkbox("Loop", &m_gif_settings.m_is_looping);
+			ImGui::Checkbox("Open folder after convertion", &m_gif_settings.m_is_open_folder);
+			ImGui::InputInt("Width", &m_gif_settings.m_width);
+			ImGui::InputInt("Height", &m_gif_settings.m_height);
 			ImGui::End();
 		}
 		ImGui::PopStyleColor();
@@ -285,6 +281,7 @@ void GameScene::input(SDL_Event event)
 			m_timeline.myItems.push_back(Timeline::MySequenceItem{ m_current_file_idx, 0, 2, false });
 
 			m_video_frames.push_back(GifFrame{event.drop.file, get_filename(event.drop.file), m_resources->LoadTexture(event.drop.file)});
+			SDL_QueryTexture(m_video_frames.back().m_texture, nullptr, nullptr, &m_gif_settings.m_width, &m_gif_settings.m_height);
 
 			m_current_file_idx++;
 		break;
