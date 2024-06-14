@@ -281,7 +281,18 @@ void GameScene::input(SDL_Event event)
 			m_timeline.myItems.push_back(Timeline::MySequenceItem{ m_current_file_idx, 0, 2, false });
 
 			m_video_frames.push_back(GifFrame{event.drop.file, get_filename(event.drop.file), m_resources->LoadTexture(event.drop.file)});
-			SDL_QueryTexture(m_video_frames.back().m_texture, nullptr, nullptr, &m_gif_settings.m_width, &m_gif_settings.m_height);
+
+			int width, height;
+
+			SDL_QueryTexture(m_video_frames.back().m_texture, nullptr, nullptr, &width, &height);
+
+			if(width >= m_gif_settings.m_width){
+				m_gif_settings.m_width = width;
+			}
+
+			if(height >= m_gif_settings.m_height){
+				m_gif_settings.m_height = height;
+			}
 
 			m_current_file_idx++;
 		break;
