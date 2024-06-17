@@ -1,9 +1,3 @@
 Frame : 0
 Frame : 1
 Frame : 2
-Frame : 0
-Frame : 1
-Frame : 2
-Frame : 3
-Frame : 4
-Frame : 5

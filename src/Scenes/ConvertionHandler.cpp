@@ -28,7 +28,7 @@ void Convertion::convert(std::vector<GifFrame> frames, std::string output, GifSe
 
 			int sum = frames[frame].frame_end - frames[frame].frame_start;
 
-            int frame_img = Math::clamp(1, i+1, frames.size()-1);
+            int frame_img = Math::clamp(1, i+1, frames.size());
 
 			outfile << "file image" << frame_img << extension << std::endl;
     		outfile << "outpoint " << sum << std::endl;
