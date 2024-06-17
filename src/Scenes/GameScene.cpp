@@ -46,6 +46,8 @@ IniData* m_convert_button;
 
 //private control variables
 bool m_is_mouse_down = false;
+bool m_is_hovering_preview = false;
+bool m_is_hovering_convert = false;
 
 //cursors
 SDL_Cursor* cursor = nullptr;
@@ -124,14 +126,18 @@ void GameScene::update(double deltaTime)
 	}
 
 	if(Mouse::is_at_area({m_preview_button->relative_x,m_preview_button->relative_y, 25, 25})){
+		m_is_hovering_preview = true;
 		if(m_is_mouse_down){
 			m_is_playing = !m_is_playing;
 			m_is_mouse_down = false;
 			
 		}
+	}else{
+		m_is_hovering_preview = false;
 	}
 
 	if(Mouse::is_at_area({m_convert_button->relative_x,m_convert_button->relative_y, 25, 25})){
+		m_is_hovering_convert = true;
 		if(m_is_mouse_down){
 			auto path = Data_Loader::save_file("*.gif");
 			std::cout << path << "\n";
@@ -142,6 +148,8 @@ void GameScene::update(double deltaTime)
 
 			m_is_mouse_down = false;
 		}
+	}else{
+		m_is_hovering_convert = false;
 	}
 
 	if(!m_is_playing)return;
@@ -169,6 +177,18 @@ void GameScene::ui()
 			currentFrame = m_current_frame;
 		}else{
 			m_current_frame = currentFrame;
+		}
+
+		if(m_is_hovering_preview){
+			ImGui::BeginTooltip();
+			ImGui::Text("Preview of the gif");
+			ImGui::EndTooltip();
+		}
+
+		if(m_is_hovering_convert){
+			ImGui::BeginTooltip();
+			ImGui::Text("Convert the gif");
+			ImGui::EndTooltip();
 		}
 
         //Sequencer(&mySequence, &currentFrame, &expanded, &selectedEntry, &firstFrame, ImSequencer::SEQUENCER_EDIT_STARTEND | ImSequencer::SEQUENCER_ADD | ImSequencer::SEQUENCER_DEL | ImSequencer::SEQUENCER_COPYPASTE | ImSequencer::SEQUENCER_CHANGE_FRAME);
@@ -313,7 +333,7 @@ void GameScene::input(SDL_Event event)
 			if(event.type == SDL_MOUSEBUTTONDOWN)return;
 			switch (event.button.button) {
 				case SDL_BUTTON_LEFT:			
-
+					m_is_mouse_down = false;
 				break;
 			}
 
