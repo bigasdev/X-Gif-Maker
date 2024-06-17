@@ -194,10 +194,15 @@ void GameScene::ui()
 		ImGui::SetNextWindowSize(ImVec2(254, 170));
 		if(ImGui::Begin("Settings", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize)){
 			ImGui::Checkbox("Transparent background", &m_gif_settings.m_is_transparent);
+
+			if(ImGui::IsItemHovered()){
+				ImGui::BeginTooltip();
+				ImGui::Text("WARNING: All the images need to be the same size to work with transparent background!");
+				ImGui::EndTooltip();
+			}
+			
 			ImGui::Checkbox("Loop", &m_gif_settings.m_is_looping);
 			ImGui::Checkbox("Open folder after convertion", &m_gif_settings.m_is_open_folder);
-			ImGui::InputInt("Width", &m_gif_settings.m_width);
-			ImGui::InputInt("Height", &m_gif_settings.m_height);
 			ImGui::End();
 		}
 		ImGui::PopStyleColor();

@@ -1,5 +1,7 @@
 #include "ConvertionHandler.hpp"
 
+#include "../Utils/FDebug.hpp"
+
 void Convertion::convert(std::vector<GifFrame> frames, std::string output, GifSettings settings, std::string extension)
 {
     std::string batchFilePath = "convert_images.bat";
@@ -19,10 +21,16 @@ void Convertion::convert(std::vector<GifFrame> frames, std::string output, GifSe
 			return;
 		}
 
-		for(int i = 0; i < frames.size(); i++){
-			int sum = frames[i].frame_end - frames[i].frame_start;
+		for(int i = 0; i < frames.size()+1; i++){
+            F_Debug::log_group("Frame", std::to_string(i));
 
-			outfile << "file image" << i+1 << extension << std::endl;
+            int frame = Math::clamp(0, i, frames.size()-1);
+
+			int sum = frames[frame].frame_end - frames[frame].frame_start;
+
+            int frame_img = Math::clamp(1, i+1, frames.size()-1);
+
+			outfile << "file image" << frame_img << extension << std::endl;
     		outfile << "outpoint " << sum << std::endl;
 		}
 

@@ -13,6 +13,7 @@
 #include "../Tools/Cooldown.hpp"
 #include "../Tools/Logger.hpp"
 #include "../Scenes/Scenes.hpp"
+#include "../Utils/FDebug.hpp"
 
 //global variable
 bool debug_mode = false;
@@ -80,6 +81,8 @@ void App::init(const char* title, uint32_t xpos, uint32_t ypos, uint32_t width, 
 		{
 			fprintf(stderr, "SDL_image could not initialize\n");
 		}
+
+		F_Debug::setup_crash_handlers();
 
 		m_renderer = SDL_CreateRenderer(m_window, -1, rendererFlags);
 
@@ -252,6 +255,9 @@ void App::clean()
 	SDL_DestroyRenderer(m_renderer);
 	TTF_Quit();
 	SDL_Quit();
+
+	F_Debug::write_to_file("log.txt");
+
 	std::cout << "Game Cleaned!..." << std::endl;
 }
 

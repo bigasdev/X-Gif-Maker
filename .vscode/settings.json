@@ -85,6 +85,7 @@
         "span": "cpp",
         "cinttypes": "cpp",
         "variant": "cpp",
-        "semaphore": "cpp"
+        "semaphore": "cpp",
+        "csignal": "cpp"
     }
 }

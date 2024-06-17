@@ -1,4 +1,12 @@
 file image1.png
-outpoint 2
+outpoint 1
 file image2.png
+outpoint 10
+file image3.png
 outpoint 2
+file image4.png
+outpoint 2
+file image4.png
+outpoint 12
+file image4.png
+outpoint 12
