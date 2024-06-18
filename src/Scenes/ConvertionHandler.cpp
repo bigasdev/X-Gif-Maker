@@ -36,7 +36,7 @@ void Convertion::convert(std::vector<GifFrame> frames, std::string output, GifSe
             int frame_img = Math::clamp(1, i+1, frames.size());
 
 			outfile << "file image" << frame_img << extension << std::endl;
-    		outfile << "outpoint " << sum << std::endl;
+    		outfile << "duration " << sum << std::endl;
 		}
 
 		// Close the file
