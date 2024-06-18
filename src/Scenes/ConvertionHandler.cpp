@@ -26,7 +26,7 @@ void Convertion::convert(std::vector<GifFrame> frames, std::string output, GifSe
 
             int frame = Math::clamp(0, i, frames.size()-1);
 
-			int sum = frames[frame].frame_end - frames[frame].frame_start;
+			double sum = frames[frame].frame_end - frames[frame].frame_start;
             sum = sum/settings.fps;
 
             if(i == frames.size()){
