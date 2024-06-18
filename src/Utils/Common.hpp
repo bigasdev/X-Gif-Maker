@@ -21,6 +21,17 @@ struct vec2f
 	{
 		std::cout << x << ", " << y << std::endl;
 	}
+	bool operator==(const vec2f& other) const {
+        return (x == other.x) && (y == other.y);
+    }
+
+    bool operator!=(const vec2f& other) const {
+        return !(*this == other);
+    }
+
+	vec2f operator+(const vec2f& other) const {
+		return vec2f(x + other.x, y + other.y);
+	}
 };
 struct vec3f {
 	float x, y, z;
