@@ -166,6 +166,7 @@ struct GifSettings{
 	bool m_is_open_folder = true;
 	int m_width = 0;
 	int m_height = 0;
+   int fps = 60;
 };
 
 class GameScene : public Scene {

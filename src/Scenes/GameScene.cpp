@@ -85,7 +85,7 @@ void GameScene::init()
 	m_convert_button = m_ini_handler->get_ini_data("convert_img_button");
 
    	m_timeline.mFrameMin = 0;
-   	m_timeline.mFrameMax = 10;
+   	m_timeline.mFrameMax = 600;
 	m_timeline.m_del_callback = [&](int index) {
 		m_video_frames.erase(m_video_frames.begin() + index);
 	};
@@ -303,7 +303,7 @@ void GameScene::input(SDL_Event event)
 			filenames_storage.push_back(get_filename(event.drop.file));
 
 			SequencerItemTypeNames[m_current_file_idx] = filenames_storage.back().c_str();
-			m_timeline.myItems.push_back(Timeline::MySequenceItem{ m_current_file_idx, 0, 2, false });
+			m_timeline.myItems.push_back(Timeline::MySequenceItem{ m_current_file_idx, 0 + static_cast<int>(60*m_timeline.myItems.size()), 60+ static_cast<int>(60*m_timeline.myItems.size()), false });
 
 			m_video_frames.push_back(GifFrame{event.drop.file, get_filename(event.drop.file), m_resources->LoadTexture(event.drop.file)});
 
