@@ -3,6 +3,7 @@
 #include "../ImGui/tinyfiledialogs.h"
 #include "TestPartialScene.hpp"
 #include "../Utils/Gizmos.hpp"
+#include "../Utils/Fini.hpp"
 #include "GameScene.hpp"
 
 //Used to reference the app in local functions
@@ -40,6 +41,8 @@ IniData* data_file = nullptr;
 IniData* data_folder = nullptr;
 IniData* change_game_scene = nullptr;
 
+std::unique_ptr<Fini> m_fgif_settings = nullptr;
+
 
 MainScene::MainScene(App* app, Logger* logger, Cooldown* cooldown, Camera* camera):Scene(app, logger, cooldown, camera)
 {
@@ -74,6 +77,21 @@ void MainScene::init()
 	//F_ASSERT(m_files.size() > 0);
 
 	m_ini_handler->load_ini_files("config.ini");
+
+	m_fgif_settings = std::make_unique<Fini>("res/data/gif_settings.ini");
+
+	//gif settings initialize
+	{
+		m_fgif_settings->initialize_value("gif_settings", "width", "800");
+		m_fgif_settings->initialize_value("gif_settings", "quality", "5");
+		m_fgif_settings->initialize_value("gif_settings", "fps", "20");
+
+		m_fgif_settings->save();
+
+		m_fgif_settings->grab_value("gif_settings", "width", &m_selected_width);
+		m_fgif_settings->grab_value("gif_settings", "quality", &m_selected_quality);
+		m_fgif_settings->grab_value("gif_settings", "fps", &m_selected_fps);
+	}
 
 	//Ini loading
 	{
@@ -186,6 +204,10 @@ void MainScene::update(double deltaTime)
 			}
 		}
 	}
+
+	m_fgif_settings->set_value("gif_settings", "width", m_selected_width);
+	m_fgif_settings->set_value("gif_settings", "quality", m_selected_quality);
+	m_fgif_settings->set_value("gif_settings", "fps", m_selected_fps);
 }
 
 
@@ -439,5 +461,8 @@ void MainScene::clean()
 	for(auto& scene : m_partial_scenes){
 		scene->clean();
 	}
+
+	m_fgif_settings->save();
+
 	m_partial_scenes.clear();
 }
