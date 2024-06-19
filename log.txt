@@ -1,0 +1,3 @@
+Loading ........ res/data/gif_settings.ini
+Saving ........ res/data/gif_settings.ini
+Saving ........ res/data/gif_settings.ini

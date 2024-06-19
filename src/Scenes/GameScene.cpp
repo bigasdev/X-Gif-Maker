@@ -9,6 +9,7 @@
 #include "../Utils/Math.hpp"
 #include "ConvertionHandler.hpp"
 #include "../Utils/Gizmos.hpp"
+#include "../Utils/Fini.hpp"
 #include "../Core/DataLoader.hpp"
 
 SDL_Texture* m_bg_texture = nullptr;
@@ -43,6 +44,7 @@ int m_left_door_pos = -330;
 //data
 IniData* m_preview_button;
 IniData* m_convert_button;
+std::unique_ptr<Fini> m_gifsettings_handler;
 
 //private control variables
 bool m_is_mouse_down = false;
@@ -79,6 +81,18 @@ void GameScene::init()
     //
     load_assets();
 
+	m_gifsettings_handler = std::make_unique<Fini>("res/data/gif_img_settings.ini");
+
+	m_gifsettings_handler->initialize_value("gif settings", "png", "false");
+	m_gifsettings_handler->initialize_value("gif settings", "looping", "true");
+	m_gifsettings_handler->initialize_value("gif settings", "open_folder", "true");
+
+	m_gifsettings_handler->save();
+
+	m_gifsettings_handler->grab_value("gif settings", "png", &m_gif_settings.m_is_transparent);
+	m_gifsettings_handler->grab_value("gif settings", "looping", &m_gif_settings.m_is_looping);
+	m_gifsettings_handler->grab_value("gif settings", "open_folder", &m_gif_settings.m_is_open_folder);
+
 	//data stuff
 	m_ini_handler->load_ini_files("config.ini");
 	m_preview_button = m_ini_handler->get_ini_data("preview_img_button");
@@ -104,6 +118,10 @@ void GameScene::update(double deltaTime)
 #if F_ENABLE_DEBUG
 	m_ini_handler->update_ini_files();
 #endif
+
+	m_gifsettings_handler->set_value("gif settings", "png", m_gif_settings.m_is_transparent);
+	m_gifsettings_handler->set_value("gif settings", "looping", m_gif_settings.m_is_looping);
+	m_gifsettings_handler->set_value("gif settings", "open_folder", m_gif_settings.m_is_open_folder);
 
 	if(Mouse::is_at_area({m_preview_button->relative_x,m_preview_button->relative_y, 25, 25}) || Mouse::is_at_area({m_convert_button->relative_x,m_convert_button->relative_y, 25, 25})){
 		m_is_hovering = true;
@@ -387,6 +405,6 @@ void GameScene::input(SDL_Event event)
 
 void GameScene::clean()
 {
-
+	m_gifsettings_handler->save();
 }
 

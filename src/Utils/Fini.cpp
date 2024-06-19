@@ -3,7 +3,7 @@
 Fini::Fini(std::string file){
     filename = file;
 
-    ini.load(filename);
+    load();
 }
 
 Fini::~Fini(){
@@ -21,10 +21,12 @@ bool Fini::update()
 
 void Fini::save()
 {
+    F_Debug::log("Saving ........ " + filename);
     ini.save(filename);
 }
 
 void Fini::load()
 {
+    F_Debug::log("Loading ........ " + filename);
     ini.load(filename);
 }
