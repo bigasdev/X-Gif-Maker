@@ -21,10 +21,20 @@ void Convertion::convert(std::vector<GifFrame> frames, std::string output, GifSe
 			return;
 		}
 
-		for(int i = 0; i < frames.size()+1; i++){
-            F_Debug::log_group("Frame", std::to_string(i));
+        std::sort(frames.begin(), frames.end(), [](const GifFrame& a, const GifFrame& b) {
+            return a.frame_start < b.frame_start;
+        });
 
+		for(int i = 0; i < frames.size()+1; i++){
             int frame = Math::clamp(0, i, frames.size()-1);
+
+            F_Debug::log("-------");
+            F_Debug::log_group("Frame", std::to_string(frame));
+            F_Debug::log_group("Frame Path", frames[frame].m_file_path);
+            F_Debug::log_group("Frame Start", std::to_string(frames[frame].frame_start));
+            F_Debug::log_group("Frame End", std::to_string(frames[frame].frame_end));
+            F_Debug::log("-------");
+
 
 			double sum = frames[frame].frame_end - frames[frame].frame_start;
             sum = sum/settings.fps;
