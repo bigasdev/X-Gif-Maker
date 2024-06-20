@@ -465,7 +465,6 @@ namespace ImSequencer
                }
 
                movingEntry = -1;
-               F_Debug::log_group("Selected entry", std::to_string(*selectedEntry));
 
                if(sequence->on_frame_click) sequence->on_frame_click(*selectedEntry);
                

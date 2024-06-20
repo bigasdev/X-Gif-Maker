@@ -101,14 +101,14 @@ struct Timeline : public ImSequencer::SequenceInterface
    //RampEdit rampEdit;
 
    virtual void DoubleClick(int index) {
-      if (myItems[index].mExpanded)
+      /*if (myItems[index].mExpanded)
       {
          myItems[index].mExpanded = false;
          return;
       }
       for (auto& item : myItems)
          item.mExpanded = false;
-      myItems[index].mExpanded = !myItems[index].mExpanded;
+      myItems[index].mExpanded = !myItems[index].mExpanded;*/
    }
 
    virtual void CustomDraw(int index, ImDrawList* draw_list, const ImRect& rc, const ImRect& legendRect, const ImRect& clippingRect, const ImRect& legendClippingRect)

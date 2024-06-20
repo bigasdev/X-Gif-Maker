@@ -263,7 +263,7 @@ void GameScene::ui()
 
 			ImGui::Text("Duration in seconds : ");
 			ImGui::SameLine();
-			ImGui::Text(std::to_string((m_timeline.myItems[selectedEntry].mFrameEnd - m_timeline.myItems[selectedEntry].mFrameStart)/600).c_str());
+			ImGui::Text(std::to_string(static_cast<float>((m_timeline.myItems[selectedEntry].mFrameEnd - m_timeline.myItems[selectedEntry].mFrameStart))/60).c_str());
 
 			if(ImGui::Button("Close")){
 				m_edit_frame_popup = false;
