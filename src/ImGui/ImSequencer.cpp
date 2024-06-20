@@ -358,6 +358,7 @@ namespace ImSequencer
             }
             if (ImRect(slotP1, slotP2).Contains(io.MousePos) && io.MouseDoubleClicked[0])
             {
+               if(sequence->on_frame_click) sequence->on_frame_click(*selectedEntry);
                sequence->DoubleClick(i);
             }
             // Ensure grabbable handles
@@ -465,8 +466,6 @@ namespace ImSequencer
                }
 
                movingEntry = -1;
-
-               if(sequence->on_frame_click) sequence->on_frame_click(*selectedEntry);
                
                sequence->EndEdit();
             }
