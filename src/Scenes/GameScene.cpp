@@ -50,6 +50,7 @@ std::unique_ptr<Fini> m_gifsettings_handler;
 bool m_is_mouse_down = false;
 bool m_is_hovering_preview = false;
 bool m_is_hovering_convert = false;
+bool m_edit_frame_popup = false;
 
 //cursors
 SDL_Cursor* cursor = nullptr;
@@ -105,6 +106,11 @@ void GameScene::init()
 	};
 	m_timeline.m_duplicated_callback = [&](int index) {
 		m_video_frames.push_back(m_video_frames[index]);
+	};
+	m_timeline.on_frame_click = [&](int index) {
+		m_current_frame = index;
+
+		m_edit_frame_popup = true;
 	};
 
 	//
@@ -244,6 +250,28 @@ void GameScene::ui()
 			ImGui::End();
 		}
 		ImGui::PopStyleColor();
+
+		if(m_edit_frame_popup){
+			ImGui::OpenPopup("Edit Frame");
+		}
+
+		if(ImGui::BeginPopupModal("Edit Frame", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			ImGui::Text("Edit the frame");
+			ImGui::InputInt("Frame Start", &m_timeline.myItems[selectedEntry].mFrameStart);
+			ImGui::InputInt("Frame End", &m_timeline.myItems[selectedEntry].mFrameEnd);
+
+			ImGui::Text("Duration in seconds : ");
+			ImGui::SameLine();
+			ImGui::Text(std::to_string((m_timeline.myItems[selectedEntry].mFrameEnd - m_timeline.myItems[selectedEntry].mFrameStart)/600).c_str());
+
+			if(ImGui::Button("Close")){
+				m_edit_frame_popup = false;
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
 	}
 }
 

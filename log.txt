@@ -1,3 +1,12 @@
 Loading ........ res/data/gif_settings.ini
 Saving ........ res/data/gif_settings.ini
 Saving ........ res/data/gif_settings.ini
+Loading ........ res/data/gif_img_settings.ini
+Saving ........ res/data/gif_img_settings.ini
+Selected entry : 0
+Selected entry : 1
+Selected entry : 1
+Selected entry : 0
+Selected entry : 0
+Selected entry : 0
+Saving ........ res/data/gif_img_settings.ini

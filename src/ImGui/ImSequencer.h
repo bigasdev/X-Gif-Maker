@@ -26,6 +26,7 @@
 #pragma once
 
 #include <cstddef>
+#include <functional>
 
 struct ImDrawList;
 struct ImRect;
@@ -69,7 +70,9 @@ namespace ImSequencer
       virtual void CustomDraw(int /*index*/, ImDrawList* /*draw_list*/, const ImRect& /*rc*/, const ImRect& /*legendRect*/, const ImRect& /*clippingRect*/, const ImRect& /*legendClippingRect*/) {}
       virtual void CustomDrawCompact(int /*index*/, ImDrawList* /*draw_list*/, const ImRect& /*rc*/, const ImRect& /*clippingRect*/) {}
 
-       virtual ~SequenceInterface() = default;
+      virtual ~SequenceInterface() = default;
+
+      std::function<void(int)> on_frame_click;
    };
 
 
