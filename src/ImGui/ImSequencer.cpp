@@ -64,8 +64,8 @@ namespace ImSequencer
       ImGuiIO& io = ImGui::GetIO();
       int cx = (int)(io.MousePos.x);
       int cy = (int)(io.MousePos.y);
-      static float framePixelWidth = 10.f;
-      static float framePixelWidthTarget = 10.f;
+      static float framePixelWidth = 4.f;
+      static float framePixelWidthTarget = 4.f;
       int legendWidth = 200;
 
       static int movingEntry = -1;
@@ -359,6 +359,7 @@ namespace ImSequencer
             if (ImRect(slotP1, slotP2).Contains(io.MousePos) && io.MouseDoubleClicked[0])
             {
                if(sequence->on_frame_click) sequence->on_frame_click(*selectedEntry);
+
                sequence->DoubleClick(i);
             }
             // Ensure grabbable handles
@@ -557,6 +558,7 @@ namespace ImSequencer
             static const float MinBarWidth = 44.f;
             if (sizingRBar)
             {
+               F_Debug::log("sizing r bar");
                if (!io.MouseDown[0])
                {
                   sizingRBar = false;

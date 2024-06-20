@@ -74,7 +74,10 @@ struct Timeline : public ImSequencer::SequenceInterface
       if (type)
          *type = item.mType;
    }
-   virtual void Add(int type) { myItems.push_back(MySequenceItem{ type, 0, 2, false }); };
+   virtual void Add(int type) { 
+      
+      myItems.push_back(MySequenceItem{ type, 0, 2, false }); 
+   };
    virtual void Del(int index) { 
      if(m_del_callback) m_del_callback(index);
 	  myItems.erase(myItems.begin() + index);
@@ -166,7 +169,7 @@ struct GifSettings{
 	bool m_is_open_folder = true;
 	int m_width = 0;
 	int m_height = 0;
-   int fps = 60;
+   int fps = 30;
 };
 
 class GameScene : public Scene {
