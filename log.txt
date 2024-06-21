@@ -3,4 +3,343 @@ Saving ........ res/data/gif_settings.ini
 Saving ........ res/data/gif_settings.ini
 Loading ........ res/data/gif_img_settings.ini
 Saving ........ res/data/gif_img_settings.ini
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set3
+current frame3
+Hover exit
+Trying to set3
+current frame3
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set3
+current frame3
+Hover exit
+Trying to set3
+current frame3
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set3
+current frame3
+Hover exit
+Trying to set3
+current frame3
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set0
+current frame0
+Hover exit
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set3
+current frame3
+Trying to set2
+current frame2
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set3
+current frame3
+Hover exit
+Trying to set3
+current frame3
+Hover exit
+Trying to set3
+current frame3
+Hover exit
+Trying to set3
+current frame3
+Hover exit
+Trying to set3
+current frame3
+Hover exit
+Trying to set3
+current frame3
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set3
+current frame3
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set3
+current frame3
+Hover exit
+Trying to set3
+current frame3
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set3
+current frame3
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set3
+current frame3
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Hover exit
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Trying to set0
+current frame0
+Hover exit
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set3
+current frame3
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set3
+current frame3
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set3
+current frame3
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set3
+current frame3
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
+Trying to set0
+current frame0
+Hover exit
+Trying to set1
+current frame1
+Hover exit
+Trying to set2
+current frame2
+Hover exit
+Trying to set3
+current frame3
+Hover exit
+Trying to set3
+current frame3
+Trying to set2
+current frame2
+Trying to set1
+current frame1
+Trying to set0
+current frame0
+Hover exit
 Saving ........ res/data/gif_img_settings.ini

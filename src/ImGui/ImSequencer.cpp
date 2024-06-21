@@ -309,7 +309,18 @@ namespace ImSequencer
         if (!popupOpened && cy >= pos.y && cy < pos.y + (ItemHeight + localCustomHeight) && movingEntry == -1 && cx > contentMin.x && cx < contentMin.x + canvas_size.x)
         {
           col += 0x80201008;
+          if (sequence->on_frame_hover)
+          {
+            sequence->on_frame_hover(i);
+          }
           pos.x -= legendWidth;
+        }
+        else
+        {
+          if (sequence->on_frame_hover_exit)
+          {
+            sequence->on_frame_hover_exit(i);
+          }
         }
         draw_list->AddRectFilled(pos, sz, col, 0);
         customHeight += localCustomHeight;

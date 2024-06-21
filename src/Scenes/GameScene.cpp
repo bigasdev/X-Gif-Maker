@@ -28,6 +28,7 @@ std::string m_current_extension = "";
 bool m_is_hovering = false;
 
 // preview variables
+int m_hover_frame = -99;
 int m_current_frame = 0;
 float timer = 0.0f;
 float m_frame_time = 0.5f;
@@ -51,6 +52,7 @@ bool m_is_mouse_down = false;
 bool m_is_hovering_preview = false;
 bool m_is_hovering_convert = false;
 bool m_edit_frame_popup = false;
+bool m_frame_hover_tooltip = false;
 
 // cursors
 SDL_Cursor *cursor = nullptr;
@@ -114,6 +116,30 @@ void GameScene::init()
     m_current_frame = index;
 
     m_edit_frame_popup = true;
+  };
+
+  m_timeline.on_frame_hover = [&](int index)
+  {
+    if (m_hover_frame == index)
+      return;
+
+    m_hover_frame = index;
+
+    F_Debug::log("Trying to set" + std::to_string(index));
+    F_Debug::log("current frame" + std::to_string(m_hover_frame));
+
+    m_frame_hover_tooltip = true;
+  };
+
+  m_timeline.on_frame_hover_exit = [&](int index)
+  {
+    if (m_hover_frame != index)
+      return;
+
+    m_hover_frame = -99;
+
+    F_Debug::log("Hover exit");
+    m_frame_hover_tooltip = false;
   };
 
   //
@@ -235,6 +261,17 @@ void GameScene::ui()
     {
       ImGui::BeginTooltip();
       ImGui::Text("Convert the gif");
+      ImGui::EndTooltip();
+    }
+
+    if (m_frame_hover_tooltip)
+    {
+
+      ImGui::BeginTooltip();
+      std::string frame = "Frame " + std::to_string(m_hover_frame);
+      ImGui::Text(frame.c_str());
+      ImGui::Text("Frames: %d", m_timeline.myItems[m_hover_frame].mFrameEnd - m_timeline.myItems[m_hover_frame].mFrameStart);
+      ImGui::Text("Duration in seconds : %f", static_cast<float>((m_timeline.myItems[m_hover_frame].mFrameEnd - m_timeline.myItems[m_hover_frame].mFrameStart)) / m_gif_settings.fps);
       ImGui::EndTooltip();
     }
 

@@ -73,6 +73,8 @@ namespace ImSequencer
     virtual ~SequenceInterface() = default;
 
     std::function<void(int)> on_frame_click;
+    std::function<void(int)> on_frame_hover;
+    std::function<void(int)> on_frame_hover_exit;
   };
 
   // return true if selection is made
