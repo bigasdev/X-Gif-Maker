@@ -102,7 +102,7 @@ void GameScene::init()
   m_convert_button = m_ini_handler->get_ini_data("convert_img_button");
 
   m_timeline.mFrameMin = 0;
-  m_timeline.mFrameMax = 300;
+  m_timeline.mFrameMax = m_gif_settings.fps * 10;
   m_timeline.m_del_callback = [&](int index)
   {
     m_video_frames.erase(m_video_frames.begin() + index);
