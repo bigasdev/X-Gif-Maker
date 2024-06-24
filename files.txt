@@ -1,10 +1,6 @@
 file image1.png
-duration 0.4
-file image2.png
-duration 0.4
-file image3.png
 duration 1
-file image4.png
-duration 1.46667
-file image4.png
+file image2.png
+duration 1
+file image2.png
 duration 1

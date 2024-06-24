@@ -106,6 +106,8 @@ void GameScene::init()
   m_timeline.m_del_callback = [&](int index)
   {
     m_video_frames.erase(m_video_frames.begin() + index);
+    if (m_video_frames.size() <= 0)
+      m_current_extension = "";
   };
   m_timeline.m_duplicated_callback = [&](int index)
   {
@@ -220,7 +222,9 @@ void GameScene::update(double deltaTime)
   if (!m_is_playing)
     return;
 
-  timer += 1 * deltaTime;
+  m_max_frames = m_gif_settings.fps * 10;
+
+  timer += 15 * deltaTime;
   if (timer >= m_frame_time)
   {
     timer = 0.0f;
