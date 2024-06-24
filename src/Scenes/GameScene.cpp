@@ -101,6 +101,7 @@ void GameScene::init()
   m_ini_handler->load_ini_files("config.ini");
   m_preview_button = m_ini_handler->get_ini_data("preview_img_button");
   m_convert_button = m_ini_handler->get_ini_data("convert_img_button");
+  m_return_button = m_ini_handler->get_ini_data("return_img_button");
 
   m_timeline.mFrameMin = 0;
   m_timeline.mFrameMax = m_gif_settings.fps * 10;
@@ -167,6 +168,15 @@ void GameScene::update(double deltaTime)
   else
   {
     m_is_hovering = false;
+  }
+
+  if (Mouse::is_at_area({m_return_button->relative_x, m_return_button->relative_y, 25, 25}))
+  {
+    F_Debug::log("Return button");
+    if (m_is_mouse_down)
+    {
+      m_is_mouse_down = false;
+    }
   }
 
   m_left_door_x = Math::lerp(m_left_door_x, m_left_door_pos, m_door_speed * deltaTime);
@@ -374,6 +384,7 @@ void GameScene::draw()
   // gizmos stuff
   Gizmos::draw_area({m_preview_button->relative_x, m_preview_button->relative_y}, 25, m_atlas, {255, 0, 0});
   Gizmos::draw_area({m_convert_button->relative_x, m_convert_button->relative_y}, 25, m_atlas, {255, 0, 0});
+  Gizmos::draw_area({m_return_button->relative_x, m_return_button->relative_y}, 25, m_atlas, {255, 0, 0});
 
   if (m_is_hovering)
   {
