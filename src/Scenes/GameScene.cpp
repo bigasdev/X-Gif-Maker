@@ -45,6 +45,7 @@ int m_left_door_pos = -330;
 // data
 IniData *m_preview_button;
 IniData *m_convert_button;
+IniData *m_return_button;
 std::unique_ptr<Fini> m_gifsettings_handler;
 
 // private control variables
@@ -472,13 +473,13 @@ void GameScene::input(SDL_Event event)
     switch (event.key.keysym.scancode)
     {
     case SDL_SCANCODE_D:
-      m_app->return_scene();
+      // m_app->return_scene();
       break;
     case SDL_SCANCODE_F:
       // Convertion::convert(m_timeline, m_files_path, "output", "output");
       break;
     case SDL_SCANCODE_E:
-      m_files_path.clear();
+      // m_files_path.clear();
 
       /*if(m_file_path != ""){
         convert_file(m_file_path);
