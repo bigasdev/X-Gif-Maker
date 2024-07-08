@@ -371,7 +371,7 @@ void MainScene::draw() {
   // drawing the buttons
   Gizmos::draw_area(
       vec2f(data_convert_button->relative_x, data_convert_button->relative_y),
-      90, m_atlas, {255, 0, 0});
+      130, m_atlas, {255, 0, 0});
   Gizmos::draw_area(
       vec2f(data_select_folder->relative_x, data_select_folder->relative_y), 24,
       m_atlas, {255, 0, 0});

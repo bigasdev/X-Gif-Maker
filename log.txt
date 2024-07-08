@@ -1,3 +1,56 @@
 Loading ........ res/data/gif_settings.ini
 Saving ........ res/data/gif_settings.ini
 Saving ........ res/data/gif_settings.ini
+Loading ........ res/data/gif_img_settings.ini
+Saving ........ res/data/gif_img_settings.ini
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Saving ........ res/data/gif_img_settings.ini
+Loading ........ res/data/gif_settings.ini
+Saving ........ res/data/gif_settings.ini
+Saving ........ res/data/gif_settings.ini
+Saving ........ res/data/gif_settings.ini
+Loading ........ res/data/gif_img_settings.ini
+Saving ........ res/data/gif_img_settings.ini
+Saving ........ res/data/gif_img_settings.ini
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Return button
+Saving ........ res/data/gif_img_settings.ini
+Loading ........ res/data/gif_settings.ini
+Saving ........ res/data/gif_settings.ini
+Saving ........ res/data/gif_settings.ini
+Saving ........ res/data/gif_settings.ini
