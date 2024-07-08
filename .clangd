@@ -1,0 +1,6 @@
+CompileFlags:
+  Add: 
+  - "-IC:/dev/SDL2-2.28.4/i686-w64-mingw32/include/SDL2"
+  - "-IC:/dev/SDL2_ttf-2.20.1/include"
+  - "-IC:/dev/SDL2_image-2.6.2/include"
+  - "-IC:/sdl2"
